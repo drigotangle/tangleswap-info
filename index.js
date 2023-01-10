@@ -41,7 +41,7 @@ app.listen(PORT, server_host, () => {
     console.log(`server is listening on port: ${PORT}`)
 })
 
-router.post('/tvl', cors(corsOptions), async(req, res) =>{
+router.post('/tvl', cors(corsOptions), async (req, res) => {
     queryTVL().then((res) => {
         return res.json()
     })
