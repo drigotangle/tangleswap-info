@@ -1,7 +1,10 @@
 
+const { MongoClient, ServerApiVersion } = require('mongodb')
+const uri = `mongodb+srv://burgossrodrigo:9DwdYTYuiEmQvhmx@tangle.hkje2xt.mongodb.net/?retryWrites=true&w=majority`
+const mongoClient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
+
 const express = require('express')
 const bodyParse = require('body-parser')
-require('isomorphic-fetch');
 const cors = require('cors');
 
 const json = bodyParse.json
