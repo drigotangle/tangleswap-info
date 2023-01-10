@@ -19,6 +19,7 @@ const corsOptions = {
   origin: [
     'http://localhost:3000',
     'http://localhost:5000',
+    'https://tvl-api.herokuapp.com/'
   ],
 };
 
