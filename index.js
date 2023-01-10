@@ -41,12 +41,42 @@ const queryTVL = async () => {
     }
 }
 
+const queryTransactions = async () => {
+    try {
+        const collection = await mongoClient.db("tangle-db").collection("liquidity-trasactions")
+        const documents = await collection.find({}).toArray()
+        let docArr = []
+        documents.map((data) => {
+            console.log(data, 'data')
+            docArr.push({
+                eventName: data.eventName,
+                token0: data.token0Address,
+                token1: data.token1Address,
+                symbol0: data.symol0,
+                symbol1: data.symbol1,
+                amount0: data.amount1,
+                amount1: data.amount1,
+                time: data.tine
+            })
+        })
+        return docArr
+    } catch (error) {
+        console.log(error, 'for getLastTVL')
+    }
+}
+
 app.listen(PORT, server_host, () => {
     console.log(`server is listening on port: ${PORT}`)
 })
 
 router.get('/tvl', cors(corsOptions), async (req, res) => {
     queryTVL().then((result) => {
+        return res.json(result)
+    })
+})
+
+router.get('/transactions', cors(corsOptions), async (req, res) => {
+    queryTransactions().then((result) => {
         return res.json(result)
     })
 })
