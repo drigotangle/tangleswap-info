@@ -28,15 +28,16 @@ const queryTVL = async (from, to) => {
         const collection = await mongoClient.db("tangle-db").collection("tvl")
         const documents = await collection.find({}).toArray()
         let docArr = []
-            if(data.time <= from && data.time >= to){
-                documents.map((data) => {
+            documents.map((data) => {
+                if(data.time <= from && data.time >= to){
                     console.log(data, 'data')
                     docArr.push({
                         tvl: data.tvl,
                         time: data.time
                     })
-                })
-            }        
+                }  
+            })
+      
         return docArr
     } catch (error) {
         console.log(error, 'for getLastTVL')
