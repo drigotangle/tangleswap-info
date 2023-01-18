@@ -23,18 +23,20 @@ const corsOptions = {
   ],
 };
 
-const queryTVL = async () => {
+const queryTVL = async (from, to) => {
     try {
         const collection = await mongoClient.db("tangle-db").collection("tvl")
         const documents = await collection.find({}).toArray()
         let docArr = []
-        documents.map((data) => {
-            console.log(data, 'data')
-            docArr.push({
-                tvl: data.tvl,
-                time: data.time
-            })
-        })
+            if(data.time >= from && data.time <= to){
+                documents.map((data) => {
+                    console.log(data, 'data')
+                    docArr.push({
+                        tvl: data.tvl,
+                        time: data.time
+                    })
+                })
+            }        
         return docArr
     } catch (error) {
         console.log(error, 'for getLastTVL')
@@ -47,17 +49,18 @@ const queryTransactions = async () => {
         const documents = await collection.find({}).toArray()
         let docArr = []
         documents.map((data) => {
-            console.log(data, 'data')
-            docArr.push({
-                eventName: data.eventName,
-                token0: data.token0Address,
-                token1: data.token1Address,
-                symbol0: data.symol0,
-                symbol1: data.symbol1,
-                amount0: data.amount1,
-                amount1: data.amount1,
-                time: data.tine
-            })
+            if(data.time >= from && data.time <= to){
+                docArr.push({
+                    eventName: data.eventName,
+                    token0: data.token0Address,
+                    token1: data.token1Address,
+                    symbol0: data.symol0,
+                    symbol1: data.symbol1,
+                    amount0: data.amount1,
+                    amount1: data.amount1,
+                    time: data.tine
+                })                
+            }            
         })
         return docArr
     } catch (error) {
@@ -69,13 +72,13 @@ app.listen(PORT, server_host, () => {
     console.log(`server is listening on port: ${PORT}`)
 })
 
-router.get('/tvl', cors(corsOptions), async (req, res) => {
+router.get('/tvl/:from/:to', cors(corsOptions), async (req, res) => {
     queryTVL().then((result) => {
         return res.json(result)
     })
 })
 
-router.get('/transactions', cors(corsOptions), async (req, res) => {
+router.get('/transactions/:from/:to', cors(corsOptions), async (req, res) => {
     queryTransactions().then((result) => {
         return res.json(result)
     })
