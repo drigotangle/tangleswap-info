@@ -28,7 +28,7 @@ const queryTVL = async (from, to) => {
         const collection = await mongoClient.db("tangle-db").collection("tvl")
         const documents = await collection.find({}).toArray()
         let docArr = []
-            if(data.time >= from && data.time <= to){
+            if(data.time <= from && data.time >= to){
                 documents.map((data) => {
                     console.log(data, 'data')
                     docArr.push({
@@ -49,7 +49,7 @@ const queryTransactions = async () => {
         const documents = await collection.find({}).toArray()
         let docArr = []
         documents.map((data) => {
-            if(data.time >= from && data.time <= to){
+            if(data.time <= from && data.time >= to){
                 docArr.push({
                     eventName: data.eventName,
                     token0: data.token0Address,
