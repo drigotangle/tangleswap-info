@@ -1,25 +1,62 @@
-import { Line, LineChart } from 'recharts'
-import { getTVL } from '../functions'
-import { ITVL } from '../interfaces'
-import { useContext, useEffect } from 'react'
+import { Area, AreaChart, XAxis, YAxis } from 'recharts'
+import { DataKey } from 'recharts/types/util/types'
+import { getTVL, minMax } from '../functions'
+import { useContext, useEffect, useState } from 'react'
 import { setTVL } from '../state/Actions'
 import { AppContext } from '../state'
+import dayjs from 'dayjs'
+import { Skeleton } from '@mui/material'
+import { ITVL } from '../interfaces'
 
 export const TVLChart = () => {
     const { state, dispatch } = useContext(AppContext)
+    const [ minMaxValue, setMinMaxValue ] = useState<DataKey<number>>()
 
     useEffect(() => {
-        getTVL().then((res) => {
-            setTVL(dispatch, res)
+        const from = 100       
+        getTVL(from).then((res) => {
+            console.log(res, 'meu pau')
+            let chartData: ITVL[] = []
+            res.map((data: ITVL) => {
+                chartData.push({
+                    time: data.time,
+                    tvl: data.tvl + 100000
+                })
+            })
+            setTVL(dispatch, chartData)
+            setMinMaxValue(minMax(res))
         })
-        console.log(state, 'state')
-    })
+    }, [])
 
+    //1#
+    // HERE WE CHECK IF THE DATA LENGTH IS GREATER THEN 0
+    // IF IT DOES WE DISPLAY THE CHART OR WE DISPLAY THE
+    // SKELETON
+    
     return(
         <>
-            <LineChart width={730} height={250} data={state.tvl}>
-                    <Line type="monotone" dataKey="tvl" stroke="#8884d8" />
-            </LineChart>            
+        {
+
+            state.tvl.length > 0 
+
+                ?
+
+                    <AreaChart width={500} height={300} data={state.tvl}>
+                        <XAxis
+                        dataKey="time"
+                        axisLine={false}
+                        tickLine={false}
+                        tickFormatter={(time) => dayjs(time).format('DD')}
+                        minTickGap={10}
+                        />
+                        <Area dataKey="tvl" strokeWidth={2}/>              
+                    </AreaChart>
+
+                :
+
+                    <Skeleton variant="rectangular" width={210} height={118}  />
+
+        }
         </>
     )
 }

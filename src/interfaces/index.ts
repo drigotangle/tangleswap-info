@@ -1,4 +1,4 @@
 export interface ITVL {
-    time: number
+    time: number | string
     tvl: number
 }

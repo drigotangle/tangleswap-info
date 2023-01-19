@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { createTheme, ThemeProvider  } from '@mui/material';
 
 import Home from './pages/Home'
@@ -26,10 +26,11 @@ function App() {
       }
     }
 
-  });
+  })
 
   return (
     <>
+      aqui
       <ThemeProvider theme={theme}>
         <BrowserRouter>
           <Routes>
@@ -38,7 +39,7 @@ function App() {
         </BrowserRouter>        
       </ThemeProvider>
     </>
-  );
+  )
 }
 
 export default App;
