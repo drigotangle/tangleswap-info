@@ -13,7 +13,7 @@ export const TVLChart = () => {
     const [ minMaxValue, setMinMaxValue ] = useState<DataKey<number>>()
 
     useEffect(() => {
-        const from = 100       
+        const from = 10000       
         getTVL(from).then((res) => {
             console.log(res, 'meu pau')
             let chartData: ITVL[] = []
@@ -23,6 +23,9 @@ export const TVLChart = () => {
                     tvl: data.tvl + 100000
                 })
             })
+            chartData.sort((a: ITVL, b: ITVL) => {
+                return Number(a.time) - Number(b.time)
+            })   
             setTVL(dispatch, chartData)
             setMinMaxValue(minMax(res))
         })
