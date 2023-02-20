@@ -129,7 +129,7 @@ const getWethPriceAndLiquidity = async (address) => {
                     poolsArr.push({
                         poolAddress: poolAddress,
                         price: price,
-                        wethBalance: wethBalance
+                        wethBalance: Number(wethBalance)
                     })
                 }
             }
@@ -206,9 +206,11 @@ router.get('/tokens', cors(corsOptions), async (req, res) => {
                         if(!poolSet.has(result)){
                                 const priceArr = result.price
                                 const tvlArr = result.tvl || []
+                                const liquidityArr = result.liquidity || []
                                 const lastPrice = () => {
-                                    const result = wethPriceAndLiquidity.price
+                                    const result = wethPriceAndLiquidity[0]?.price ?? 0
                                     console.log(result, 'lastPrice')
+                                    console.log(typeof result, 'typeof lastPrice')
                                     return result
                                 }
                         
@@ -216,8 +218,8 @@ router.get('/tokens', cors(corsOptions), async (req, res) => {
                                     let percent
                                     for(let i = 0; i < priceArr.length; i++){
                                         if(dayjs(priceArr[i].time).format('DD') !== dayjs(priceArr[priceArr.length - 1].time).format('DD')){
-                                            console.log(lastPrice, priceArr[i].price, 'priceChange')
-                                            percent = ( 100 * lastPrice ) / priceArr[i].price
+                                            console.log(lastPrice(), priceArr[i].price, 'priceChange')
+                                            percent = ( 100 * lastPrice() ) / priceArr[i].price
                                             break
                                         }
                                     }
@@ -226,22 +228,26 @@ router.get('/tokens', cors(corsOptions), async (req, res) => {
                         
                                 const TVL = () => {
                                     if(wethPriceAndLiquidity.length > 0){
+                                        const initialValue = 0
                                         const accBalance = wethPriceAndLiquidity?.reduce((acc, cur) => {
-                                            acc.wethBalance + cur.wethBalance
-                                        })
+                                            return acc + cur.wethBalance
+                                        }, 0)
+                                    console.log(accBalance, 'TVL')
                                     return accBalance
                                     }
                                 }
                                 
                                 const volume24H = () => {
                                     let volume
-                                    for(let i = 0; i < tvlArr.length; i++){
-                                        if(dayjs(tvlArr[i].time).format('DD') !== dayjs(tvlArr[tvlArr.length - 1].time).format('DD')){
-                                            volume = ( 100 * Number(lastPrice) ) / Number(tvlArr[i].tvl)
-                                            console.log(percent, tvlArr[i].tvl, volume)
+                                    for(let i = 0; i < tvlArr.length; i++){liquidityArr
+                                        if(dayjs(liquidityArr[i].time).format('DD') !== dayjs(liquidityArr[liquidityArr.length - 1].time).format('DD')){
+                                            console.log(Number(liquidityArr[liquidityArr.length - 1].liquidity), 'currently liquidty')
+                                            console.log(Number(liquidityArr[i].liquidity), 'last liquidity')
+                                            volume = Number(liquidityArr[liquidityArr.length - 1].liquidity) - Number(liquidityArr[i].liquidity)
                                             break
                                         }
                                     }
+                                    console.log(volume, 'volume')
                                     return volume            
                                 }
                     
@@ -252,10 +258,9 @@ router.get('/tokens', cors(corsOptions), async (req, res) => {
                                         tokenAddress: result.token1 === WETH_ADDRESS && result.token0 !== WETH_ADDRESS ? result.token0 : result.token1,
                                         lastPrice: lastPrice(),
                                         priceChange: priceChange(),
-                                        TVL: TVL(),
-                                        volume24H: volume24H()
+                                        volume24H: volume24H(),
+                                        TVL: TVL()
                                     })
-                    
                                     tokenSet.add(tokenName)
                                     poolSet.add(result)
                                 }
