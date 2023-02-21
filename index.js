@@ -172,7 +172,8 @@ app.listen(PORT, server_host, () => {
     console.log(`server is listening on port: ${PORT}`)
 })
 
-router.get('/tvl/:from/:to', cors(corsOptions), async (req, res) => {
+router.get('/tvl/:limit', cors(corsOptions), async (req, res) => {
+    const limit = req.params.limit
     queryTVL().then((result) => {
         return res.json(result)
     })
