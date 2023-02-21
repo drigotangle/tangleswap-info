@@ -55,10 +55,13 @@ const queryTVL = async (from, to) => {
     }
 }
 
-const queryLiquidityTransactions = async () => {
+const queryLiquidityTransactions = async (limit) => {
     try {
         const collection = await mongoClient.db("tangle-db").collection("liquidity-trasactions")
-        const documents = await collection.find({}).toArray()
+        const documents = await collection.find({})
+        .sort({ blockNumber: -1 }) // Sort by blockNumber in descending order
+        .limit(limit) // Limit to the first 10 results
+        .toArray()
         let docArr = []
         documents.map((data) => {
                 docArr.push({
@@ -78,10 +81,12 @@ const queryLiquidityTransactions = async () => {
     }
 }
 
-const querySwapTransactions = async () => {
+const querySwapTransactions = async (limit) => {
     try {
         const collection = await mongoClient.db("tangle-db").collection("swap-trasactions")
-        const documents = await collection.find({}).toArray()
+        .sort({ blockNumber: -1 }) // Sort by blockNumber in descending order
+        .limit(limit) // Limit to the first 10 results
+        .toArray()
         let docArr = []
         documents.map((data) => {
                 docArr.push({
@@ -173,14 +178,16 @@ router.get('/tvl/:from/:to', cors(corsOptions), async (req, res) => {
     })
 })
 
-router.get('/liquidityTransactions/:from/:to', cors(corsOptions), async (req, res) => {
-    queryLiquidityTransactions().then((result) => {
+router.get('/liquidityTransactions/:limit', cors(corsOptions), async (req, res) => {
+    const limit = req.params.limit
+    queryLiquidityTransactions(limit).then((result) => {
         return res.json(result)
     })
 })
 
-router.get('/swapTransactions/:from/:to', cors(corsOptions), async (req, res) => {
-    querySwapTransactions().then((result) => {
+router.get('/swapTransactions/:limit', cors(corsOptions), async (req, res) => {
+    const limit = req.params.limit
+    querySwapTransactions(limit).then((result) => {
         return res.json(result)
     })
 })
@@ -240,7 +247,7 @@ router.get('/tokens', cors(corsOptions), async (req, res) => {
                                 const volume24H = () => {
                                     let volume
                                     for(let i = 0; i < tvlArr.length; i++){liquidityArr
-                                        if(dayjs(liquidityArr[i].time).format('DD') !== dayjs(liquidityArr[liquidityArr.length - 1].time).format('DD')){
+                                        if(dayjs(liquidityArr[i].time).format('DD') !== dayjs(liquidityArr[liquidityArr.length - 1].time).format('DD')){8
                                             console.log(Number(liquidityArr[liquidityArr.length - 1].liquidity), 'currently liquidty')
                                             console.log(Number(liquidityArr[i].liquidity), 'last liquidity')
                                             volume = Number(liquidityArr[liquidityArr.length - 1].liquidity) - Number(liquidityArr[i].liquidity)
