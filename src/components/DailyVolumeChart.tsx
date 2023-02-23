@@ -13,33 +13,51 @@ export const DailyVolumeChart = () => {
     // const [ minMaxValue, setMinMaxValue ] = useState<DataKey<number>>()
 
     useEffect(() => {
-        const from = 400000 
+        const from = 10000
         getTVL(from).then((res) => {
             let arr: ITVL[] | any = []
+
             for(let i = 0; i < res.length; i++){
-                console.log(moment(res[i].time).day(), 'res')
-            if(i > 0 && moment(res[i]?.time).day() !== moment(res[i - 1]?.time).day()){
+
+            if(i === 0 && res[i].time !== undefined){  
+                arr.push({
+                    tvl: res[i].tvl + 8000,
+                    time: moment(res[i].time).format('DD')
+                })                    
+            }
+
+
+            if(
+                i > 0 && 
+                moment(res[i].time).format('DD') !== arr[arr.length - 1]?.time &&
+                res[i].time !== undefined
+                ){
                     arr.push({
                         tvl: res[i].tvl + 8000,
-                        time: dayjs(res[i].time).format('DD')
+                        time: moment(res[i].time).format('DD')
                     })                    
             }
 
-            if(i < 0){
-                    arr.push({
-                        tvl: res[0].tvl + 8000,
-                        time: moment(res[0].time).day()
-                    })                    
+             if(
+                i > 0 && 
+                moment(res[i].time).format('DD') === arr[arr.length - 1]?.time &&
+                res[i].time !== undefined &&
+                arr[arr.lenght - 1]?.tvl !== undefined
+                ){
+                arr[arr.lenght - 1].tvl += res[i].tvl
+                // const day = arr.filter((obj: any) => moment(obj.time).format('DD') === moment(res[i].time).format('DD'))
+                // if(arr[arr.indexOf(day)]?.tvl !== undefined){
+                //     console.log(arr[arr.indexOf(day)].tvl, 'aqui')
+                //     arr[arr.indexOf(day)].tvl += res[i].tvl
+                // }
+             }
+
             }
-            const day = arr.filter((obj: any) => moment(obj.time).day() === moment(res[i].time).day())
-            if(arr[arr.indexOf(day)]?.tvl !== undefined){
-                arr[arr.indexOf(day)].tvl =+ res[i].tvl
-            }
-            }
-            console.log(arr, 'arr')
+            
             arr.sort((a: ITVL, b: ITVL) => {
                 return Number(a.time) - Number(b.time)
-            })         
+            })
+            
             setLiquidtyBarData(dispatch, arr)
         })
     }, [])
@@ -51,12 +69,12 @@ export const DailyVolumeChart = () => {
     
     return(
         <>
+        aqui
         {
 
-            state.tvl.length > 0 
+            state.tvl.length > 0 && state.barChart !== undefined
 
                 ?
-
                     <BarChart width={500} height={300} data={state.barChart}>
                         <XAxis
                         dataKey="time"
@@ -64,12 +82,12 @@ export const DailyVolumeChart = () => {
                         tickLine={false}
                         minTickGap={10}
                         />
-                        <Bar dataKey="tvl" barSize={20} />              
+                        <Bar dataKey="tvl" barSize={10} />              
                     </BarChart>
 
                 :
 
-                    <Skeleton variant="rectangular" width={210} height={118}  />
+                    <Skeleton variant="rectangular" width={500} height={300}  />
 
         }
         </>
