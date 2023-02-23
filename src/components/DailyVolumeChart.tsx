@@ -1,5 +1,5 @@
 import { BarChart, ResponsiveContainer, XAxis, Bar } from 'recharts'
-import { getTVL, minMax } from '../functions'
+import { getTVL } from '../functions'
 import { useContext, useEffect, useState } from 'react'
 import { setTVL, setLiquidtyBarData } from '../state/Actions'
 import dayjs from 'dayjs'
@@ -45,13 +45,7 @@ export const DailyVolumeChart = () => {
                 arr[arr.lenght - 1]?.tvl !== undefined
                 ){
                 arr[arr.lenght - 1].tvl += res[i].tvl
-                // const day = arr.filter((obj: any) => moment(obj.time).format('DD') === moment(res[i].time).format('DD'))
-                // if(arr[arr.indexOf(day)]?.tvl !== undefined){
-                //     console.log(arr[arr.indexOf(day)].tvl, 'aqui')
-                //     arr[arr.indexOf(day)].tvl += res[i].tvl
-                // }
              }
-
             }
             
             arr.sort((a: ITVL, b: ITVL) => {
@@ -69,7 +63,6 @@ export const DailyVolumeChart = () => {
     
     return(
         <>
-        aqui
         {
 
             state.tvl.length > 0 && state.barChart !== undefined

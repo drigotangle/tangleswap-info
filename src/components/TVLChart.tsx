@@ -1,6 +1,6 @@
 import { Area, AreaChart, XAxis, YAxis } from 'recharts'
 import { DataKey } from 'recharts/types/util/types'
-import { getTVL, minMax } from '../functions'
+import { getTVL } from '../functions'
 import { useContext, useEffect, useState } from 'react'
 import { setTVL } from '../state/Actions'
 import { AppContext } from '../state'
@@ -27,7 +27,6 @@ export const TVLChart = () => {
                 return Number(a.time) - Number(b.time)
             })   
             setTVL(dispatch, chartData)
-            setMinMaxValue(minMax(res))
         })
     }, [])
 
@@ -57,7 +56,7 @@ export const TVLChart = () => {
 
                 :
 
-                    <Skeleton variant="rectangular" width={210} height={118}  />
+                    <Skeleton variant="rectangular" width={500} height={300}  />
 
         }
         </>

@@ -1,6 +1,5 @@
 import axios from "axios"
 import { ITVL } from "../interfaces"
-import { BaseAxisProps } from 'recharts/types/util/types'
 
 export const getTVL = async (from: number): Promise<any | ITVL[]> => {
     try {
@@ -11,12 +10,31 @@ export const getTVL = async (from: number): Promise<any | ITVL[]> => {
     }
 }
 
-export const minMax = (arr: any[]): BaseAxisProps[] | any => {
-    const minValue = Math.min(...arr.map(obj => obj.tvl));
-    const maxValue = Math.max(...arr.map(obj => obj.tvl));
-    const result = {
-        range: [minValue, maxValue]
+export const getTokens = async (): Promise<any> => {
+    try {
+        const result = await axios.get(`http://localhost:5000/tokens`)
+        return result.data
+    } catch (error) {
+        return error
     }
-    //@ts-ignore
-    return result
 }
+
+export const getPools = async (limit: number): Promise<any> => {
+    try {
+        const result = await axios.get(`http://localhost:5000/pools/${limit}`)
+        return result.data
+    } catch (error) {
+        return error
+    }
+}
+
+export const getLiquidityTx = async (limit: number): Promise<any> => {
+    try {
+        const result = await axios.get(`http://localhost:5000/liquidityTransactions/${limit}`)
+        return result.data
+    } catch (error) {
+        return error
+    }
+}
+
+

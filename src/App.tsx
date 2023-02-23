@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { createTheme, ThemeProvider  } from '@mui/material';
 
 import Home from './pages/Home'
+import GlobalStyle from "./style";
 
 function App() {
 
@@ -30,8 +31,8 @@ function App() {
 
   return (
     <>
-      aqui
       <ThemeProvider theme={theme}>
+      <GlobalStyle />
         <BrowserRouter>
           <Routes>
               <Route path="/" element={<Home />} />
