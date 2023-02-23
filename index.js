@@ -37,10 +37,13 @@ const corsOptions = {
 const provider = new ethers.JsonRpcProvider('https://smart-quick-wave.discover.quiknode.pro/e3c1d5f4c51dae28ffddcd947415045bfa0f8f7d/')
 // const provider = new ethers.providers.JsonRpcProvider('https://smart-quick-wave.discover.quiknode.pro/e3c1d5f4c51dae28ffddcd947415045bfa0f8f7d/')
 
-const queryTVL = async (from, to) => {
+const queryTVL = async (limit) => {
     try {
         const collection = await mongoClient.db("tangle-db").collection("tvl")
-        const documents = await collection.find({}).toArray()
+        const documents = await collection.find({})
+        .sort({ time: 1 }) // Sort by blockNumber in descending order
+        .limit(limit) // Limit to the first 10 results
+        .toArray()
         let docArr = []
             documents.map((data) => {
                     docArr.push({
@@ -95,9 +98,9 @@ const querySwapTransactions = async (limit) => {
                     token1: data.token1Address,
                     symbol0: data.symol0,
                     symbol1: data.symbol1,
-                    amount0: data.amount1,
+                    amount0: data.amount0,
                     amount1: data.amount1,
-                    time: data.tine
+                    time: data.time
                 })                        
         })
         return docArr
@@ -173,27 +176,27 @@ app.listen(PORT, server_host, () => {
 })
 
 router.get('/tvl/:limit', cors(corsOptions), async (req, res) => {
-    const limit = req.params.limit
-    queryTVL().then((result) => {
+    const limit = Number(req.params.limit)
+    queryTVL(limit).then((result) => {
         return res.json(result)
     })
 })
 
 router.get('/liquidityTransactions/:limit', cors(corsOptions), async (req, res) => {
-    const limit = req.params.limit
+    const limit = Number(req.params.limit)
     queryLiquidityTransactions(limit).then((result) => {
         return res.json(result)
     })
 })
 
 router.get('/swapTransactions/:limit', cors(corsOptions), async (req, res) => {
-    const limit = req.params.limit
+    const limit = Number(req.params.limit)
     querySwapTransactions(limit).then((result) => {
         return res.json(result)
     })
 })
 
-router.get('/tokens', cors(corsOptions), async (req, res) => {
+router.get('/tokens', cors(corsOptions), async (res) => {
     await queryPools().then(async (poolRes) => {
         console.log(poolRes.length, 'length')
         const poolSet = new Set()
@@ -276,7 +279,7 @@ router.get('/tokens', cors(corsOptions), async (req, res) => {
                     })
             }  
     }
-    return res.json(tokenArr)
+    return tokenArr
     })
 })
 
