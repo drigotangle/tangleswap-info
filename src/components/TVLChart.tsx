@@ -7,6 +7,11 @@ import { AppContext } from '../state'
 import dayjs from 'dayjs'
 import { Skeleton } from '@mui/material'
 import { ITVL } from '../interfaces'
+import styled from 'styled-components'
+
+const Wrapper = styled.div`
+    margin: auto auto;
+`
 
 export const TVLChart = () => {
     const { state, dispatch } = useContext(AppContext)
@@ -36,7 +41,7 @@ export const TVLChart = () => {
     // SKELETON
     
     return(
-        <>
+        <Wrapper>
         {
 
             state.tvl.length > 0 
@@ -50,8 +55,14 @@ export const TVLChart = () => {
                         tickLine={false}
                         tickFormatter={(time) => dayjs(time).format('DD')}
                         minTickGap={10}
+                        color='#191B1F'
                         />
-                        <Area dataKey="tvl" strokeWidth={2}/>              
+                        <Area 
+                            dataKey="tvl" 
+                            strokeWidth={2}
+                            fill='#2172E5'
+                            fillOpacity={1} 
+                        />              
                     </AreaChart>
 
                 :
@@ -59,6 +70,6 @@ export const TVLChart = () => {
                     <Skeleton variant="rectangular" width={500} height={300}  />
 
         }
-        </>
+        </Wrapper>
     )
 }
