@@ -15,12 +15,12 @@ function App() {
     palette:{
       mode: 'dark',
       background:{
-        paper: '#1F1D2B',
+        paper: '#191B1F',
         default: '#1F1D2B'
 
       },
       primary:{
-        main: '#7022E7',
+        main: '#191B1F',
       },
       secondary:{
         main: '#7022E7'

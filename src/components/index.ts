@@ -9,5 +9,5 @@ export const RowWrapper = styled.div`
 export const ColumnWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 4vh;
+    gap: 10vh;
 `
