@@ -60,9 +60,9 @@ const queryTVL = async (limit) => {
 
 const queryLiquidityTransactions = async (limit) => {
     try {
-        const collection = await mongoClient.db("tangle-db").collection("liquidity-trasactions")
+        const collection = await mongoClient.db("tangle-db").collection("liquidity-transactions")
         const documents = await collection.find({})
-        .sort({ blockNumber: -1 }) // Sort by blockNumber in descending order
+        .sort({ blockNumber: 1 }) // Sort by blockNumber in descending order
         .limit(limit) // Limit to the first 10 results
         .toArray()
         let docArr = []
@@ -71,11 +71,12 @@ const queryLiquidityTransactions = async (limit) => {
                     eventName: data.eventName,
                     token0: data.token0Address,
                     token1: data.token1Address,
-                    symbol0: data.symol0,
+                    symbol0: data.symbol0,
                     symbol1: data.symbol1,
-                    amount0: data.amount1,
+                    amount0: data.amount0,
                     amount1: data.amount1,
-                    time: data.tine
+                    time: data._id.getTimestamp(),
+                    blockNumber: data.block
                 })                        
         })
         return docArr
@@ -109,10 +110,18 @@ const querySwapTransactions = async (limit) => {
     }
 }
 
-const queryPools = async () => {
+const queryPools = async (limit) => {
     try {
         const collection = await mongoClient.db("tangle-db").collection("pools")
-        const documents = await collection.find({}).toArray()
+        if(limit !== undefined){
+            const documents = await collection.find({})
+            .sort({ time: 1 }) // Sort by blockNumber in descending order
+            .limit(limit) // Limit to the first 10 results
+            .toArray()
+            return documents
+        }
+        const documents = await collection.find({})
+        .toArray()
         return documents
     } catch (error) {
         console.log(error, 'for queryPools')
@@ -144,7 +153,6 @@ const getWethPriceAndLiquidity = async (address) => {
             poolsArr.sort((a, b) => {
                 return b.liquidity - a.liquidity
             })
-            console.log(poolsArr, Date.now(), 'chamou')
             return poolsArr
     } catch (error) {
         console.log(error, 'for getWethPriceAndLiquidity')
@@ -160,8 +168,30 @@ const _tokenName = async (token1, token0) => {
             )
     
             const tokenName = await tokenCtt.name()
-            console.log(tokenName, Date.now(), 'chamou')
             return tokenName
+    } catch (error) {
+        console.log(error, 'for tokenName')
+    }
+}
+
+const _tokenSymbol = async (token1, token0) => {
+    try {
+            const token0Ctt = new ethers.Contract(
+                token0,
+                ERC20_ABI,
+                provider
+            )
+
+            const token1Ctt = new ethers.Contract(
+                token1,
+                ERC20_ABI,
+                provider
+            )
+    
+            const token0Symbol = await token0Ctt.symbol()
+            const token1Symbol = await token1Ctt.symbol()
+            const result = { symbol0: token0Symbol, symbol1:token1Symbol }
+            return result
     } catch (error) {
         console.log(error, 'for tokenName')
     }
@@ -182,6 +212,60 @@ router.get('/tvl/:limit', cors(corsOptions), async (req, res) => {
     })
 })
 
+router.get('/pools/:limit', cors(corsOptions), async (req, res) => {
+    const limit = Number(req.params.limit)
+
+    const result = await queryPools(limit)
+    let arr = []
+    const dataSet = new Set()
+    const interval = result.length * 200
+
+    for (const data of result) {
+        if(!dataSet.has(data)){
+            const [symbols, _] = await Promise.all([_tokenSymbol(data.token0, data.token1), timeOut(interval)])
+        const symbol0 = symbols?.symbol0
+        const symbol1 = symbols?.symbol1
+        const tvl = data.liquidity[data.liquidity.length - 1].liquidity
+        const fee = data.fee
+        const volume24H = () => {
+            let volume;
+            for (let i = 0; i < data.liquidity.length; i++) {
+                if(dayjs(data.liquidity[i].time).format('DD') !== dayjs(data.liquidity[data.liquidity.length - 1].liquidity).format('DD')){
+                    volume = Number(data.liquidity[data.liquidity.length - 1].liquidity) - Number(data.liquidity[i].liquidity)
+                    break
+                }
+            }
+            return volume
+        }
+        const volume7D = () => {
+            let volume;
+            for (let i = 0; i < data.liquidity.length; i++) {
+                if(dayjs(data.liquidity[data.liquidity.length - 1].liquidity - dayjs(data.liquidity[i].time).format('DD')).format('DD') === 7){
+                    volume = Number(liquidityArr[liquidityArr.length - 1].liquidity) - Number(liquidityArr[i].liquidity)
+                    break
+                }
+                else
+                {
+                    volume = volume24H()
+                }
+            }
+            return volume
+        }
+        dataSet.add(data)
+        arr.push({
+            symbol0: symbol0,
+            symbol1: symbol1,
+            tvl: tvl,
+            volume24H: volume24H(),
+            volume7D: volume7D(),
+            fee: fee
+        })
+        }
+    }
+
+    return res.json(arr)
+})
+
 router.get('/liquidityTransactions/:limit', cors(corsOptions), async (req, res) => {
     const limit = Number(req.params.limit)
     queryLiquidityTransactions(limit).then((result) => {
@@ -196,9 +280,8 @@ router.get('/swapTransactions/:limit', cors(corsOptions), async (req, res) => {
     })
 })
 
-router.get('/tokens', cors(corsOptions), async (res) => {
-    await queryPools().then(async (poolRes) => {
-        console.log(poolRes.length, 'length')
+router.get('/tokens', cors(corsOptions), async (req, res) => {
+    queryPools().then(async (poolRes) => {
         const poolSet = new Set()
         const tokenSet = new Set()
         const interval = ((poolRes.length * 3 * 3) * 80 ) + (poolRes.length * 80)
@@ -220,8 +303,6 @@ router.get('/tokens', cors(corsOptions), async (res) => {
                                 const liquidityArr = result.liquidity || []
                                 const lastPrice = () => {
                                     const result = wethPriceAndLiquidity[0]?.price ?? 0
-                                    console.log(result, 'lastPrice')
-                                    console.log(typeof result, 'typeof lastPrice')
                                     return result
                                 }
                         
@@ -229,7 +310,6 @@ router.get('/tokens', cors(corsOptions), async (res) => {
                                     let percent
                                     for(let i = 0; i < priceArr.length; i++){
                                         if(dayjs(priceArr[i].time).format('DD') !== dayjs(priceArr[priceArr.length - 1].time).format('DD')){
-                                            console.log(lastPrice(), priceArr[i].price, 'priceChange')
                                             percent = ( 100 * lastPrice() ) / priceArr[i].price
                                             break
                                         }
@@ -243,7 +323,6 @@ router.get('/tokens', cors(corsOptions), async (res) => {
                                         const accBalance = wethPriceAndLiquidity?.reduce((acc, cur) => {
                                             return acc + cur.wethBalance
                                         }, 0)
-                                    console.log(accBalance, 'TVL')
                                     return accBalance
                                     }
                                 }
@@ -251,19 +330,15 @@ router.get('/tokens', cors(corsOptions), async (res) => {
                                 const volume24H = () => {
                                     let volume
                                     for(let i = 0; i < tvlArr.length; i++){liquidityArr
-                                        if(dayjs(liquidityArr[i].time).format('DD') !== dayjs(liquidityArr[liquidityArr.length - 1].time).format('DD')){8
-                                            console.log(Number(liquidityArr[liquidityArr.length - 1].liquidity), 'currently liquidty')
-                                            console.log(Number(liquidityArr[i].liquidity), 'last liquidity')
+                                        if(dayjs(liquidityArr[i].time).format('DD') !== dayjs(liquidityArr[liquidityArr.length - 1].time).format('DD')){
                                             volume = Number(liquidityArr[liquidityArr.length - 1].liquidity) - Number(liquidityArr[i].liquidity)
                                             break
                                         }
                                     }
-                                    console.log(volume, 'volume')
                                     return volume            
                                 }
                     
                                 if(!tokenSet.has(tokenName)){
-                                    console.log(tokenArr, 'tokenArr')
                                     tokenArr.push({
                                         tokenName: tokenName,
                                         tokenAddress: result.token1 === WETH_ADDRESS && result.token0 !== WETH_ADDRESS ? result.token0 : result.token1,
@@ -279,7 +354,7 @@ router.get('/tokens', cors(corsOptions), async (res) => {
                     })
             }  
     }
-    return tokenArr
+    return res.json(tokenArr)
     })
 })
 
