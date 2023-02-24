@@ -1,9 +1,11 @@
 import { Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import dayjs from 'dayjs';
 import { useContext, useEffect } from 'react';
 import { getLiquidityTx } from '../functions';
-import { ITVL, ITx } from '../interfaces';
+import { ITx } from '../interfaces';
 import { AppContext } from '../state';
 import { setLiquidityTxData } from '../state/Actions';
+import relativeTime from 'dayjs/plugin/relativeTime';
 
 
 const TokenTable = () => {
@@ -14,9 +16,12 @@ const TokenTable = () => {
         arr.sort((a: ITx, b: ITx) => {
             return Number(a.blockNumber) - Number(b.blockNumber)
         })
+        console.log(arr)
         setLiquidityTxData(dispatch, arr)
     })
   }, [])
+
+  dayjs.extend(relativeTime)
 
   return (
 
@@ -33,6 +38,7 @@ const TokenTable = () => {
           <TableCell>Symbol 1</TableCell>
           <TableCell>Amount 0</TableCell>
           <TableCell>Amount 1</TableCell>
+          <TableCell>Time</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -43,6 +49,7 @@ const TokenTable = () => {
             <TableCell>{event.symbol1}</TableCell>
             <TableCell>{event.amount0}</TableCell>
             <TableCell>{event.amount1}</TableCell>
+            <TableCell>{dayjs(event.time).fromNow()}</TableCell>
           </TableRow>
         ))}
       </TableBody>
@@ -51,7 +58,7 @@ const TokenTable = () => {
 
     :
 
-    <Skeleton variant="rectangular" width={1030} height={300}  />
+    <Skeleton variant="rectangular" width={1280} height={300}  />
 
   );
 };

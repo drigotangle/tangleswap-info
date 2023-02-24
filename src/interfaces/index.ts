@@ -44,5 +44,6 @@ export interface IToken {
     amount0: number
     amount1: number
     blockNumber: number
+    time: any
   }
   
