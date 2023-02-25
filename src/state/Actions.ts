@@ -17,6 +17,6 @@ export const setPoolData = (dispatch: any, payLoad: IPoolData[]) => {
     dispatch({type: 'SET_POOL_DATA', payload: payLoad})
 }
 
-export const setLiquidityTxData = (dispatch: any, payLoad: ITx[]) => {
-    dispatch({type: 'SET_LIQUIDITY_TX_DATA', payload: payLoad})
+export const setTxData = (dispatch: any, payLoad: ITx[]) => {
+    dispatch({type: 'SET_TX_DATA', payload: payLoad})
 }

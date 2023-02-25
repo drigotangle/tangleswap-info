@@ -37,4 +37,15 @@ export const getLiquidityTx = async (limit: number): Promise<any> => {
     }
 }
 
+export const getSwapTx = async (limit: number): Promise<any> => {
+    try {
+        const result = await axios.get(`http://localhost:5000/swapTransactions/${limit}`)
+        return result.data
+    } catch (error) {
+        return error
+    }
+}
+
+
+
 

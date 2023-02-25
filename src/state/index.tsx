@@ -15,7 +15,7 @@ type ACTIONTYPE =
   | { type: "SET_LIQUIDITY_BAR_DATA"; payload: ITVL[] | any}
   | { type: "SET_TOKEN_DATA"; payload: IToken[] | any }
   | { type: "SET_POOL_DATA"; payload: IPoolData[] | any }
-  | { type: "SET_LIQUIDITY_TX_DATA"; payload: ITx[] | any }
+  | { type: "SET_TX_DATA"; payload: ITx[] | any }
 
 function reducer(state: AppState, action: ACTIONTYPE) {
   switch (action.type) {
@@ -27,7 +27,7 @@ function reducer(state: AppState, action: ACTIONTYPE) {
         return { ...state, tokenData: action.payload }
         case "SET_POOL_DATA":
           return { ...state, poolData: action.payload }
-          case "SET_LIQUIDITY_TX_DATA":
+          case "SET_TX_DATA":
             return { ...state, txData: action.payload }          
       default:
         return state  
