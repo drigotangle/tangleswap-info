@@ -66,6 +66,7 @@ const queryLiquidityTransactions = async (limit) => {
         .limit(limit) // Limit to the first 10 results
         .toArray()
         let docArr = []
+        
         documents.map((data) => {
                 docArr.push({
                     eventName: data.eventName,
@@ -87,8 +88,9 @@ const queryLiquidityTransactions = async (limit) => {
 
 const querySwapTransactions = async (limit) => {
     try {
-        const collection = await mongoClient.db("tangle-db").collection("swap-trasactions")
-        .sort({ blockNumber: -1 }) // Sort by blockNumber in descending order
+        const collection = await mongoClient.db("tangle-db").collection("swap-transactions")
+        const documents = await collection.find({})
+        .sort({ block: -1 }) // Sort by blockNumber in descending order
         .limit(limit) // Limit to the first 10 results
         .toArray()
         let docArr = []
@@ -97,11 +99,12 @@ const querySwapTransactions = async (limit) => {
                     eventName: data.eventName,
                     token0: data.token0Address,
                     token1: data.token1Address,
-                    symbol0: data.symol0,
+                    symbol0: data.symbol0,
                     symbol1: data.symbol1,
                     amount0: data.amount0,
                     amount1: data.amount1,
-                    time: data.time
+                    time: data._id.getTimestamp(),
+                    blockNumber: data.block
                 })                        
         })
         return docArr
@@ -218,7 +221,7 @@ router.get('/pools/:limit', cors(corsOptions), async (req, res) => {
     const result = await queryPools(limit)
     let arr = []
     const dataSet = new Set()
-    const interval = result.length * 200
+    const interval = result.length * 200 * 2
 
     for (const data of result) {
         if(!dataSet.has(data)){
@@ -284,7 +287,7 @@ router.get('/tokens', cors(corsOptions), async (req, res) => {
     queryPools().then(async (poolRes) => {
         const poolSet = new Set()
         const tokenSet = new Set()
-        const interval = ((poolRes.length * 3 * 3) * 80 ) + (poolRes.length * 80)
+        const interval = ((poolRes.length * 3 * 3) * 80 ) + (poolRes.length * 80) * 2 * 2
         let tokenArr = []
         for(let i = 0; i < poolRes.length; i++){
             const result = poolRes[i]
@@ -302,8 +305,11 @@ router.get('/tokens', cors(corsOptions), async (req, res) => {
                                 const tvlArr = result.tvl || []
                                 const liquidityArr = result.liquidity || []
                                 const lastPrice = () => {
-                                    const result = wethPriceAndLiquidity[0]?.price ?? 0
-                                    return result
+                                    if(wethPriceAndLiquidity.length > 0){
+                                        const result = wethPriceAndLiquidity[0]?.price ?? 0
+                                        return result
+                                    }
+                                    return 0
                                 }
                         
                                 const priceChange = () => {
