@@ -8,14 +8,14 @@ import { AppContext } from "../state";
 
 
 const PoolDataTable = () => {
-  const { state, dispatch } = useContext(AppContext)
+  const { state } = useContext(AppContext)
 
-  useEffect(() => {
-    getPools(15).then((res: IPoolData[]) => {
-        console.log(res, 'pools')
-        setPoolData(dispatch, res)
-    })
-  }, [])
+  // useEffect(() => {
+  //   getPools(15).then((res: IPoolData[]) => {
+  //       console.log(res, 'pools')
+  //       setPoolData(dispatch, res)
+  //   })
+  // }, [])
 
   return (
 

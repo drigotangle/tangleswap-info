@@ -7,16 +7,16 @@ import { setTokenData } from '../state/Actions';
 
 
 const TokenTable = () => {
-  const { state, dispatch } = useContext(AppContext)    
-  useEffect(() => {
-    getTokens().then((res: IToken[]) => {
-        let arr: IToken[] = res
-        arr.sort((a: IToken, b: IToken) => {
-            return Number(a.TVL) - Number(b.TVL)
-        })
-        setTokenData(dispatch, arr)
-    })
-  }, [])
+  const { state } = useContext(AppContext)    
+  // useEffect(() => {
+  //   getTokens().then((res: IToken[]) => {
+  //       let arr: IToken[] = res
+  //       arr.sort((a: IToken, b: IToken) => {
+  //           return Number(a.TVL) - Number(b.TVL)
+  //       })
+  //       setTokenData(dispatch, arr)
+  //   })
+  // }, [])
 
   return (
 

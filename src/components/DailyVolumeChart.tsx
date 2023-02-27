@@ -9,52 +9,52 @@ import { ITVL } from '../interfaces'
 import moment from 'moment'
 
 export const DailyVolumeChart = () => {
-    const { state, dispatch } = useContext(AppContext)
+    const { state } = useContext(AppContext)
     // const [ minMaxValue, setMinMaxValue ] = useState<DataKey<number>>()
 
-    useEffect(() => {
-        const from = 10000
-        getTVL(from).then((res) => {
-            let arr: ITVL[] | any = []
+    // useEffect(() => {
+    //     const from = 10000
+    //     getTVL(from).then((res) => {
+    //         let arr: ITVL[] | any = []
 
-            for(let i = 0; i < res.length; i++){
+    //         for(let i = 0; i < res.length; i++){
 
-            if(i === 0 && res[i].time !== undefined){  
-                arr.push({
-                    tvl: res[i].tvl + 8000,
-                    time: moment(res[i].time).format('DD')
-                })                    
-            }
+    //         if(i === 0 && res[i].time !== undefined){  
+    //             arr.push({
+    //                 tvl: res[i].tvl + 8000,
+    //                 time: moment(res[i].time).format('DD')
+    //             })                    
+    //         }
 
 
-            if(
-                i > 0 && 
-                moment(res[i].time).format('DD') !== arr[arr.length - 1]?.time &&
-                res[i].time !== undefined
-                ){
-                    arr.push({
-                        tvl: res[i].tvl + 8000,
-                        time: moment(res[i].time).format('DD')
-                    })                    
-            }
+    //         if(
+    //             i > 0 && 
+    //             moment(res[i].time).format('DD') !== arr[arr.length - 1]?.time &&
+    //             res[i].time !== undefined
+    //             ){
+    //                 arr.push({
+    //                     tvl: res[i].tvl + 8000,
+    //                     time: moment(res[i].time).format('DD')
+    //                 })                    
+    //         }
 
-             if(
-                i > 0 && 
-                moment(res[i].time).format('DD') === arr[arr.length - 1]?.time &&
-                res[i].time !== undefined &&
-                arr[arr.lenght - 1]?.tvl !== undefined
-                ){
-                arr[arr.lenght - 1].tvl += res[i].tvl
-             }
-            }
+    //          if(
+    //             i > 0 && 
+    //             moment(res[i].time).format('DD') === arr[arr.length - 1]?.time &&
+    //             res[i].time !== undefined &&
+    //             arr[arr.lenght - 1]?.tvl !== undefined
+    //             ){
+    //             arr[arr.lenght - 1].tvl += res[i].tvl
+    //          }
+    //         }
             
-            arr.sort((a: ITVL, b: ITVL) => {
-                return Number(a.time) - Number(b.time)
-            })
+    //         arr.sort((a: ITVL, b: ITVL) => {
+    //             return Number(a.time) - Number(b.time)
+    //         })
             
-            setLiquidtyBarData(dispatch, arr)
-        })
-    }, [])
+    //         setLiquidtyBarData(dispatch, arr)
+    //     })
+    // }, [])
 
     //1#
     // HERE WE CHECK IF THE DATA LENGTH IS GREATER THEN 0

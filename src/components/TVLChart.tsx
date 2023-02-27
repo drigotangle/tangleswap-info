@@ -14,26 +14,25 @@ const Wrapper = styled.div`
 `
 
 export const TVLChart = () => {
-    const { state, dispatch } = useContext(AppContext)
-    const [ minMaxValue, setMinMaxValue ] = useState<DataKey<number>>()
+    const { state } = useContext(AppContext)
 
-    useEffect(() => {
-        const from = 10000       
-        getTVL(from).then((res) => {
-            console.log(res, 'meu pau')
-            let chartData: ITVL[] = []
-            res.map((data: ITVL) => {
-                chartData.push({
-                    time: data.time,
-                    tvl: data.tvl + 100000
-                })
-            })
-            chartData.sort((a: ITVL, b: ITVL) => {
-                return Number(a.time) - Number(b.time)
-            })   
-            setTVL(dispatch, chartData)
-        })
-    }, [])
+    // useEffect(() => {
+    //     const from = 10000       
+    //     getTVL(from).then((res) => {
+    //         console.log(res, 'meu pau')
+    //         let chartData: ITVL[] = []
+    //         res.map((data: ITVL) => {
+    //             chartData.push({
+    //                 time: data.time,
+    //                 tvl: data.tvl + 100000
+    //             })
+    //         })
+    //         chartData.sort((a: ITVL, b: ITVL) => {
+    //             return Number(a.time) - Number(b.time)
+    //         })   
+    //         setTVL(dispatch, chartData)
+    //     })
+    // }, [])
 
     //1#
     // HERE WE CHECK IF THE DATA LENGTH IS GREATER THEN 0
