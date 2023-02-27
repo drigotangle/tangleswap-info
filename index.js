@@ -62,6 +62,7 @@ const queryFee = async () => {
     try {
         const collection = await mongoClient.db("tangle-db").collection("fees-generated")
         const documents = await collection.find({})
+        .toArray()
         let docArr = []
         documents.map((data) => {
                 docArr.push({
@@ -98,6 +99,7 @@ const queryLiquidityTransactions = async (limit) => {
                     blockNumber: data.block
                 })                        
         })
+        console.log(docArr)
         return docArr
     } catch (error) {
         console.log(error, 'for getLastTVL')
