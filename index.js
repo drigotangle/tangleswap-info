@@ -287,7 +287,7 @@ router.get('/pools/:limit', cors(corsOptions), async (req, res) => {
 })
 
 router.get('/fees', cors(corsOptions), async (req, res) => {
-    queryFee(ui).then((result) => {
+    queryFee().then((result) => {
         return res.json(result)
     })
 })
