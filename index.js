@@ -35,7 +35,6 @@ const corsOptions = {
 };
 
 const provider = new ethers.JsonRpcProvider('https://smart-quick-wave.discover.quiknode.pro/e3c1d5f4c51dae28ffddcd947415045bfa0f8f7d/')
-// const provider = new ethers.providers.JsonRpcProvider('https://smart-quick-wave.discover.quiknode.pro/e3c1d5f4c51dae28ffddcd947415045bfa0f8f7d/')
 
 const queryTVL = async (limit) => {
     try {
@@ -55,6 +54,23 @@ const queryTVL = async (limit) => {
         return docArr
     } catch (error) {
         console.log(error, 'for getLastTVL')
+    }
+}
+
+const queryFee = async () => {
+    try {
+        const collection = await mongoClient.db("tangle-db").collection("fees-generated")
+        const documents = await collection.find({})
+        let docArr = []
+        documents.map((data) => {
+                docArr.push({
+                    tvl: data.tvl,
+                    time: data.time
+                })
+        })
+        return docArr
+    } catch (error) {
+        console.log(error, 'queryFee')
     }
 }
 
@@ -267,6 +283,12 @@ router.get('/pools/:limit', cors(corsOptions), async (req, res) => {
     }
 
     return res.json(arr)
+})
+
+router.get('/fees', cors(corsOptions), async (req, res) => {
+    queryFee().then((result) => {
+        return res.json(result)
+    })
 })
 
 router.get('/liquidityTransactions/:limit', cors(corsOptions), async (req, res) => {
