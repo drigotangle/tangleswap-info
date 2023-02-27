@@ -1,9 +1,7 @@
 import { Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { useContext, useEffect } from 'react';
-import { getTokens } from '../functions';
+import { useContext } from 'react';
 import { IToken } from '../interfaces';
 import { AppContext } from '../state';
-import { setTokenData } from '../state/Actions';
 
 
 const TokenTable = () => {

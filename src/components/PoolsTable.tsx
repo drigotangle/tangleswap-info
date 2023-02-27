@@ -1,8 +1,6 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { getPools } from "../functions";
 import { IPoolData } from "../interfaces";
-import { setPoolData } from "../state/Actions";
 import { AppContext } from "../state";
 
 

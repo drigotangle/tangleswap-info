@@ -1,12 +1,8 @@
-import { Area, AreaChart, XAxis, YAxis } from 'recharts'
-import { DataKey } from 'recharts/types/util/types'
-import { getTVL } from '../functions'
-import { useContext, useEffect, useState } from 'react'
-import { setTVL } from '../state/Actions'
+import { Area, AreaChart, XAxis } from 'recharts'
+import { useContext } from 'react'
 import { AppContext } from '../state'
 import dayjs from 'dayjs'
 import { Skeleton } from '@mui/material'
-import { ITVL } from '../interfaces'
 import styled from 'styled-components'
 
 const Wrapper = styled.div`

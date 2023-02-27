@@ -1,10 +1,8 @@
 import { Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import dayjs from 'dayjs';
-import { useContext, useEffect } from 'react';
-import { getLiquidityTx, getSwapTx } from '../functions';
+import { useContext } from 'react';
 import { ITx } from '../interfaces';
 import { AppContext } from '../state';
-import { setTxData } from '../state/Actions';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
 
