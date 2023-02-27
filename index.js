@@ -65,8 +65,8 @@ const queryFee = async () => {
         let docArr = []
         documents.map((data) => {
                 docArr.push({
-                    tvl: data.tvl,
-                    time: data.time
+                    fee: data.fee,
+                    time: data._id.getTimestamp()
                 })
         })
         return docArr
