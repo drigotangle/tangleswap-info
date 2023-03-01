@@ -24,7 +24,7 @@ const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 app.use(json());
 app.use(router);
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 443
 var server_host = process.env.YOUR_HOST || '0.0.0.0';
 const corsOptions = {
   origin: [
@@ -362,10 +362,7 @@ router.get('/tokens', cors(corsOptions), async (req, res) => {
                                 const volume24H = () => {
                                     let volume
                                     for(let i = 0; i < tvlArr.length; i++){liquidityArr
-                                        if(dayjs(liquidityArr[i].time).format('DD') !== dayjs(liquidityArr[liquidityArr.length - 1].time).format('DD')){
-                                            volume = Number(liquidityArr[liquidityArr.length - 1].liquidity) - Number(liquidityArr[i].liquidity)
-                                            break
-                                        }
+k
                                     }
                                     return volume            
                                 }
