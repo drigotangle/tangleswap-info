@@ -361,8 +361,11 @@ router.get('/tokens', cors(corsOptions), async (req, res) => {
                                 
                                 const volume24H = () => {
                                     let volume
-                                    for(let i = 0; i < tvlArr.length; i++){liquidityArr
-k
+                                    for(let i = 0; i < tvlArr.length; i++){
+                                        if(dayjs(liquidityArr[i].time).format('DD') !== dayjs(liquidityArr[liquidityArr.length - 1].time).format('DD')){
+                                            volume = Number(liquidityArr[liquidityArr.length - 1].liquidity) - Number(liquidityArr[i].liquidity)
+                                            break
+                                        }
                                     }
                                     return volume            
                                 }
