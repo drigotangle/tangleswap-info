@@ -1,7 +1,9 @@
-import { Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead } from '@mui/material';
 import { useContext } from 'react';
+import { SkeletonWrapper } from '.';
 import { IToken } from '../interfaces';
 import { AppContext } from '../state';
+import { StyledTableRow } from './'
 
 
 const TokenTable = () => {
@@ -25,25 +27,25 @@ const TokenTable = () => {
     <TableContainer component={Paper}>
       <Table>
         <TableHead>
-          <TableRow>
+          <StyledTableRow>
             <TableCell>Name</TableCell>
             <TableCell>Address</TableCell>
             <TableCell>Last Price</TableCell>
             <TableCell>Price Change</TableCell>
             <TableCell>Volume 24H</TableCell>
             <TableCell>TVL</TableCell>
-          </TableRow>
+          </StyledTableRow>
         </TableHead>
         <TableBody>
           {state.tokenData.map((token: IToken) => (
-            <TableRow key={token.tokenAddress}>
+            <StyledTableRow key={token.tokenAddress}>
               <TableCell>{token.tokenName}</TableCell>
               <TableCell>{token.tokenAddress}</TableCell>
               <TableCell>{Number(token.lastPrice).toFixed(2)}</TableCell>
               <TableCell>{Number((token.priceChange) / 100).toFixed(2)}%</TableCell>
               <TableCell>{token.volume24H}</TableCell>
               <TableCell>{(token.TVL?.toFixed(2)) ?? 'N/A'}</TableCell>
-            </TableRow>
+            </StyledTableRow>
           ))}
         </TableBody>
       </Table>
@@ -51,7 +53,7 @@ const TokenTable = () => {
 
     :
 
-    <Skeleton variant="rectangular" width={1030} height={300}  />
+    <SkeletonWrapper><Skeleton variant="rectangular" width={1030} height={300}  /></SkeletonWrapper>
 
   );
 };

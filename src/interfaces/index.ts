@@ -46,4 +46,10 @@ export interface IToken {
     blockNumber: number
     time: any
   }
+
+  export interface IFee {
+    fee: number
+    poolAddress: string
+    time: any
+  }
   

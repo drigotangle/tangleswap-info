@@ -3,6 +3,8 @@ import { createTheme, ThemeProvider  } from '@mui/material';
 
 import Home from './pages/Home'
 import GlobalStyle from "./style";
+import Pools from "./pages/Pools";
+import Tokens from "./pages/Tokens";
 
 function App() {
 
@@ -16,7 +18,7 @@ function App() {
       mode: 'dark',
       background:{
         paper: '#191B1F',
-        default: '#1F1D2B'
+        default: '#191B1F'
 
       },
       primary:{
@@ -36,6 +38,8 @@ function App() {
         <BrowserRouter>
           <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/Pools" element={<Pools />} />
+              <Route path="/Tokens" element={<Tokens />} />
           </Routes>
         </BrowserRouter>        
       </ThemeProvider>

@@ -1,9 +1,11 @@
-import { Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead } from '@mui/material';
 import dayjs from 'dayjs';
 import { useContext } from 'react';
 import { ITx } from '../interfaces';
 import { AppContext } from '../state';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { SkeletonWrapper } from '.'
+import { StyledTableRow } from './'
 
 
 const TokenTable = () => {
@@ -29,25 +31,25 @@ const TokenTable = () => {
     <TableContainer component={Paper}>
     <Table>
       <TableHead>
-        <TableRow>
+        <StyledTableRow>
           <TableCell>Event Name</TableCell>
           <TableCell>Symbol 0</TableCell>
           <TableCell>Symbol 1</TableCell>
           <TableCell>Amount 0</TableCell>
           <TableCell>Amount 1</TableCell>
           <TableCell>Time</TableCell>
-        </TableRow>
+        </StyledTableRow>
       </TableHead>
       <TableBody>
         {state.txData.map((event: ITx, index) => (
-          <TableRow key={index}>
+          <StyledTableRow key={index}>
             <TableCell>{event.eventName}</TableCell>
             <TableCell>{event.symbol0}</TableCell>
             <TableCell>{event.symbol1}</TableCell>
             <TableCell>{event.amount0}</TableCell>
             <TableCell>{event.amount1}</TableCell>
             <TableCell>{dayjs(event.time).fromNow()}</TableCell>
-          </TableRow>
+          </StyledTableRow>
         ))}
       </TableBody>
     </Table>
@@ -55,7 +57,7 @@ const TokenTable = () => {
 
     :
 
-    <Skeleton variant="rectangular" width={1280} height={300}  />
+    <SkeletonWrapper><Skeleton variant="rectangular" width={1280} height={300}  /></SkeletonWrapper>
 
   );
 };

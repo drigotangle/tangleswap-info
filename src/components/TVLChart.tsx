@@ -48,7 +48,7 @@ export const TVLChart = () => {
                         dataKey="time"
                         axisLine={false}
                         tickLine={false}
-                        tickFormatter={(time) => dayjs(time).format('DD')}
+                        tickFormatter={(time: any) => dayjs(time).format('DD')}
                         minTickGap={10}
                         color='#191B1F'
                         />

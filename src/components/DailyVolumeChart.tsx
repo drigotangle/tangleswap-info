@@ -1,12 +1,7 @@
 import { BarChart, ResponsiveContainer, XAxis, Bar } from 'recharts'
-import { getTVL } from '../functions'
 import { useContext, useEffect, useState } from 'react'
-import { setTVL, setLiquidtyBarData } from '../state/Actions'
-import dayjs from 'dayjs'
 import { AppContext } from '../state'
 import { Skeleton } from '@mui/material'
-import { ITVL } from '../interfaces'
-import moment from 'moment'
 
 export const DailyVolumeChart = () => {
     const { state } = useContext(AppContext)

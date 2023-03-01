@@ -1,5 +1,6 @@
 import axios from "axios"
-import { ITVL } from "../interfaces"
+import dayjs from "dayjs"
+import { IFee, ITVL } from "../interfaces"
 
 export const getTVL = async (from: number): Promise<any | ITVL[]> => {
     try {
@@ -45,6 +46,43 @@ export const getSwapTx = async (limit: number): Promise<any> => {
         return error
     }
 }
+
+export const getFees = async (): Promise<IFee[] | any> => {
+    try {
+        const result = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/fees`)
+        console.log(result.data, 'fees')
+        return result.data
+    } catch (error) {
+        return error
+    }
+}
+
+export const vol24H = (liquidity: ITVL[]) => {
+    let volume = 0;
+    for (const tvl of liquidity) {
+        if(dayjs(tvl.time).format('DD') === dayjs(tvl.time).format('DD')){
+            volume = Number(liquidity[liquidity.length - 1].tvl) - Number(tvl.tvl)
+            break
+        }
+    }
+    return Math.abs(volume)
+}
+
+export const feesGenerated = async (): Promise<number> => {
+    const feesArr: IFee[] = await getFees()
+    let totalFee = 0
+    console.log(feesArr, 'feesArr')
+        for(const fees of feesArr){
+            if(dayjs(fees.time).format('DD') === dayjs(fees.time).format('DD')){
+                console.log(fees.fee, 'fee')
+                totalFee += fees.fee
+            }            
+        }
+        console.log(totalFee, 'totalFee')
+    return Math.abs(totalFee)
+}
+
+
 
 
 

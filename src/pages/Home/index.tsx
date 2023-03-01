@@ -3,6 +3,8 @@ import { useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import { ColumnWrapper, RowWrapper } from '../../components'
 import { DailyVolumeChart } from '../../components/DailyVolumeChart'
+import Header from '../../components/Header'
+import HomeGeneral from '../../components/HomeGeneral'
 import PoolDataTable from '../../components/PoolsTable'
 import TokenTable from '../../components/TokenTable'
 import TransactionsTable from '../../components/TransactionsTable'
@@ -109,19 +111,21 @@ const Home = () => {
         })
         
       }, [])
-    return(
+    return(<>
+        <Header />  
         <HomeWrapper>
             <ColumnWrapper>
                 <RowWrapper>
                     <TVLChart />
                     <DailyVolumeChart />
                 </RowWrapper>
+                <HomeGeneral />
                 <TokenTable />
                 <PoolDataTable />
                 <TransactionsTable />
             </ColumnWrapper>    
         </HomeWrapper>
-    )
+        </>)
 }
 
 export default Home
