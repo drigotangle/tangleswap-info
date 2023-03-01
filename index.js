@@ -24,7 +24,7 @@ const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 app.use(json());
 app.use(router);
-const PORT = process.env.PORT || 5000
+const PORT = 80
 var server_host = process.env.YOUR_HOST || '0.0.0.0';
 const corsOptions = {
   origin: [
@@ -224,7 +224,7 @@ const timeOut = (interval) => {
     return new Promise(resolve => setTimeout(resolve, interval));
 }
 
-app.listen(PORT, server_host, () => {
+app.listen(PORT, () => {
     console.log(`server is listening on port: ${PORT}`)
 })
 
