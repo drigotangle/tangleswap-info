@@ -24,7 +24,7 @@ const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 app.use(json());
 app.use(router);
-const PORT = 80
+const PORT = 443
 var server_host = process.env.YOUR_HOST || '0.0.0.0';
 const corsOptions = {
   origin: [
