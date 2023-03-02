@@ -323,7 +323,7 @@ router.get('/tokens', cors(corsOptions), async (req, res) => {
             }
             _tokenAddress === result.token1
             if(_tokenAddress !== undefined){
-                    await Promise.all([getWethPriceAndLiquidity(_tokenAddress), _tokenName(_tokenAddress), _tokenSymbol(_tokenAddress), timeOut(interval)]).then((promises) => {
+                    await Promise.all([getWethPriceAndLiquidity(_tokenAddress), _tokenName(_tokenAddress), _tokenSymbol(result.token1, result.token0), timeOut(interval)]).then((promises) => {
                         const wethPriceAndLiquidity = promises[0]
                         const tokenName = promises[1]
                         const tokenSymbol = promises[2]
