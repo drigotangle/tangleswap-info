@@ -31,7 +31,7 @@ const corsOptions = {
     'http://localhost:3000',
     'http://localhost:5000',
     'https://tvl-api.herokuapp.com/',
-    'https://tangleswap-info.vercel.app/',
+    'https://tangleswap-info.vercel.app',
     'https://tangle-db-api.onrender.com/'
   ],
 };
