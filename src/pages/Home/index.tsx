@@ -1,3 +1,4 @@
+import { Typography } from '@mui/material'
 import moment from 'moment'
 import { useContext, useEffect } from 'react'
 import styled from 'styled-components'
@@ -18,13 +19,13 @@ const HomeWrapper = styled.div`
     display: flex;
     flex-direction: column;
     width: 80vw;
-    margin: auto auto;
+    margin: 10vh auto 10vh;
 `
 
 
 const Home = () => {
 
-    const { state, dispatch } = useContext(AppContext)
+    const { dispatch } = useContext(AppContext)
 
     useEffect(() => {
         //SWAPS TX
@@ -115,13 +116,17 @@ const Home = () => {
         <Header />  
         <HomeWrapper>
             <ColumnWrapper>
+                <Typography variant='h6'>TangleSwap general</Typography>
                 <RowWrapper>
                     <TVLChart />
                     <DailyVolumeChart />
                 </RowWrapper>
                 <HomeGeneral />
+                <Typography variant='h6'>Top tokens</Typography>
                 <TokenTable />
+                <Typography variant='h6'>Top pools</Typography>
                 <PoolDataTable />
+                <Typography variant='h6'>Recent transactions</Typography>
                 <TransactionsTable />
             </ColumnWrapper>    
         </HomeWrapper>

@@ -1,5 +1,5 @@
-import { BarChart, ResponsiveContainer, XAxis, Bar } from 'recharts'
-import { useContext, useEffect, useState } from 'react'
+import { BarChart, XAxis, Bar } from 'recharts'
+import { useContext } from 'react'
 import { AppContext } from '../state'
 import { Skeleton } from '@mui/material'
 

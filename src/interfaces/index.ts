@@ -5,6 +5,7 @@ export interface ITVL {
 
 export interface IToken {
     tokenName: string
+    tokenSymbol: string
     tokenAddress: string
     lastPrice: number
     priceChange: number

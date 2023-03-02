@@ -30,7 +30,15 @@ const Header = () => {
             <StyledImg width={30} src='https://d3m3d54t409w7t.cloudfront.net/logos/Logo_White_Alpha.gif' />                
             <LinksWrapper>
                 {
-                    ['Overview', 'Pools', 'Tokens'].map((data: string) => {
+                    ['Overview', 'Pools', 'Tokens'].map((data: string, index: number) => {
+                        if(index === 0){
+                            return (
+                                <>
+                                    <Link to={`/`}>{data}</Link>
+                                </>
+                            )
+                        }
+                        
                         return (
                             <>
                                 <Link to={`/${data}`}>{data}</Link>

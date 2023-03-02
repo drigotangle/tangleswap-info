@@ -60,7 +60,7 @@ export const getFees = async (): Promise<IFee[] | any> => {
 export const vol24H = (liquidity: ITVL[]) => {
     let volume = 0;
     for (const tvl of liquidity) {
-        if(dayjs(tvl.time).format('DD') === dayjs(tvl.time).format('DD')){
+        if(dayjs(tvl.time).format('DD') === dayjs(liquidity[liquidity.length - 1].tvl).format('DD')){
             volume = Number(liquidity[liquidity.length - 1].tvl) - Number(tvl.tvl)
             break
         }
@@ -73,7 +73,7 @@ export const feesGenerated = async (): Promise<number> => {
     let totalFee = 0
     console.log(feesArr, 'feesArr')
         for(const fees of feesArr){
-            if(dayjs(fees.time).format('DD') === dayjs(fees.time).format('DD')){
+            if(dayjs(fees.time).format('DD') === dayjs(feesArr[feesArr.length - 1].time).format('DD')){
                 console.log(fees.fee, 'fee')
                 totalFee += fees.fee
             }            

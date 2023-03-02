@@ -3,7 +3,8 @@ import { useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import { ColumnWrapper, PaperWrapper } from '../../components'
 import Header from '../../components/Header'
-import TokenTable from '../../components/TransactionsTable'
+import TokenTable from '../../components/TokenTable'
+import TopMoversCard from '../../components/TopMoversCard'
 import { getTokens } from '../../functions'
 import { IToken } from '../../interfaces'
 import { AppContext } from '../../state'
@@ -40,7 +41,11 @@ const Pools = () => {
             <ColumnWrapper>
             <Typography variant='h6'>Your Watchlist</Typography>
             <Paper><PaperWrapper>Your saved pools will appear here</PaperWrapper></Paper>
-            <Typography variant='h6'>All pools</Typography>
+            <Typography variant='h6'>Top movers</Typography>
+            <Paper>
+                <TopMoversCard />
+            </Paper>
+            <Typography variant='h6'>Top tokens</Typography>
                 <TokenTable />
             </ColumnWrapper>    
         </HomeWrapper>

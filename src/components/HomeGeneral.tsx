@@ -1,7 +1,8 @@
-import { Paper } from '@mui/material'
+import { Paper, Skeleton } from '@mui/material'
 import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { PaperWrapper } from '.'
+import { isUndefined } from 'util'
+import { PaperWrapper, SkeletonWrapper } from '.'
 import { feesGenerated, vol24H } from '../functions'
 import { ITVL } from '../interfaces'
 import { AppContext } from '../state'
@@ -22,6 +23,10 @@ const HomeGeneral = () => {
 
     return(
 
+    ![vol24H(state.tvl), fees, tvl[tvl.length - 1]?.tvl].includes(undefined)
+
+    ?
+
     <Paper>
         <PaperWrapper>
                 <SpanWrapper>Volume24h: {vol24H(state.tvl)}</SpanWrapper>
@@ -29,6 +34,11 @@ const HomeGeneral = () => {
                 <SpanWrapper>TVL: {tvl[tvl.length - 1]?.tvl}</SpanWrapper>
         </PaperWrapper>
     </Paper>
+
+    :
+
+    <SkeletonWrapper><Skeleton variant="rectangular" width={1030} height={30}  /></SkeletonWrapper>
+
     )
 }
 

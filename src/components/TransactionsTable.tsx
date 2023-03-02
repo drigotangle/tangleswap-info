@@ -8,7 +8,7 @@ import { SkeletonWrapper } from '.'
 import { StyledTableRow } from './'
 
 
-const TokenTable = () => {
+const TransactionsTable = () => {
   const { state } = useContext(AppContext)    
   // useEffect(() => {
   //   Promise.all([getLiquidityTx(20),  getSwapTx(20)]).
@@ -57,9 +57,9 @@ const TokenTable = () => {
 
     :
 
-    <SkeletonWrapper><Skeleton variant="rectangular" width={1280} height={300}  /></SkeletonWrapper>
+    <SkeletonWrapper><Skeleton variant="rectangular" width={1030} height={300}  /></SkeletonWrapper>
 
   );
 };
 
-export default TokenTable;
+export default TransactionsTable;
