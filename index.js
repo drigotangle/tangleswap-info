@@ -241,7 +241,7 @@ router.get('/pools/:limit', cors(corsOptions), async (req, res) => {
     const result = await queryPools(limit)
     let arr = []
     const dataSet = new Set()
-    const interval = result.length * 200 * 2
+    const interval = result.length * 200 * 2 * 2
 
     for (const data of result) {
         if(!dataSet.has(data)){
@@ -313,7 +313,7 @@ router.get('/tokens', cors(corsOptions), async (req, res) => {
     queryPools().then(async (poolRes) => {
         const poolSet = new Set()
         const tokenSet = new Set()
-        const interval = ((poolRes.length * 7 * 3) * 80 ) + (poolRes.length * 80) * 2 * 2 * 2
+        const interval = ((poolRes.length * 7 * 3) * 80 ) + (poolRes.length * 80) * 2 * 2 * 2 * 2
         let tokenArr = []
         for(let i = 0; i < poolRes.length; i++){
             const result = poolRes[i]
@@ -332,7 +332,7 @@ router.get('/tokens', cors(corsOptions), async (req, res) => {
                                 const tvlArr = result.tvl || []
                                 const liquidityArr = result.liquidity || []
                                 const lastPrice = () => {
-                                    if(wethPriceAndLiquidity.length > 0){
+                                    if(wethPriceAndLiquidity?.length > 0){
                                         const result = wethPriceAndLiquidity[0]?.price ?? 0
                                         return result
                                     }
