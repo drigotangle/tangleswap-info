@@ -57,6 +57,8 @@ export const getFees = async (): Promise<IFee[] | any> => {
     }
 }
 
+//
+
 export const vol24H = (liquidity: ITVL[]) => {
     let volume = 0;
     for (const tvl of liquidity) {
