@@ -182,10 +182,10 @@ const getWethPriceAndLiquidity = async (address) => {
     }
 }
 
-const _tokenName = async (token1, token0) => {
+const _tokenName = async (token) => {
     try {
             const tokenCtt = new ethers.Contract(
-                token1 === WETH_ADDRESS && token0 !== WETH_ADDRESS ? token0 : token1,
+                token,
                 ERC20_ABI,
                 provider
             )
