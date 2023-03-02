@@ -1,7 +1,7 @@
 import { Paper, Typography } from '@mui/material'
 import { useContext, useEffect } from 'react'
 import styled from 'styled-components'
-import { ColumnWrapper, PaperWrapper, RowWrapper } from '../../components'
+import { ColumnWrapper, PaperWrapper } from '../../components'
 import Header from '../../components/Header'
 import TokenTable from '../../components/TransactionsTable'
 import { getTokens } from '../../functions'
@@ -20,20 +20,20 @@ const HomeWrapper = styled.div`
 
 const Pools = () => {
 
-    const { state, dispatch } = useContext(AppContext)
+    const { dispatch } = useContext(AppContext)
 
     useEffect(() => {
         
         //TOKENS TABLE
-        getTokens().then((res: IToken[]) => {
-            let arr: IToken[] = res
-            arr.sort((a: IToken, b: IToken) => {
-                return Number(a.TVL) - Number(b.TVL)
-            })
-            setTokenData(dispatch, arr)
+    getTokens().then((res: IToken[]) => {
+        let arr: IToken[] = res
+        arr.sort((a: IToken, b: IToken) => {
+            return Number(a.TVL) - Number(b.TVL)
         })
-        
+            setTokenData(dispatch, arr)
+        })    
       }, [])
+
     return(<>
         <Header />  
         <HomeWrapper>
