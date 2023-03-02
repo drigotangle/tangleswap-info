@@ -241,11 +241,12 @@ router.get('/pools/:limit', cors(corsOptions), async (req, res) => {
     const result = await queryPools(limit)
     let arr = []
     const dataSet = new Set()
-    const interval = result.length * 200 * 2 * 2
+    const interval = result.length * 60 * 2 
 
     for (const data of result) {
         if(!dataSet.has(data)){
-            const [symbols, _] = await Promise.all([_tokenSymbol(data.token0, data.token1), timeOut(interval)])
+            console.log(data.token1, data.token0, 'aqui')
+            const [symbols, _] = await Promise.all([_tokenSymbol(data.token1, data.token0), timeOut(interval)])
         const symbol0 = symbols?.symbol0
         const symbol1 = symbols?.symbol1
         const tvl = data.liquidity[data.liquidity.length - 1].liquidity
@@ -313,7 +314,7 @@ router.get('/tokens', cors(corsOptions), async (req, res) => {
     queryPools().then(async (poolRes) => {
         const poolSet = new Set()
         const tokenSet = new Set()
-        const interval = (((poolRes.length * 7 * 3) * 80 ) + (poolRes.length * 80) * 2 * 2 * 2 ) * 2
+        const interval = (((poolRes.length * 7 * 3) * 50 ) + (poolRes.length * 50) * 2 )
         let tokenArr = []
         for(let i = 0; i < poolRes.length; i++){
             const result = poolRes[i]
@@ -324,6 +325,7 @@ router.get('/tokens', cors(corsOptions), async (req, res) => {
             _tokenAddress === result.token1
             if(_tokenAddress !== undefined){
                     await Promise.all([getWethPriceAndLiquidity(_tokenAddress), _tokenName(_tokenAddress), _tokenSymbol(result.token1, result.token0), timeOut(interval)]).then((promises) => {
+                        console.log('chamou')
                         const wethPriceAndLiquidity = promises[0]
                         const tokenName = promises[1]
                         const tokenSymbol = promises[2]
