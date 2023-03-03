@@ -1,4 +1,4 @@
-const { getWethPriceAndLiquidity, _tokenName, _tokenSymbol, timeOut, queryPools } = require('./functions')
+const { getWethPriceAndLiquidity, _tokenName, _tokenSymbol, timeOut, queryPools } = require('../functions')
 const dayjs = require('dayjs')
 
 

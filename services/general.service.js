@@ -1,4 +1,4 @@
-const { queryFee, queryLiquidityTransactions, querySwapTransactions, queryTVL } = require('./functions')
+const { queryFee, queryLiquidityTransactions, querySwapTransactions, queryTVL } = require('../functions')
 
 const getFees = async () => {
     try {
