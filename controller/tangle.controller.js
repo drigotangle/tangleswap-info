@@ -1,7 +1,7 @@
 const poolService = require('../services/pool.service')
 const tokenService = require('../services/token.service')
 const { poolCache, tokenCache, swapTxCache, liquidityTxCache, tvlCache, feeCache } = require('../cache/cache')
-const { getLiquidityTx, getSwapTx, getTvl, getFees } = require('./general.service')
+const { getLiquidityTx, getSwapTx, getTvl, getFees } = require('../service/general.service')
 
 const poolController = async (req, res) => {
   const limit = Number(req.params.limit)
