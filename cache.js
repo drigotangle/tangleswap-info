@@ -33,8 +33,8 @@ const tokenCachedMiddleware = (req, res, next) => {
 
   const liquidityTxCachedMiddleware = (req, res, next) => {
     try {
-      if (swapTxCache.has("swapTx-list")) {
-        return res.send(liquidityTxCache.get("swapTx-list")).status(200);
+      if (swapTxCache.has("liquidityTx-list")) {
+        return res.send(liquidityTxCache.get("liquidityTx-list")).status(200);
       }
       return next();
     } catch (err) {
@@ -57,8 +57,8 @@ const tokenCachedMiddleware = (req, res, next) => {
 
   const swapTxCachedMiddleware = (req, res, next) => {
     try {
-      if (liquidityTxCache.has("liquidityTx-list")) {
-        return res.send(swapTxCache.get("liquidityTx-list")).status(200);
+      if (liquidityTxCache.has("swapTx-list")) {
+        return res.send(swapTxCache.get("swapTx-list")).status(200);
       }
       return next();
     } catch (err) {
