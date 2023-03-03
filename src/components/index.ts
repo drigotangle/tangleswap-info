@@ -1,4 +1,4 @@
-import { TableRow } from "@mui/material";
+import { TableCell, TableRow } from "@mui/material";
 import styled from "styled-components";
 
 export const RowWrapper = styled.div`
@@ -30,4 +30,8 @@ export const PaperWrapper = styled.div`
 
 export const StyledTableRow = styled(TableRow)`
     padding: 4vh;
+`
+
+export const StyledTableCell = styled(TableCell)`
+    cursor: pointer;
 `

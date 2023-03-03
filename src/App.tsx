@@ -4,6 +4,7 @@ import { createTheme, ThemeProvider  } from '@mui/material';
 import Home from './pages/Home'
 import GlobalStyle from "./style";
 import Pools from "./pages/Pools";
+import PoolPage from './pages/Pools/PoolPage';
 import Tokens from "./pages/Tokens";
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
           <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/Pools" element={<Pools />} />
+              <Route path="/Pools/:poolAddress" element={<Pools />} />
               <Route path="/Tokens" element={<Tokens />} />
           </Routes>
         </BrowserRouter>        

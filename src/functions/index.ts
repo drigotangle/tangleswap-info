@@ -84,6 +84,10 @@ export const feesGenerated = async (): Promise<number> => {
     return Math.abs(totalFee)
 }
 
+export const useUseHistory = (history: any, url: string) => {
+    history.push(url)
+}
+
 
 
 

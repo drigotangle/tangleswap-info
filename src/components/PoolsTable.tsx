@@ -1,21 +1,17 @@
 import { useContext } from "react";
-import { Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead } from "@mui/material";
-import { StyledTableRow } from './'
+import { Paper, Skeleton, Table, TableBody, TableContainer, TableHead, TableCell } from "@mui/material";
+import { StyledTableCell, StyledTableRow } from './'
 import { IPoolData } from "../interfaces";
 import { AppContext } from "../state";
 import { SkeletonWrapper } from ".";
+import { useNavigate } from "react-router-dom";
 
 
 
 const PoolDataTable = () => {
   const { state } = useContext(AppContext)
 
-  // useEffect(() => {
-  //   getPools(15).then((res: IPoolData[]) => {
-  //       console.log(res, 'pools')
-  //       setPoolData(dispatch, res)
-  //   })
-  // }, [])
+  const navigate = useNavigate()
 
   return (
 
@@ -35,11 +31,11 @@ const PoolDataTable = () => {
         </TableHead>
         <TableBody>
           {state.poolData.map((row: IPoolData) => (
-            <StyledTableRow key={`${row.symbol0}-${row.symbol1}`}>
-              <TableCell>{row.symbol0}/{row.symbol1}{" "}{row.fee / 10000}%</TableCell>
-              <TableCell>{row.tvl}</TableCell>
-              <TableCell>{row.volume24H}</TableCell>
-              <TableCell>{row.volume7D}</TableCell> 
+            <StyledTableRow onClick={_ => navigate(`pools/${row.pool}`)} key={`${row.symbol0}-${row.symbol1}`}>
+              <StyledTableCell>{row.symbol0}/{row.symbol1}{" "}{row.fee / 10000}%</StyledTableCell>
+              <StyledTableCell>{row.tvl}</StyledTableCell>
+              <StyledTableCell>{row.volume24H}</StyledTableCell>
+              <StyledTableCell>{row.volume7D}</StyledTableCell> 
             </StyledTableRow>
           ))}
         </TableBody>
