@@ -6,10 +6,10 @@ const WETH_ADDRESS = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'
 
 const tokenService = async () => {
     try {
-            const poolRes = await queryPools(20)
+            const poolRes = await queryPools(50)
             const poolSet = new Set()
             const tokenSet = new Set()
-            const interval = (((((poolRes.length * 9) * 40 ) + (poolRes.length * 40) * 3 )) * 2 ) * 2
+            const interval = ((((((poolRes.length * 9) * 40 ) + (poolRes.length * 40) * 3 )) * 2 ) * 2) * 2
         
             let tokenArr = []
             for(let i = 0; i < poolRes.length; i++){
