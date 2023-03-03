@@ -71,8 +71,9 @@ export const DailyVolumeChart = () => {
                         minTickGap={10}
                         />
                         <Bar 
-                        dataKey="tvl" 
-                        barSize={10}
+                            dataKey="tvl" 
+                            barSize={10}
+                            fill="#740E95"
                         />              
                     </BarChart>
 
@@ -84,3 +85,5 @@ export const DailyVolumeChart = () => {
         </>
     )
 }
+
+//#740E95
