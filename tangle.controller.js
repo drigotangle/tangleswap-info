@@ -62,7 +62,7 @@ const poolController = async (req, res) => {
     const limit = Number(req.params.limit)
       try {
         const data = await getTvl(limit);
-        tvlCache.set("pool-list", data);
+        tvlCache.set("tvl-list", data);
         res.send(data);
         res.status(200);
       } catch (err) {
@@ -76,7 +76,7 @@ const poolController = async (req, res) => {
       const limit = Number(req.params.limit)
         try {
           const data = await getFees(limit);
-          feeCache.set("pool-list", data);
+          feeCache.set("fee-list", data);
           res.send(data);
           res.status(200);
         } catch (err) {
