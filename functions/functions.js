@@ -7,9 +7,9 @@ const { MongoClient, ServerApiVersion } = require('mongodb')
 const uri = `mongodb+srv://burgossrodrigo:BeREmhPli0p3qFTq@tangle.hkje2xt.mongodb.net/?retryWrites=true&w=majority`
 const mongoClient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
 
-const POOL_ABI = require('./artifacts/POOLV3.json')
-const FACTORY_ABI = require('./artifacts/FACTORYV3.json')
-const ERC20_ABI = require('./artifacts/ERC20.json')
+const POOL_ABI = require('../artifacts/POOLV3.json')
+const FACTORY_ABI = require('../artifacts/FACTORYV3.json')
+const ERC20_ABI = require('../artifacts/ERC20.json')
 
 const WETH_ADDRESS = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'

@@ -7,8 +7,8 @@ const app = express();
 const router = express.Router()
 
 
-const { poolCachedMiddleware, tokenCachedMiddleware, tvlCachedMiddleware, feeCachedMiddleware, liquidityTxCachedMiddleware, swapTxCachedMiddleware } = require('./cache')
-const { poolController, tokenController, tvlController, feeControler, liquidityTxController, swapTxController } = require('./tangle.controller')
+const { poolCachedMiddleware, tokenCachedMiddleware, tvlCachedMiddleware, feeCachedMiddleware, liquidityTxCachedMiddleware, swapTxCachedMiddleware } = require('./cache/cache')
+const { poolController, tokenController, tvlController, feeControler, liquidityTxController, swapTxController } = require('./controller/tangle.controller')
 
 
 
