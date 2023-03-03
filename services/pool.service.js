@@ -46,6 +46,7 @@ const poolService = async (limit) => {
             arr.push({
                 symbol0: symbol0,
                 symbol1: symbol1,
+                pool: data.pool,
                 tvl: tvl,
                 volume24H: volume24H(),
                 volume7D: volume7D(),
