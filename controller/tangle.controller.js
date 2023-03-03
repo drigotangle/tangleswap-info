@@ -1,5 +1,5 @@
 const poolService = require('../services/pool.service')
-const tokenService = require('./token.service')
+const tokenService = require('../services/token.service')
 const { poolCache, tokenCache, swapTxCache, liquidityTxCache, tvlCache, feeCache } = require('../cache/cache')
 const { getLiquidityTx, getSwapTx, getTvl, getFees } = require('./general.service')
 
