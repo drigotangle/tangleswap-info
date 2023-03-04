@@ -7,7 +7,7 @@ const poolService = async (limit) => {
         const result = await queryPools(limit)
         let arr = []
         const dataSet = new Set()
-        const interval = ((result.length * 40 )* 2) * 2.3
+        const interval = ((result.length * 40 )* 2) * 2.5
     
         for (const data of result) {
             console.log('chamou')
