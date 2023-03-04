@@ -174,23 +174,14 @@ const _tokenName = async (token) => {
     }
 }
 
-const _tokenSymbol = async (token1, token0) => {
+const _tokenSymbol = async (address) => {
     try {
-            const token0Ctt = new ethers.Contract(
-                token0,
+            const erc20 = new ethers.Contract(
+                address,
                 ERC20_ABI,
                 provider
-            )
-
-            const token1Ctt = new ethers.Contract(
-                token1,
-                ERC20_ABI,
-                provider
-            )
-    
-            const token0Symbol = await token0Ctt.symbol()
-            const token1Symbol = await token1Ctt.symbol()
-            const result = { symbol0: token0Symbol, symbol1:token1Symbol }
+            )    
+            const result = await erc20.symbol()
             return result
     } catch (error) {
         console.log(error, 'for tokenName')
