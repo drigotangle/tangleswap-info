@@ -9,7 +9,7 @@ const tokenService = async () => {
             const poolRes = await queryPools(50)
             const poolSet = new Set()
             const tokenSet = new Set()
-            const interval = ((poolRes.length * 9) * 40 ) + ((result.length * 40 )* 2) * 1.2
+            const interval = ((poolRes.length * 9) * 40 ) + ((poolRes.length * 40 )* 2) * 1.2
         
             let tokenArr = []
             for(let i = 0; i < poolRes.length; i++){
