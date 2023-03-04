@@ -197,6 +197,16 @@ const _tokenSymbol = async (token1, token0) => {
     }
 }
 
+const tokenBalance = async (address, poolAddress) => {
+    try {
+        const erc20 = new ethers.Contract(address, ERC20_ABI, provider)
+        const balance = await erc20.balanceOf(poolAddress)
+        return balance
+    } catch (error) {
+        console.log(error, 'for tokenBalance')
+    }
+} 
+
 const timeOut = (interval) => {
     return new Promise(resolve => setTimeout(resolve, interval));
 }
