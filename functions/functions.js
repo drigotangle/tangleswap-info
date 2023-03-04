@@ -220,5 +220,6 @@ module.exports = {
     getWethPriceAndLiquidity,
     _tokenName,
     _tokenSymbol,
-    timeOut
+    timeOut,
+    tokenBalance
 }
