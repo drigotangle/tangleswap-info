@@ -14,8 +14,8 @@ const poolService = async (limit) => {
             if(!dataSet.has(data)){
                 await Promise.all([
                     _tokenSymbol(data.token1, data.token0), 
-                    tokenBalance(data.pool, data.token0), 
-                    tokenBalance(data.pool, data.token1), 
+                    tokenBalance(data.token0, data.pool), 
+                    tokenBalance(data.token1, data.pool), 
                     timeOut(interval)
                 ]).then((promise) => {
                     const symbol0 = promise[0].symbol0
