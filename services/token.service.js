@@ -2,7 +2,7 @@ const { getWethPriceAndLiquidity, _tokenName, _tokenSymbol, timeOut, queryPools 
 const dayjs = require('dayjs')
 
 
-const WETH_ADDRESS = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'
+const WETH_ADDRESS = '0x9a0F333908010331769F1B4764Ff2b3a1e965897'
 
 const tokenService = async () => {
     try {
