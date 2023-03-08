@@ -13,16 +13,15 @@ const poolService = async (limit) => {
             console.log('chamou')
             if(!dataSet.has(data)){
                 await Promise.all([
-                    _tokenSymbol(data.token0),
-                    _tokenSymbol(data.token1),
                     tokenBalance(data.token0, data.pool), 
                     tokenBalance(data.token1, data.pool), 
                     timeOut(interval)
                 ]).then((promise) => {
-                    const symbol0 = promise[0].symbol0
-                    const symbol1 = promise[1].symbol1
-                    const balance0 = promise[2]
-                    const balance1 = promise[3]
+                    console.log(promise, 'promise')
+                    const symbol0 = data.symbol0
+                    const symbol1 = data.symbol1
+                    const balance0 = promise[0]
+                    const balance1 = promise[1]
                     const tvl = data.liquidity[data.liquidity.length - 1].liquidity
                     const fee = data.fee
                     const volume24H = () => {
@@ -51,8 +50,8 @@ const poolService = async (limit) => {
                     }
                     dataSet.add(data)
                     arr.push({
-                        symbol0: symbol0,
-                        symbol1: symbol1,
+                        symbol0: data.symbol0,
+                        symbol1: data.symbol1,
                         balance0: Number(balance0._hex),
                         balance1: Number(balance1._hex),
                         pool: data.pool,

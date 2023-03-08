@@ -161,11 +161,7 @@ const getWethPriceAndLiquidity = async (address) => {
 
 const _tokenName = async (token) => {
     try {
-            const tokenCtt = new ethers.Contract(
-                token,
-                ERC20_ABI,
-                provider
-            )
+            const tokenCtt = new ethers.Contract(token, ERC20_ABI, provider)
     
             const tokenName = await tokenCtt.name()
             return tokenName
@@ -176,11 +172,7 @@ const _tokenName = async (token) => {
 
 const _tokenSymbol = async (address) => {
     try {
-            const erc20 = new ethers.Contract(
-                address,
-                ERC20_ABI,
-                provider
-            )    
+            const erc20 = new ethers.Contract(address, ERC20_ABI, provider)    
             const result = await erc20.symbol()
             return result
     } catch (error) {

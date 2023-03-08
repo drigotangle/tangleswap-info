@@ -19,11 +19,11 @@ const tokenService = async () => {
                     _tokenAddress = result.token0
                 }
                 _tokenAddress === result.token1
+                console.log(_tokenAddress, 'tokenAddress')
                 if(_tokenAddress !== undefined){
-                        await Promise.all([getWethPriceAndLiquidity(_tokenAddress), _tokenName(_tokenAddress), _tokenSymbol(result.token1, result.token0), timeOut(interval)]).then((promises) => {
+                        await Promise.all([getWethPriceAndLiquidity(_tokenAddress), timeOut(interval)]).then((promises) => {
+                            console.log(promises, 'promises')
                             const wethPriceAndLiquidity = promises[0]
-                            const tokenName = promises[1]
-                            const tokenSymbol = promises[2]
                             if(!poolSet.has(result)){
                                     const priceArr = result.price
                                     const tvlArr = result.tvl || []
@@ -67,19 +67,23 @@ const tokenService = async () => {
                                         }
                                         return volume            
                                     }
-                        
-                                    if(!tokenSet.has(tokenName)){
+
+                                    const _tokenName = result.token1 === WETH_ADDRESS && result.token0 !== WETH_ADDRESS ? result.name0 : result.name1
+                                    const _tokenSymbol = result.token1 === WETH_ADDRESS && result.token0 !== WETH_ADDRESS ? result.symbol0 : result.symbol1
+                                    const _tokenAdddress = result.token1 === WETH_ADDRESS && result.token0 !== WETH_ADDRESS ? result.token0 : result.token1
+
+                                    if(!tokenSet.has(_tokenAdddress)){
                                         console.log('chamou')
                                         tokenArr.push({
-                                            tokenName: tokenName,
-                                            tokenSymbol: tokenSymbol,
-                                            tokenAddress: result.token1 === WETH_ADDRESS && result.token0 !== WETH_ADDRESS ? result.token0 : result.token1,
+                                            tokenName: _tokenName,
+                                            tokenSymbol: _tokenSymbol,
+                                            tokenAddress: _tokenAdddress,
                                             lastPrice: lastPrice(),
                                             priceChange: priceChange(),
                                             volume24H: volume24H(),
                                             TVL: TVL()
                                         })
-                                        tokenSet.add(tokenName)
+                                        tokenSet.add(_tokenAdddress)
                                         poolSet.add(result)
                                     }
                             }
