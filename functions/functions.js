@@ -1,6 +1,6 @@
 const ethers  = require("ethers")
 
-const provider = new ethers.JsonRpcProvider('https://smart-quick-wave.discover.quiknode.pro/e3c1d5f4c51dae28ffddcd947415045bfa0f8f7d/')
+const provider = new ethers.JsonRpcProvider('https://json-rpc.evm.testnet.shimmer.network')
 
 
 const { MongoClient, ServerApiVersion } = require('mongodb')
@@ -11,7 +11,7 @@ const POOL_ABI = require('../artifacts/POOLV3.json')
 const FACTORY_ABI = require('../artifacts/FACTORYV3.json')
 const ERC20_ABI = require('../artifacts/ERC20.json')
 
-const WETH_ADDRESS = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'
+const WETH_ADDRESS = '0x9a0F333908010331769F1B4764Ff2b3a1e965897'
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 const queryTVL = async (limit) => {
