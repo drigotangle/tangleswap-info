@@ -132,7 +132,7 @@ const getWethPriceAndLiquidity = async (address) => {
     const feesArr = [3000, 1000, 10000]
     let poolsArr = []
     try {
-            const factory = new ethers.Contract('0x1F98431c8aD98523631AE4a59f267346ea31F984', FACTORY_ABI, provider)
+            const factory = new ethers.Contract('0x84c66B601c1c424AcB9Ea1fed5d8b4F613441b95', FACTORY_ABI, provider)
             for(let i = 0; i < feesArr.length; i++){
                 const fee = feesArr[i]
                 const poolAddress = await factory.getPool(address, WETH_ADDRESS, fee)
