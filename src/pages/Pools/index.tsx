@@ -7,7 +7,7 @@ import PoolDataTable from '../../components/PoolsTable'
 import { getPools } from '../../functions'
 import { IPoolData } from '../../interfaces'
 import { AppContext } from '../../state'
-import { setPoolData } from '../../state/Actions'
+import { setPoolData, setChain } from '../../state/Actions'
 
 const HomeWrapper = styled.div`
     display: flex;
@@ -20,16 +20,19 @@ const HomeWrapper = styled.div`
 
 const Pools = () => {
 
-    const { dispatch } = useContext(AppContext)
-
+    const { dispatch, state } = useContext(AppContext)
+    const { chain } = state
     useEffect(() => {
-        //POOLS TABLE
-        getPools(15).then((res: IPoolData[]) => {
+        if(chain === undefined){
+            setChain(dispatch, 'Ethereum')
+        }
+        setChain(dispatch, chain)
+        getPools(15, state.chain).then((res: IPoolData[]) => {
             console.log(res, 'pools')
             setPoolData(dispatch, res)
         })
         
-      }, [])
+      }, [chain])
     return(<>
         <Header />  
         <HomeWrapper>

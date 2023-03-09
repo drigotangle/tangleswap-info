@@ -1,7 +1,6 @@
 import { Paper, Skeleton } from '@mui/material'
 import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { isUndefined } from 'util'
 import { PaperWrapper, SkeletonWrapper } from '.'
 import { feesGenerated, vol24H } from '../functions'
 import { ITVL } from '../interfaces'
@@ -18,8 +17,8 @@ const HomeGeneral = () => {
     const [ fees, setFees ] = useState<number>()
     const tvl: ITVL[] = state.tvl
     useEffect(() => {
-        feesGenerated().then(((res: number) => { setFees(res) }))
-    }, [])
+        feesGenerated(state.chain).then(((res: number) => { setFees(res) }))
+    }, [state.chain])
 
     return(
 

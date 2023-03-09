@@ -1,6 +1,7 @@
 import { Typography } from '@mui/material'
 import moment from 'moment'
 import { useContext, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { ColumnWrapper, RowWrapper } from '../../components'
 import { DailyVolumeChart } from '../../components/DailyVolumeChart'
@@ -13,7 +14,7 @@ import { TVLChart } from '../../components/TVLChart'
 import { getLiquidityTx, getPools, getSwapTx, getTokens, getTVL } from '../../functions'
 import { IPoolData, IToken, ITVL, ITx } from '../../interfaces'
 import { AppContext } from '../../state'
-import { setLiquidtyBarData, setPoolData, setTokenData, setTVL, setTxData } from '../../state/Actions'
+import { setChain, setLiquidtyBarData, setPoolData, setTokenData, setTVL, setTxData } from '../../state/Actions'
 
 const HomeWrapper = styled.div`
     display: flex;
@@ -25,11 +26,13 @@ const HomeWrapper = styled.div`
 
 const Home = () => {
 
-    const { dispatch } = useContext(AppContext)
+    const { dispatch, state } = useContext(AppContext)
+    const { chain } = state
 
     useEffect(() => {
+
         //SWAPS TX
-        Promise.all([getLiquidityTx(20),  getSwapTx(20)]).
+        Promise.all([getLiquidityTx(20, chain),  getSwapTx(20, chain)]).
         then(async (res: ITx[][]) => {
           const liquidity = res[0]
           const swap = res[1]
@@ -39,7 +42,7 @@ const Home = () => {
 
         //DAILY VOLUME CHART
         const from = 10000
-        getTVL(from).then((res) => {
+        getTVL(from, chain).then((res) => {
             let arr: ITVL[] | any = []
 
             for(let i = 0; i < res.length; i++){
@@ -81,13 +84,13 @@ const Home = () => {
         })
 
         //POOLS TABLE
-        getPools(15).then((res: IPoolData[]) => {
+        getPools(15, chain).then((res: IPoolData[]) => {
             console.log(res, 'pools')
             setPoolData(dispatch, res)
         })
 
         //TOKENS TABLE
-        getTokens().then((res: IToken[]) => {
+        getTokens(chain).then((res: IToken[]) => {
             let arr: IToken[] = res
             arr.sort((a: IToken, b: IToken) => {
                 return Number(a.TVL) - Number(b.TVL)
@@ -96,7 +99,7 @@ const Home = () => {
         })
 
         //TVL CHART 
-        getTVL(from).then((res) => {
+        getTVL(from, chain).then((res) => {
             console.log(res, 'meu pau')
             let chartData: ITVL[] = []
             res.map((data: ITVL) => {
@@ -110,8 +113,8 @@ const Home = () => {
             })   
             setTVL(dispatch, chartData)
         })
-        
-      }, [])
+
+      }, [state.chain])
     return(<>
         <Header />  
         <HomeWrapper>

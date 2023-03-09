@@ -21,19 +21,19 @@ const HomeWrapper = styled.div`
 
 const Pools = () => {
 
-    const { dispatch } = useContext(AppContext)
+    const { dispatch, state } = useContext(AppContext)
 
     useEffect(() => {
         
         //TOKENS TABLE
-    getTokens().then((res: IToken[]) => {
+    getTokens(state.chain).then((res: IToken[]) => {
         let arr: IToken[] = res
         arr.sort((a: IToken, b: IToken) => {
             return Number(a.TVL) - Number(b.TVL)
         })
             setTokenData(dispatch, arr)
         })    
-      }, [])
+      }, [state.chain])
 
     return(<>
         <Header />  

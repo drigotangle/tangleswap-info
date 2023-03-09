@@ -15,12 +15,15 @@ const TopMoversCard = () => {
     const tokenArr: IToken[] = state.tokenData
     return(<>
         {tokenArr.map((data: IToken) => {
-                    <Card>
+            return(<>
+                <Card>
                     <CardWrapper>
                         <QuestionMarkIcon />
                         {data.tokenSymbol}
                     </CardWrapper>           
-                </Card>
+                </Card>            
+            </>)
+
         })}
     </>)
 }

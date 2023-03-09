@@ -20,3 +20,7 @@ export const setPoolData = (dispatch: any, payLoad: IPoolData[]) => {
 export const setTxData = (dispatch: any, payLoad: ITx[]) => {
     dispatch({type: 'SET_TX_DATA', payload: payLoad})
 }
+
+export const setChain = (dispatch: any, payLoad: string | undefined) => {
+    dispatch({type: 'SET_CHAIN', payload: payLoad})
+}

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import ChainMenu from './ChainMenu'
 
 const HeadWrapper = styled.div`
 display: flex;
@@ -47,6 +48,7 @@ const Header = () => {
                     })
                 }
             </LinksWrapper>
+            <ChainMenu />
         </HeadWrapper>
     )
 }

@@ -6,7 +6,8 @@ const initialState = {
   barChart: [],
   tokenData: [],
   poolData: [],
-  txData: []
+  txData: [],
+  chain: 'Shimmer'
 }
 type AppState = typeof initialState
 
@@ -16,6 +17,7 @@ type ACTIONTYPE =
   | { type: "SET_TOKEN_DATA"; payload: IToken[] | any }
   | { type: "SET_POOL_DATA"; payload: IPoolData[] | any }
   | { type: "SET_TX_DATA"; payload: ITx[] | any }
+  | { type: "SET_CHAIN"; payload: string }  
 
 function reducer(state: AppState, action: ACTIONTYPE) {
   switch (action.type) {
@@ -28,7 +30,9 @@ function reducer(state: AppState, action: ACTIONTYPE) {
         case "SET_POOL_DATA":
           return { ...state, poolData: action.payload }
           case "SET_TX_DATA":
-            return { ...state, txData: action.payload }          
+            return { ...state, txData: action.payload }
+            case "SET_CHAIN":
+              return { ...state, chain: action.payload }               
       default:
         return state  
   }

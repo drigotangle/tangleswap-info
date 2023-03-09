@@ -2,54 +2,60 @@ import axios from "axios"
 import dayjs from "dayjs"
 import { IFee, ITVL } from "../interfaces"
 
-export const getTVL = async (from: number): Promise<any | ITVL[]> => {
+export const getTVL = async (from: number, chain: string | undefined): Promise<any | ITVL[]> => {
     try {
-        const result = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/tvl/${from}`)
+        const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
+        const result = await axios.get(`${url}/tvl/${from}`)
         return result.data
     } catch (error) {
         return error
     }
 }
 
-export const getTokens = async (): Promise<any> => {
+export const getTokens = async (chain: string | undefined): Promise<any> => {
     try {
-        const result = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/tokens`)
+        const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
+        const result = await axios.get(`${url}/tokens`)
         return result.data
     } catch (error) {
         return error
     }
 }
 
-export const getPools = async (limit: number): Promise<any> => {
+export const getPools = async (limit: number, chain: string | undefined): Promise<any> => {
     try {
-        const result = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/pools/${limit}`)
+        const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
+        const result = await axios.get(`${url}/pools/${limit}`)
         return result.data
     } catch (error) {
         return error
     }
 }
 
-export const getLiquidityTx = async (limit: number): Promise<any> => {
+export const getLiquidityTx = async (limit: number, chain: string | undefined | undefined): Promise<any> => {
     try {
-        const result = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/liquidityTransactions/${limit}`)
+        const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
+        const result = await axios.get(`${url}/liquidityTransactions/${limit}`)
         return result.data
     } catch (error) {
         return error
     }
 }
 
-export const getSwapTx = async (limit: number): Promise<any> => {
+export const getSwapTx = async (limit: number, chain: string | undefined): Promise<any> => {
     try {
-        const result = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/swapTransactions/${limit}`)
+        const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
+        const result = await axios.get(`${url}/swapTransactions/${limit}`)
         return result.data
     } catch (error) {
         return error
     }
 }
 
-export const getFees = async (): Promise<IFee[] | any> => {
+export const getFees = async (chain: string | undefined): Promise<IFee[] | any> => {
     try {
-        const result = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/fees`)
+        const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
+        const result = await axios.get(`${url}/fees`)
         console.log(result.data, 'fees')
         return result.data
     } catch (error) {
@@ -70,8 +76,8 @@ export const vol24H = (liquidity: ITVL[]) => {
     return Math.abs(volume)
 }
 
-export const feesGenerated = async (): Promise<number> => {
-    const feesArr: IFee[] = await getFees()
+export const feesGenerated = async (chain: string | undefined): Promise<number> => {
+    const feesArr: IFee[] = await getFees(chain)
     let totalFee = 0
     console.log(feesArr, 'feesArr')
         for(const fees of feesArr){
@@ -83,11 +89,6 @@ export const feesGenerated = async (): Promise<number> => {
         console.log(totalFee, 'totalFee')
     return Math.abs(totalFee)
 }
-
-export const useUseHistory = (history: any, url: string) => {
-    history.push(url)
-}
-
 
 
 
