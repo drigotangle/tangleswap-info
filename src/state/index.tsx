@@ -1,5 +1,5 @@
 import { createContext, useReducer } from 'react'
-import { IPoolData, IToken, ITVL, ITx } from '../interfaces';
+import { GroupedEntry, IPoolData, IToken, ITVL, ITx } from '../interfaces';
 
 const initialState = {
   tvl: [], 
@@ -13,7 +13,7 @@ type AppState = typeof initialState
 
 type ACTIONTYPE =
   | { type: "SET_LIQUIDITY_DATA"; payload: ITVL[] | any }
-  | { type: "SET_LIQUIDITY_BAR_DATA"; payload: ITVL[] | any}
+  | { type: "SET_LIQUIDITY_BAR_DATA"; payload: ITVL[] | GroupedEntry[] | any}
   | { type: "SET_TOKEN_DATA"; payload: IToken[] | any }
   | { type: "SET_POOL_DATA"; payload: IPoolData[] | any }
   | { type: "SET_TX_DATA"; payload: ITx[] | any }

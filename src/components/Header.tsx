@@ -1,5 +1,7 @@
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { AppContext } from '../state'
 import ChainMenu from './ChainMenu'
 
 const HeadWrapper = styled.div`
@@ -26,6 +28,8 @@ const StyledImg = styled.img`
 
 
 const Header = () => {
+    const { state } = useContext(AppContext)
+    const { chain } = state
     return(
         <HeadWrapper>
             <StyledImg width={30} src='https://d3m3d54t409w7t.cloudfront.net/logos/Logo_White_Alpha.gif' />                
@@ -42,7 +46,7 @@ const Header = () => {
                         
                         return (
                             <>
-                                <Link to={`/${data}`}>{data}</Link>
+                                <Link to={`/${chain}/${data}`}>{data}</Link>
                             </>
                         )
                     })

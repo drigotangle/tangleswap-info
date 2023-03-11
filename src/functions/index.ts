@@ -1,6 +1,6 @@
 import axios from "axios"
 import dayjs from "dayjs"
-import { IFee, ITVL } from "../interfaces"
+import { GroupedData, GroupedEntry, IFee, IPoolLiquidity, ITVL, LiquidityPerDay } from "../interfaces"
 
 export const getTVL = async (from: number, chain: string | undefined): Promise<any | ITVL[]> => {
     try {
@@ -26,6 +26,7 @@ export const getPools = async (limit: number, chain: string | undefined): Promis
     try {
         const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
         const result = await axios.get(`${url}/pools/${limit}`)
+        console.log(result.data, 'poolsAqui')
         return result.data
     } catch (error) {
         return error
@@ -89,6 +90,44 @@ export const feesGenerated = async (chain: string | undefined): Promise<number> 
         console.log(totalFee, 'totalFee')
     return Math.abs(totalFee)
 }
+
+export const groupDataByDay = (data: ITVL[]): GroupedEntry[] => {
+    const groupedData: GroupedData = {};
+  
+    data.forEach((entry: ITVL) => {
+      const dayStart = dayjs(entry.time).startOf('day').valueOf();
+      const dayFormatted = dayjs(dayStart).format('DD');
+  
+      if (!groupedData[dayFormatted]) {
+        groupedData[dayFormatted] = 0;
+      }
+  
+      groupedData[dayFormatted] += entry.tvl;
+    });
+  
+    return Object.keys(groupedData).map((day: string) => ({ day, tvl: groupedData[day] }));
+  }
+
+  export const groupLiquidityPerDay = (data: IPoolLiquidity[]): IPoolLiquidity[] => {
+    const result: IPoolLiquidity[] = [];
+    
+    data.forEach(({ time, liquidity }) => {
+      const day = dayjs(time).format('DD');
+      const existingEntry = result.find(entry => entry.time === Number(day));
+      
+      if (existingEntry) {
+        existingEntry.liquidity += liquidity;
+      } else {
+        result.push({
+          time: Number(day),
+          liquidity
+        });
+      }
+    });
+  
+    return result;
+  }
+  
 
 
 

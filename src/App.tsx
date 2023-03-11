@@ -61,9 +61,9 @@ function App() {
         <BrowserRouter>
           <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/Pools" element={<Pools />} />
-              <Route path="/Pools/:poolAddress" element={<PoolPage />} />
-              <Route path="/Tokens" element={<Tokens />} />
+              <Route path="/:chain/Pools/" element={<Pools />} />
+              <Route path="/:chain/Pools/:poolAddress" element={<PoolPage />} />
+              <Route path="/Tokens/:chain/" element={<Tokens />} />
           </Routes>
         </BrowserRouter>        
       </ThemeProvider>

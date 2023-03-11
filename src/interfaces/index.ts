@@ -15,7 +15,7 @@ export interface IToken {
 
   export interface IPoolLiquidity {
     time: number
-    liquidity: string
+    liquidity: number
   }
 
   export interface IPoolPrice {
@@ -28,12 +28,17 @@ export interface IToken {
     symbol0: string;
     symbol1: string;
     fee: number;
+    balance0: any
+    balance1: any
     tickSpacing: number;
     pool: string
-    price: IPoolPrice[]
+    priceArr: IPoolPrice[]
+    liquidityArr: IPoolLiquidity[]
     volume24H: number,
     tvl: number,
     volume7D: number
+    token0: string
+    token1: string
   }
 
   export interface ITx {
@@ -52,5 +57,19 @@ export interface IToken {
     fee: number
     poolAddress: string
     time: any
+  }
+
+  export interface GroupedData {
+    [day: string]: number;
+  }
+  
+  export interface GroupedEntry {
+    day: string;
+    tvl: number;
+  }
+
+  export interface LiquidityPerDay {
+    time: string;
+    liquidity: number;
   }
   

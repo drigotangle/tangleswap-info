@@ -1,7 +1,5 @@
 import { Typography } from '@mui/material'
-import moment from 'moment'
 import { useContext, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { ColumnWrapper, RowWrapper } from '../../components'
 import { DailyVolumeChart } from '../../components/DailyVolumeChart'
@@ -11,10 +9,10 @@ import PoolDataTable from '../../components/PoolsTable'
 import TokenTable from '../../components/TokenTable'
 import TransactionsTable from '../../components/TransactionsTable'
 import { TVLChart } from '../../components/TVLChart'
-import { getLiquidityTx, getPools, getSwapTx, getTokens, getTVL } from '../../functions'
+import { getLiquidityTx, getPools, getSwapTx, getTokens, getTVL, groupDataByDay } from '../../functions'
 import { IPoolData, IToken, ITVL, ITx } from '../../interfaces'
 import { AppContext } from '../../state'
-import { setChain, setLiquidtyBarData, setPoolData, setTokenData, setTVL, setTxData } from '../../state/Actions'
+import { setLiquidtyBarData, setPoolData, setTokenData, setTVL, setTxData } from '../../state/Actions'
 
 const HomeWrapper = styled.div`
     display: flex;
@@ -32,8 +30,8 @@ const Home = () => {
     useEffect(() => {
 
         //SWAPS TX
-        Promise.all([getLiquidityTx(20, chain),  getSwapTx(20, chain)]).
-        then(async (res: ITx[][]) => {
+        Promise.all([getLiquidityTx(20, chain),  getSwapTx(20, chain)])
+        .then(async (res: ITx[][]) => {
           const liquidity = res[0]
           const swap = res[1]
           const all = swap.concat(liquidity)
@@ -42,45 +40,54 @@ const Home = () => {
 
         //DAILY VOLUME CHART
         const from = 10000
-        getTVL(from, chain).then((res) => {
-            let arr: ITVL[] | any = []
+        getTVL(from, chain).then((res: ITVL[]) => {
+            // let arr: ITVL[] | any = []
+            // console.log(res, 'res')
+            // for(let i = 0; i < res.length; i++){
 
-            for(let i = 0; i < res.length; i++){
+            // if(i === 0 && res[i].time !== undefined){  
+            //     arr.push({
+            //         tvl: res[i].tvl,
+            //         time: dayjs(res[i].time).format('DD')
+            //     })                    
+            // }
 
-            if(i === 0 && res[i].time !== undefined){  
-                arr.push({
-                    tvl: res[i].tvl + 8000,
-                    time: moment(res[i].time).format('DD')
-                })                    
-            }
+            // console.log(dayjs(res[i].time).format('DD') !== arr[arr.length - 1]?.time)
+            // console.log(dayjs(res[i].time).format('DD') === dayjs(arr[arr.length - 1]?.time).format('DD'))
+            // console.log(arr[arr.length - 1]?.time)
 
+            // console.log(dayjs(res[i].time).format('DD'))
+            // console.log(dayjs(arr[arr.length - 1]?.time).format('DD'))
+            // if(
+            //     i > 0 && 
+            //     dayjs(res[i].time).format('DD') !== arr[arr.length - 1]?.time &&
+            //     res[i].time !== undefined
+            //     ){
+            //         arr.push({
+            //             tvl: res[i].tvl,
+            //             time: dayjs(res[i].time).format('DD')
+            //         })                    
+            // }
 
-            if(
-                i > 0 && 
-                moment(res[i].time).format('DD') !== arr[arr.length - 1]?.time &&
-                res[i].time !== undefined
-                ){
-                    arr.push({
-                        tvl: res[i].tvl + 8000,
-                        time: moment(res[i].time).format('DD')
-                    })                    
-            }
-
-             if(
-                i > 0 && 
-                moment(res[i].time).format('DD') === arr[arr.length - 1]?.time &&
-                res[i].time !== undefined &&
-                arr[arr.lenght - 1]?.tvl !== undefined
-                ){
-                arr[arr.lenght - 1].tvl += res[i].tvl
-             }
-            }
+            //  if(
+            //     i > 0 && 
+            //     dayjs(res[i].time).format('DD') === arr[arr.length - 1]?.time &&
+            //     res[i].time !== undefined &&
+            //     arr[arr.lenght - 1]?.tvl !== undefined
+            //     ){
+            //     console.log('chamouAqui')
+            //     arr[arr.lenght - 1].tvl += res[i].tvl
+            //  }
+            // }
             
-            arr.sort((a: ITVL, b: ITVL) => {
-                return Number(a.time) - Number(b.time)
-            })
+            // arr.sort((a: ITVL, b: ITVL) => {
+            //     return Number(a.time) - Number(b.time)
+            // })
+
+            // console.log(arr, 'aqui')
+            console.log(groupDataByDay(res), 'aqui')
             
-            setLiquidtyBarData(dispatch, arr)
+            setLiquidtyBarData(dispatch, groupDataByDay(res))
         })
 
         //POOLS TABLE
@@ -99,15 +106,15 @@ const Home = () => {
         })
 
         //TVL CHART 
-        getTVL(from, chain).then((res) => {
+        getTVL(30, chain).then((res) => {
             console.log(res, 'meu pau')
             let chartData: ITVL[] = []
-            res.map((data: ITVL) => {
+            for(const data of res){
                 chartData.push({
                     time: data.time,
-                    tvl: data.tvl + 100000
+                    tvl: data.tvl
                 })
-            })
+            }
             chartData.sort((a: ITVL, b: ITVL) => {
                 return Number(a.time) - Number(b.time)
             })   
@@ -122,7 +129,7 @@ const Home = () => {
                 <Typography variant='h6'>TangleSwap general</Typography>
                 <RowWrapper>
                     <TVLChart />
-                    <DailyVolumeChart />
+                    <DailyVolumeChart chartWidth={200} chartData={state.barChart} />
                 </RowWrapper>
                 <HomeGeneral />
                 <Typography variant='h6'>Top tokens</Typography>
@@ -130,7 +137,7 @@ const Home = () => {
                 <Typography variant='h6'>Top pools</Typography>
                 <PoolDataTable />
                 <Typography variant='h6'>Recent transactions</Typography>
-                <TransactionsTable />
+                <TransactionsTable txData={state.txData} />
             </ColumnWrapper>    
         </HomeWrapper>
         </>)

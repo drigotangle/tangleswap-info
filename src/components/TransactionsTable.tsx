@@ -1,15 +1,19 @@
 import { Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead } from '@mui/material';
 import dayjs from 'dayjs';
-import { useContext } from 'react';
+import { FC, useContext } from 'react';
 import { ITx } from '../interfaces';
 import { AppContext } from '../state';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { SkeletonWrapper } from '.'
+import { ChartWrapper, SkeletonWrapper } from '.'
 import { StyledTableRow } from './'
 
+interface IProps {
+  txData: ITx[] | undefined
+}
 
-const TransactionsTable = () => {
-  const { state } = useContext(AppContext)    
+const TransactionsTable: FC<IProps> = (props) => {
+  const { state } = useContext(AppContext)
+  const { txData } = props    
   // useEffect(() => {
   //   Promise.all([getLiquidityTx(20),  getSwapTx(20)]).
   //   then(async (res: ITx[][]) => {
@@ -22,9 +26,9 @@ const TransactionsTable = () => {
 
   dayjs.extend(relativeTime)
 
-  return (
+  return (<ChartWrapper>{
 
-    state.txData.length > 0 
+    txData !== undefined
 
     ?
 
@@ -41,7 +45,7 @@ const TransactionsTable = () => {
         </StyledTableRow>
       </TableHead>
       <TableBody>
-        {state.txData.map((event: ITx, index) => (
+        {txData?.map((event: ITx, index) => (
           <StyledTableRow key={index}>
             <TableCell>{event.eventName}</TableCell>
             <TableCell>{event.symbol0}</TableCell>
@@ -59,7 +63,7 @@ const TransactionsTable = () => {
 
     <SkeletonWrapper><Skeleton variant="rectangular" width={1030} height={300}  /></SkeletonWrapper>
 
-  );
+    }</ChartWrapper>);
 };
 
 export default TransactionsTable;

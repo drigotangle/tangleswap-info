@@ -28,10 +28,22 @@ export const PaperWrapper = styled.div`
     padding: 4vh;
 `
 
+export const HomeWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 80vw;
+    margin: auto auto;
+    margin-top: 10vh;
+`
+
 export const StyledTableRow = styled(TableRow)`
     padding: 4vh;
 `
 
 export const StyledTableCell = styled(TableCell)`
     cursor: pointer;
+`
+
+export const ChartWrapper = styled.div`
+    margin-bottom: 5vh;
 `

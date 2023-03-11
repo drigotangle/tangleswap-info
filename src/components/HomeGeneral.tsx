@@ -19,7 +19,7 @@ const HomeGeneral = () => {
     useEffect(() => {
         feesGenerated(state.chain).then(((res: number) => { setFees(res) }))
     }, [state.chain])
-
+    console.log(tvl, 'tvl')
     return(
 
     ![vol24H(state.tvl), fees, tvl[tvl.length - 1]?.tvl].includes(undefined)

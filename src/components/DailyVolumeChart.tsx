@@ -1,10 +1,17 @@
 import { BarChart, XAxis, Bar } from 'recharts'
-import { useContext } from 'react'
+import { FC, useContext } from 'react'
 import { AppContext } from '../state'
 import { Skeleton } from '@mui/material'
+import { GroupedEntry, IPoolLiquidity } from '../interfaces'
+import { ChartWrapper } from '.'
 
-export const DailyVolumeChart = () => {
-    const { state } = useContext(AppContext)
+interface IChart {
+    chartWidth: number
+    chartData: IPoolLiquidity[] | GroupedEntry[] | undefined
+}
+
+export const DailyVolumeChart: FC<IChart> = (props) => {
+    const { chartWidth, chartData } = props
     // const [ minMaxValue, setMinMaxValue ] = useState<DataKey<number>>()
 
     // useEffect(() => {
@@ -57,15 +64,15 @@ export const DailyVolumeChart = () => {
     // SKELETON
     
     return(
-        <>
+        <ChartWrapper>
         {
 
-            state.tvl.length > 0 && state.barChart !== undefined
+            chartData !== undefined
 
                 ?
-                    <BarChart width={500} height={300} data={state.barChart}>
+                    <BarChart width={chartWidth} height={300} data={chartData}>
                         <XAxis
-                        dataKey="time"
+                        dataKey="day"
                         axisLine={false}
                         tickLine={false}
                         minTickGap={10}
@@ -82,7 +89,7 @@ export const DailyVolumeChart = () => {
                     <Skeleton variant="rectangular" width={500} height={300}  />
 
         }
-        </>
+        </ChartWrapper>
     )
 }
 

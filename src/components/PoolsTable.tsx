@@ -1,21 +1,26 @@
 import { useContext } from "react";
 import { Paper, Skeleton, Table, TableBody, TableContainer, TableHead, TableCell } from "@mui/material";
-import { StyledTableCell, StyledTableRow } from './'
+import { ChartWrapper, StyledTableCell, StyledTableRow } from './'
 import { IPoolData } from "../interfaces";
 import { AppContext } from "../state";
 import { SkeletonWrapper } from ".";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 
 
 const PoolDataTable = () => {
   const { state } = useContext(AppContext)
-
+  // console.log(useParams(), 'param')
   const navigate = useNavigate()
+  
+  const { chain } = state
 
-  return (
 
-    state.poolData.length > 0 
+  
+
+  return (<ChartWrapper>
+
+    {state.poolData.length > 0 
 
     ?
 
@@ -31,7 +36,7 @@ const PoolDataTable = () => {
         </TableHead>
         <TableBody>
           {state.poolData.map((row: IPoolData) => (
-            <StyledTableRow onClick={_ => navigate(`pools/${row.pool}`)} key={`${row.symbol0}-${row.symbol1}`}>
+            <StyledTableRow onClick={_ => navigate(`/${chain}/Pools/${row.pool}`)} key={`${row.symbol0}-${row.symbol1}`}>
               <StyledTableCell>{row.symbol0}/{row.symbol1}{" "}{row.fee / 10000}%</StyledTableCell>
               <StyledTableCell>{row.tvl}</StyledTableCell>
               <StyledTableCell>{row.volume24H}</StyledTableCell>
@@ -46,7 +51,7 @@ const PoolDataTable = () => {
 
     <SkeletonWrapper><Skeleton variant="rectangular" width={1030} height={300}  /></SkeletonWrapper>
     
-  );
+    }</ChartWrapper>);
 };
 
 export default PoolDataTable;

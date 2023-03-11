@@ -1,6 +1,6 @@
 import { Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead } from '@mui/material';
 import { useContext } from 'react';
-import { SkeletonWrapper } from '.';
+import { ChartWrapper, SkeletonWrapper } from '.';
 import { IToken } from '../interfaces';
 import { AppContext } from '../state';
 import { StyledTableRow } from './'
@@ -18,7 +18,7 @@ const TokenTable = () => {
   //   })
   // }, [])
 
-  return (
+  return (<ChartWrapper>{
 
     state.tokenData.length > 0 
 
@@ -55,7 +55,7 @@ const TokenTable = () => {
 
     <SkeletonWrapper><Skeleton variant="rectangular" width={1030} height={300}  /></SkeletonWrapper>
 
-  );
+    }</ChartWrapper>);
 };
 
 export default TokenTable;
