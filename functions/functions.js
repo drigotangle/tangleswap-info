@@ -73,6 +73,7 @@ const queryLiquidityTransactions = async (limit) => {
                     amount0: data.amount0,
                     amount1: data.amount1,
                     time: data._id.getTimestamp(),
+                    pool: data.pool,
                     blockNumber: data.block
                 })                        
         })
