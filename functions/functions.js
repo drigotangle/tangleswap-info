@@ -111,6 +111,11 @@ const querySwapTransactions = async (limit) => {
     }
 }
 
+const sqrtPriceToPrice = (price) => {
+    const result = Number(price) ** 2 / 2 ** 192
+    return result
+}
+
 const queryPools = async (limit) => {
     try {
         const collection = await mongoClient.db("tangle-db-shimmer").collection("pools")
@@ -142,12 +147,12 @@ const getWethPriceAndLiquidity = async (address) => {
                     const slot0 = await poolContract.slot0()
                     const wethContract = new ethers.Contract(WETH_ADDRESS, ERC20_ABI, provider)
                     const wethBalance = await wethContract.balanceOf(poolAddress)
-                    const price = Number(slot0.sqrtPriceX96)
+                    const price = sqrtPriceToPrice(Number(slot0.sqrtPriceX96))
     
                     poolsArr.push({
                         poolAddress: poolAddress,
                         price: price,
-                        wethBalance: Number(wethBalance)
+                        wethBalance: Number(wethBalance._hex) / (10 ** 18)
                     })
                 }
             }
