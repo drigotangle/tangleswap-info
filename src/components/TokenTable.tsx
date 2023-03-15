@@ -20,8 +20,8 @@ const TokenTable: FC<IProps> = (props) => {
 
   return (<ChartWrapper>
     {
-
-    tokenList !== undefined 
+ 
+    tokenList !== undefined && tokenList.length > 0
 
     ?
 

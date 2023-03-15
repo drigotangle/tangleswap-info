@@ -22,7 +22,7 @@ const PoolDataTable: FC<IProps> = (props) => {
 
   return (<ChartWrapper>
 
-    {pooList !== undefined
+    {pooList !== undefined && pooList.length > 0
 
     ?
 
