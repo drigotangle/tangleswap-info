@@ -52,6 +52,8 @@ const poolService = async (limit) => {
                     arr.push({
                         symbol0: data.symbol0,
                         symbol1: data.symbol1,
+                        token0: data.token0,
+                        token1: data.token1,
                         balance0: Number(balance0._hex),
                         balance1: Number(balance1._hex),
                         pool: data.pool,
