@@ -1,6 +1,6 @@
 import axios from "axios"
 import dayjs from "dayjs"
-import { GroupedData, GroupedEntry, IFee, IPoolLiquidity, ITVL, LiquidityPerDay } from "../interfaces"
+import { GroupedData, GroupedEntry, IFee, IPoolData, IPoolLiquidity, ITVL, ITx, LiquidityPerDay } from "../interfaces"
 
 export const getTVL = async (from: number, chain: string | undefined): Promise<any | ITVL[]> => {
     try {
@@ -16,6 +16,7 @@ export const getTokens = async (chain: string | undefined): Promise<any> => {
     try {
         const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
         const result = await axios.get(`${url}/tokens`)
+        console.log(result.data, 'tokens')
         return result.data
     } catch (error) {
         return error
@@ -128,7 +129,37 @@ export const groupDataByDay = (data: ITVL[]): GroupedEntry[] => {
     return result;
   }
   
+export const poolsForToken = (pools: IPoolData[], tokenAddress: string | undefined): IPoolData[] => {
+    const poolSet = new Set()
+    let poolArr: IPoolData[] = []
+    for(const pool of pools){
+        if(
+          pool.token0 === tokenAddress ||
+          pool.token1 === tokenAddress &&
+          !poolSet.has(pool)
+          ){
+            poolSet.add(pool)
+            poolArr.push(pool)
+        }
+    }     
+      return poolArr
+}
 
+export const txsForToken = (txs: ITx[], symbol: string): ITx[] => {
+    const txSet = new Set()
+    let txArr: ITx[] = []
+    for(const tx of txs){
+        if(
+            tx.symbol0 === symbol ||
+            tx.symbol1 === symbol &&
+            !txSet.has(tx)
+        ){  
+            txSet.add(tx)
+            txArr.push(tx)
+        }
+    }
+    return txArr
+}
 
 
 

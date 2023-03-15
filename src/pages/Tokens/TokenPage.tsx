@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from "react-router-dom"
-import { getLiquidityTx, getPools, getSwapTx, groupLiquidityPerDay } from '../../functions'
-import { IPoolData, IPoolLiquidity, ITx } from '../../interfaces'
+import { getLiquidityTx, getPools, getSwapTx, getTokens, groupLiquidityPerDay, poolsForToken, txsForToken } from '../../functions'
+import { IPoolData, IPoolLiquidity, IToken, ITx } from '../../interfaces'
 import styled from "styled-components";
 import { Skeleton, Typography } from "@mui/material";
 import { ColumnWrapper, HomeWrapper, RowWrapper, SkeletonWrapper } from '../../components'
@@ -35,26 +35,20 @@ const LeftWrapper = styled.div`
 `
 
 const TokenPage = () => {
-    const [ liquidityData, setLiquidityData ] = useState<IPoolLiquidity[]>()
+    const [ txs, setTxs ] = useState<ITx[]>()
     const [ poolsArr, setPoolsArr ] = useState<IPoolData[]>()
     const { tokenAddress, chain } = useParams()
     
     useEffect(() => {
-      Promise.all([getSwapTx(50, chain),  getPools(50, chain)])
-        .then(([tx, pools]) => {
-          let poolArr: IPoolData[] = []
-          console.log(pools, 'pool')
-            for(const pool of pools){
-              if(
-                pool.token0 === tokenAddress ||
-                pool.token1 === tokenAddress
-                ){
-                  console.log('chamou')
-                  poolArr.push(pool)
-              }
-            }
-            setPoolsArr(poolArr)
-          console.log(poolArr, liquidityData, 'data')
+      Promise.all([getLiquidityTx(50, chain),  getPools(50, chain), getTokens(chain)])
+        .then(([tx, pools, tokens]) => {
+          console.log(tx, 'tx')
+          const index = tokens.findIndex((item: IToken) => tokenAddress === item.tokenAddress)
+          const symbol = tokens[index].tokenSymbol
+          console.log(tokens[index], 'index')
+          setPoolsArr(poolsForToken(pools, tokenAddress))
+          setTxs(txsForToken(tx, symbol))
+          console.log(txs, symbol, poolsArr, 'aqui as coisa')          
         })
     }, [])
     
@@ -62,7 +56,7 @@ const TokenPage = () => {
       <Header />
       <HomeWrapper>
         {
-            [poolsArr].includes(undefined)
+            [poolsArr, txs].includes(undefined)
 
               ?
 
@@ -79,10 +73,10 @@ const TokenPage = () => {
                   <LeftWrapper>
                   </LeftWrapper>             
                   </ColumnWrapper>
-                <DailyVolumeChart chartWidth={600} chartData={liquidityData}/>
                 </RowWrapper>
                 <Typography variant='h6'>Recent transactions</Typography>
-                <PoolsTable pooList={poolsArr} />            
+                <PoolsTable pooList={poolsArr} />
+                <TransactionsTable txData={txs}  />          
               </ColumnWrapper>                
 
         }

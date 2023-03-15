@@ -24,7 +24,6 @@ const Pools = () => {
     const { dispatch, state } = useContext(AppContext)
 
     useEffect(() => {
-        
         //TOKENS TABLE
     getTokens(state.chain).then((res: IToken[]) => {
         let arr: IToken[] = res
