@@ -46,7 +46,7 @@ const Pools = () => {
                 <TopMoversCard />
             </Paper>
             <Typography variant='h6'>Top tokens</Typography>
-                <TokenTable />
+                <TokenTable tokenList={state.tokenData} />
             </ColumnWrapper>    
         </HomeWrapper>
         </>)

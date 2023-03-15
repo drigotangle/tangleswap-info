@@ -4,11 +4,16 @@ import { AppContext } from '../state'
 import { Skeleton } from '@mui/material'
 import { GroupedEntry, IPoolLiquidity } from '../interfaces'
 import { ChartWrapper } from '.'
+import styled from 'styled-components'
 
 interface IChart {
     chartWidth: number
     chartData: IPoolLiquidity[] | GroupedEntry[] | undefined
 }
+
+const Wrapper = styled.div`
+    margin: auto auto;
+`
 
 export const DailyVolumeChart: FC<IChart> = (props) => {
     const { chartWidth, chartData } = props
@@ -64,7 +69,7 @@ export const DailyVolumeChart: FC<IChart> = (props) => {
     // SKELETON
     
     return(
-        <ChartWrapper>
+        <Wrapper>
         {
 
             chartData !== undefined
@@ -89,7 +94,7 @@ export const DailyVolumeChart: FC<IChart> = (props) => {
                     <Skeleton variant="rectangular" width={500} height={300}  />
 
         }
-        </ChartWrapper>
+        </Wrapper>
     )
 }
 

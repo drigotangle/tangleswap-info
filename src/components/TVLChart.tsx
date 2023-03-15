@@ -1,15 +1,22 @@
 import { Area, AreaChart, XAxis } from 'recharts'
-import { useContext } from 'react'
+import { FC, useContext } from 'react'
 import { AppContext } from '../state'
 import dayjs from 'dayjs'
 import { Skeleton } from '@mui/material'
 import styled from 'styled-components'
+import { GroupedEntry, IPoolLiquidity } from '../interfaces'
+
+interface IChart {
+    chartWidth: number
+    chartData: IPoolLiquidity[] | GroupedEntry[] | undefined
+}
 
 const Wrapper = styled.div`
     margin: auto auto;
 `
 
-export const TVLChart = () => {
+export const TVLChart: FC<IChart> = (props) => {
+    const { chartWidth, chartData } = props
     const { state } = useContext(AppContext)
 
     // useEffect(() => {
@@ -39,16 +46,15 @@ export const TVLChart = () => {
         <Wrapper>
         {
 
-            state.tvl.length > 0 
+            chartData !== undefined 
 
                 ?
 
-                    <AreaChart width={500} height={300} data={state.tvl}>
+                    <AreaChart width={chartWidth} height={300} data={chartData}>
                         <XAxis
-                        dataKey="time"
+                        dataKey="day"
                         axisLine={false}
                         tickLine={false}
-                        tickFormatter={(time: any) => dayjs(time).format('DD')}
                         minTickGap={10}
                         color='#191B1F'
                         />

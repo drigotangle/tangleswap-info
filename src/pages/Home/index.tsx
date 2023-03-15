@@ -41,52 +41,6 @@ const Home = () => {
         //DAILY VOLUME CHART
         const from = 10000
         getTVL(from, chain).then((res: ITVL[]) => {
-            // let arr: ITVL[] | any = []
-            // console.log(res, 'res')
-            // for(let i = 0; i < res.length; i++){
-
-            // if(i === 0 && res[i].time !== undefined){  
-            //     arr.push({
-            //         tvl: res[i].tvl,
-            //         time: dayjs(res[i].time).format('DD')
-            //     })                    
-            // }
-
-            // console.log(dayjs(res[i].time).format('DD') !== arr[arr.length - 1]?.time)
-            // console.log(dayjs(res[i].time).format('DD') === dayjs(arr[arr.length - 1]?.time).format('DD'))
-            // console.log(arr[arr.length - 1]?.time)
-
-            // console.log(dayjs(res[i].time).format('DD'))
-            // console.log(dayjs(arr[arr.length - 1]?.time).format('DD'))
-            // if(
-            //     i > 0 && 
-            //     dayjs(res[i].time).format('DD') !== arr[arr.length - 1]?.time &&
-            //     res[i].time !== undefined
-            //     ){
-            //         arr.push({
-            //             tvl: res[i].tvl,
-            //             time: dayjs(res[i].time).format('DD')
-            //         })                    
-            // }
-
-            //  if(
-            //     i > 0 && 
-            //     dayjs(res[i].time).format('DD') === arr[arr.length - 1]?.time &&
-            //     res[i].time !== undefined &&
-            //     arr[arr.lenght - 1]?.tvl !== undefined
-            //     ){
-            //     console.log('chamouAqui')
-            //     arr[arr.lenght - 1].tvl += res[i].tvl
-            //  }
-            // }
-            
-            // arr.sort((a: ITVL, b: ITVL) => {
-            //     return Number(a.time) - Number(b.time)
-            // })
-
-            // console.log(arr, 'aqui')
-            console.log(groupDataByDay(res), 'aqui')
-            
             setLiquidtyBarData(dispatch, groupDataByDay(res))
         })
 
@@ -107,18 +61,18 @@ const Home = () => {
 
         //TVL CHART 
         getTVL(30, chain).then((res) => {
-            console.log(res, 'meu pau')
-            let chartData: ITVL[] = []
-            for(const data of res){
-                chartData.push({
-                    time: data.time,
-                    tvl: data.tvl
-                })
-            }
-            chartData.sort((a: ITVL, b: ITVL) => {
-                return Number(a.time) - Number(b.time)
-            })   
-            setTVL(dispatch, chartData)
+            // console.log(res, 'meu pau')
+            // let chartData: ITVL[] = []
+            // for(const data of res){
+            //     chartData.push({
+            //         time: data.time,
+            //         tvl: data.tvl
+            //     })
+            // }
+            // chartData.sort((a: ITVL, b: ITVL) => {
+            //     return Number(a.time) - Number(b.time)
+            // })   
+            setTVL(dispatch, groupDataByDay(res))
         })
 
       }, [state.chain])
@@ -128,14 +82,14 @@ const Home = () => {
             <ColumnWrapper>
                 <Typography variant='h6'>TangleSwap general</Typography>
                 <RowWrapper>
-                    <TVLChart />
-                    <DailyVolumeChart chartWidth={200} chartData={state.barChart} />
+                    <TVLChart chartWidth={500} chartData={state.tvl} />
+                    <DailyVolumeChart chartWidth={500} chartData={state.barChart} />
                 </RowWrapper>
                 <HomeGeneral />
                 <Typography variant='h6'>Top tokens</Typography>
-                <TokenTable />
+                <TokenTable tokenList={state.tokenData} />
                 <Typography variant='h6'>Top pools</Typography>
-                <PoolDataTable />
+                <PoolDataTable pooList={state.poolData} />
                 <Typography variant='h6'>Recent transactions</Typography>
                 <TransactionsTable txData={state.txData} />
             </ColumnWrapper>    

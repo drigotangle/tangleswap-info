@@ -14,7 +14,7 @@ import { setPoolData, setChain } from '../../state/Actions'
 
 const Pools = () => {
 
-    const { dispatch } = useContext(AppContext)
+    const { dispatch, state } = useContext(AppContext)
     const { chain: urlChain } = useParams()
 
     useEffect(() => {
@@ -36,7 +36,7 @@ const Pools = () => {
             <Typography variant='h6'>Your Watchlist</Typography>
             <Paper><PaperWrapper>Your saved pools will appear here</PaperWrapper></Paper>
             <Typography variant='h6'>All pools</Typography>
-                <PoolDataTable />
+                <PoolDataTable pooList={state.poolData} />
             </ColumnWrapper>    
         </HomeWrapper>
         </>)

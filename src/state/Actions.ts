@@ -1,7 +1,7 @@
 import { GroupedEntry, IPoolData, IPoolLiquidity, IToken, ITVL, ITx } from "../interfaces"
 
 
-export const setTVL = (dispatch: any, payload: ITVL[]) => {
+export const setTVL = (dispatch: any, payload: ITVL[] | GroupedEntry[] | IPoolLiquidity[]) => {
     dispatch({type: 'SET_LIQUIDITY_DATA', payload: payload})
 }
 

@@ -23,16 +23,16 @@ function reducer(state: AppState, action: ACTIONTYPE) {
   switch (action.type) {
     case "SET_LIQUIDITY_DATA":
       return { ...state, tvl: action.payload };
-    case "SET_LIQUIDITY_BAR_DATA":
-      return { ...state, barChart: action.payload }
-      case "SET_TOKEN_DATA":
-        return { ...state, tokenData: action.payload }
-        case "SET_POOL_DATA":
-          return { ...state, poolData: action.payload }
-          case "SET_TX_DATA":
-            return { ...state, txData: action.payload }
-            case "SET_CHAIN":
-              return { ...state, chain: action.payload }               
+      case "SET_LIQUIDITY_BAR_DATA":
+        return { ...state, barChart: action.payload }
+        case "SET_TOKEN_DATA":
+          return { ...state, tokenData: action.payload }
+          case "SET_POOL_DATA":
+            return { ...state, poolData: action.payload }
+            case "SET_TX_DATA":
+              return { ...state, txData: action.payload }
+              case "SET_CHAIN":
+                return { ...state, chain: action.payload }               
       default:
         return state  
   }

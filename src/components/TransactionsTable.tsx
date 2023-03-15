@@ -28,7 +28,7 @@ const TransactionsTable: FC<IProps> = (props) => {
 
   return (<ChartWrapper>{
 
-    txData !== undefined
+    txData !== undefined && txData.length > 0
 
     ?
 

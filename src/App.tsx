@@ -6,6 +6,7 @@ import GlobalStyle from "./style";
 import Pools from "./pages/Pools";
 import PoolPage from './pages/Pools/PoolPage';
 import Tokens from "./pages/Tokens";
+import TokenPage from "./pages/Tokens/TokenPage";
 
 function App() {
 
@@ -63,7 +64,8 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/:chain/Pools/" element={<Pools />} />
               <Route path="/:chain/Pools/:poolAddress" element={<PoolPage />} />
-              <Route path="/Tokens/:chain/" element={<Tokens />} />
+              <Route path="/:chain/Tokens" element={<Tokens />} />
+              <Route path="/:chain/Tokens/:tokenAddress" element={<TokenPage />} />
           </Routes>
         </BrowserRouter>        
       </ThemeProvider>

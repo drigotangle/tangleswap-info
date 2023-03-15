@@ -45,11 +45,12 @@ const PoolPage = () => {
           let txArr: ITx[] = []
           const index = pools.findIndex((item: IPoolData) => item.pool === poolAddress)
           setPoolData(pools[index])
+          console.log(groupLiquidityPerDay(pools[index].liquidityArr), 'daily')
           setLiquidityData(groupLiquidityPerDay(pools[index].liquidityArr))
             for(const _tx of tx){
+              console.log(_tx.pool, poolAddress, 'igual?')
               if(
-                (_tx.token0 === pools[index].token0 && _tx.token1 === pools[index].token1) ||
-                (_tx.token1 === pools[index].token0 && _tx.token0 === pools[index].token1)
+                _tx.pool === pools[index].pool
                 ){
                 txArr.push(_tx)
               }

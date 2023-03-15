@@ -1,26 +1,27 @@
 import { Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead } from '@mui/material';
-import { useContext } from 'react';
-import { ChartWrapper, SkeletonWrapper } from '.';
+import { FC, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ChartWrapper, SkeletonWrapper, StyledTableCell } from '.';
 import { IToken } from '../interfaces';
 import { AppContext } from '../state';
 import { StyledTableRow } from './'
 
+interface IProps {
+  tokenList: IToken[] | undefined
+}
 
-const TokenTable = () => {
-  const { state } = useContext(AppContext)    
-  // useEffect(() => {
-  //   getTokens().then((res: IToken[]) => {
-  //       let arr: IToken[] = res
-  //       arr.sort((a: IToken, b: IToken) => {
-  //           return Number(a.TVL) - Number(b.TVL)
-  //       })
-  //       setTokenData(dispatch, arr)
-  //   })
-  // }, [])
+const TokenTable: FC<IProps> = (props) => {
 
-  return (<ChartWrapper>{
+  const { state } = useContext(AppContext)
+  const { tokenList } = props
+  const navigate = useNavigate()
+  
+  const { chain } = state   
 
-    state.tokenData.length > 0 
+  return (<ChartWrapper>
+    {
+
+    tokenList !== undefined 
 
     ?
 
@@ -37,14 +38,14 @@ const TokenTable = () => {
           </StyledTableRow>
         </TableHead>
         <TableBody>
-          {state.tokenData.map((token: IToken) => (
-            <StyledTableRow key={token.tokenAddress}>
-              <TableCell>{token.tokenName}</TableCell>
-              <TableCell>{token.tokenAddress}</TableCell>
-              <TableCell>{Number(token.lastPrice).toFixed(2)}</TableCell>
-              <TableCell>{Number((token.priceChange) / 100).toFixed(2)}%</TableCell>
-              <TableCell>{token.volume24H}</TableCell>
-              <TableCell>{(token.TVL?.toFixed(2)) ?? 'N/A'}</TableCell>
+          {tokenList.map((token: IToken) => (
+            <StyledTableRow key={token.tokenAddress}  onClick={_ => navigate(`/${chain}/Tokens/${token.tokenAddress}`)}>
+              <StyledTableCell>{token.tokenName}</StyledTableCell>
+              <StyledTableCell>{token.tokenAddress}</StyledTableCell>
+              <StyledTableCell>{Number(token.lastPrice).toFixed(2)}</StyledTableCell>
+              <StyledTableCell>{Number((token.priceChange) / 100).toFixed(2)}%</StyledTableCell>
+              <StyledTableCell>{token.volume24H}</StyledTableCell>
+              <StyledTableCell>{(token.TVL?.toFixed(2)) ?? 'N/A'}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
@@ -55,7 +56,8 @@ const TokenTable = () => {
 
     <SkeletonWrapper><Skeleton variant="rectangular" width={1030} height={300}  /></SkeletonWrapper>
 
-    }</ChartWrapper>);
+    }
+  </ChartWrapper>);
 };
 
 export default TokenTable;
