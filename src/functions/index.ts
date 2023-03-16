@@ -1,6 +1,8 @@
 import axios from "axios"
 import dayjs from "dayjs"
-import { GroupedData, GroupedEntry, IFee, IPoolData, IPoolLiquidity, ITVL, ITx, LiquidityPerDay } from "../interfaces"
+import { CandlestickData, GroupedData, GroupedEntry, IFee, IPoolData, IPoolLiquidity, ITVL, ITx, LiquidityPerDay, SeriesData } from "../interfaces"
+
+const WETH_ADDRESS = '0x9a0F333908010331769F1B4764Ff2b3a1e965897'
 
 export const getTVL = async (from: number, chain: string | undefined): Promise<any | ITVL[]> => {
     try {
@@ -34,7 +36,7 @@ export const getPools = async (limit: number, chain: string | undefined): Promis
     }
 }
 
-export const getLiquidityTx = async (limit: number, chain: string | undefined | undefined): Promise<any> => {
+export const getLiquidityTx = async (limit: number, chain: string | undefined): Promise<any> => {
     try {
         const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
         const result = await axios.get(`${url}/liquidityTransactions/${limit}`)
@@ -159,6 +161,66 @@ export const txsForToken = (txs: ITx[], symbol: string): ITx[] => {
         }
     }
     return txArr
+}
+
+export const getCandlestickData = (series: SeriesData[], resolution: number): CandlestickData[] => {
+    const candlestickData: CandlestickData[] = [];
+  
+    let currentCandle: CandlestickData | null = null;
+    let nextCandleTime: number = 0;
+    
+    for (let i = 0; i < series.length; i++) {
+      const data = series[i];
+      const time = data.time;
+      const price = Number(data.price);
+      const resolutionMillis = resolution * 60 * 1000;
+  
+      if (!currentCandle) {
+        const start = Math.floor(time / resolutionMillis) * resolutionMillis;
+        const end = start + resolutionMillis;
+        nextCandleTime = end;
+        currentCandle = {
+          time: start,
+          open: price,
+          high: price,
+          low: price,
+          close: price
+        };
+      } else {
+        if (time >= nextCandleTime) {
+          candlestickData.push(currentCandle);
+          currentCandle = null;
+          i--;
+          continue;
+        } else {
+          if (price > currentCandle.high) {
+            currentCandle.high = price;
+          }
+          if (price < currentCandle.low) {
+            currentCandle.low = price;
+          }
+          currentCandle.close = price;
+        }
+      }
+    }
+  
+    if (currentCandle) {
+      candlestickData.push(currentCandle);
+    }
+    return candlestickData;
+  }
+
+export const poolsToCandle = (pools: IPoolData[], tokenAddress: string | undefined): SeriesData[] => {
+    let poolsArr: IPoolData[] = []
+    pools.map((data: IPoolData) => {
+        if ((tokenAddress === data.token1 && WETH_ADDRESS === data.token0) || 
+            (tokenAddress === data.token0 && WETH_ADDRESS === data.token1)
+            ) {
+          poolsArr.push(data)
+        }
+      })
+      poolsArr.sort((a: IPoolData, b: IPoolData) => Number(b.liquidityArr[b.liquidityArr.length - 1]?.price) - Number(a.liquidityArr[b.liquidityArr.length - 1].price))
+      return poolsArr[0].priceArr
 }
 
 

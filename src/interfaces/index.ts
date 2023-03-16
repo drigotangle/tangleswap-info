@@ -32,8 +32,8 @@ export interface IToken {
     balance1: any
     tickSpacing: number;
     pool: string
-    priceArr: IPoolPrice[]
-    liquidityArr: IPoolLiquidity[]
+    priceArr: SeriesData[]
+    liquidityArr: SeriesData[]
     volume24H: number,
     tvl: number,
     volume7D: number
@@ -71,5 +71,18 @@ export interface IToken {
   export interface LiquidityPerDay {
     time: string;
     liquidity: number;
+  }
+
+  export interface CandlestickData {
+    time: number;
+    open: number;
+    high: number;
+    low: number;
+    close: number;
+  }
+  
+  export interface SeriesData {
+    time: number;
+    price: string;
   }
   

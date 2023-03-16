@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useParams } from "react-router-dom"
-import { getLiquidityTx, getPools, getSwapTx, getTokens, groupLiquidityPerDay, poolsForToken, txsForToken } from '../../functions'
-import { IPoolData, IPoolLiquidity, IToken, ITx } from '../../interfaces'
+import { getCandlestickData, getLiquidityTx, getPools, getSwapTx, getTokens, groupLiquidityPerDay, poolsForToken, poolsToCandle, txsForToken } from '../../functions'
+import { CandlestickData, IPoolData, IPoolLiquidity, IToken, ITx } from '../../interfaces'
 import styled from "styled-components";
 import { Skeleton, Typography } from "@mui/material";
 import { ColumnWrapper, HomeWrapper, RowWrapper, SkeletonWrapper } from '../../components'
-import { DailyVolumeChart } from '../../components/DailyVolumeChart'
+import CandleChart from '../../components/CandleChart';
 import Header from '../../components/Header'
 import TransactionsTable from '../../components/TransactionsTable';
 import PoolsTable from '../../components/PoolsTable';
@@ -37,18 +37,20 @@ const LeftWrapper = styled.div`
 const TokenPage = () => {
     const [ txs, setTxs ] = useState<ITx[]>()
     const [ poolsArr, setPoolsArr ] = useState<IPoolData[]>()
+    const [ candleStickData, setCandleStickData ] = useState<CandlestickData[]>([{time: 0, open: 0, high: 0, low: 0, close: 0}])
     const { tokenAddress, chain } = useParams()
     
     useEffect(() => {
-      Promise.all([getLiquidityTx(50, chain),  getPools(50, chain), getTokens(chain)])
+      Promise.all([getLiquidityTx(50, chain), getPools(50, chain), getTokens(chain)])
         .then(([tx, pools, tokens]) => {
-          console.log(tx, 'tx')
           const index = tokens.findIndex((item: IToken) => tokenAddress === item.tokenAddress)
           const symbol = tokens[index].tokenSymbol
           console.log(tokens[index], 'index')
           setPoolsArr(poolsForToken(pools, tokenAddress))
           setTxs(txsForToken(tx, symbol))
-          console.log(txs, symbol, poolsArr, 'aqui as coisa')          
+          const _poolsToCandle = poolsToCandle(pools, tokenAddress)
+          const _candleStickData = getCandlestickData(_poolsToCandle, 15)
+          setCandleStickData(_candleStickData)     
         })
     }, [])
     
@@ -56,7 +58,7 @@ const TokenPage = () => {
       <Header />
       <HomeWrapper>
         {
-            [poolsArr, txs].includes(undefined)
+            [poolsArr, txs, candleStickData].includes(undefined)
 
               ?
 
@@ -74,6 +76,7 @@ const TokenPage = () => {
                   </LeftWrapper>             
                   </ColumnWrapper>
                 </RowWrapper>
+                <CandleChart data={candleStickData} />
                 <Typography variant='h6'>Recent transactions</Typography>
                 <PoolsTable pooList={poolsArr} />
                 <TransactionsTable txData={txs}  />          
