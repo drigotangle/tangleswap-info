@@ -52,7 +52,7 @@ const TransactionsTable: FC<IProps> = (props) => {
             <TableCell>{event.symbol1}</TableCell>
             <TableCell>{event.amount0}</TableCell>
             <TableCell>{event.amount1}</TableCell>
-            <TableCell>{dayjs(event.time / 1000).fromNow()}</TableCell>
+            <TableCell>{dayjs(event.time).fromNow()}</TableCell>
           </StyledTableRow>
         ))}
       </TableBody>

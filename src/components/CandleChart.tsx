@@ -4,7 +4,7 @@ import { ChartWrapper } from '.';
 import { getPools } from '../functions';
 
 interface CandlestickData {
-  time: number;
+  time: any;
   open: number;
   high: number;
   low: number;

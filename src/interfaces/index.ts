@@ -74,7 +74,7 @@ export interface IToken {
   }
 
   export interface CandlestickData {
-    time: number;
+    time: string;
     open: number;
     high: number;
     low: number;
@@ -82,7 +82,7 @@ export interface IToken {
   }
   
   export interface SeriesData {
-    time: number;
-    price: string;
+    time: string;
+    price: number;
   }
   
