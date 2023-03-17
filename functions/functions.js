@@ -112,7 +112,7 @@ const querySwapTransactions = async (limit) => {
 }
 
 const sqrtPriceToPrice = (price) => {
-    const result = Number(price) ** 2 / 2 ** 192
+    const result = (Number(price) ** 2) / (2 ** 192)
     return result
 }
 
