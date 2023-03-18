@@ -7,7 +7,8 @@ const initialState = {
   tokenData: [],
   poolData: [],
   txData: [],
-  chain: 'Shimmer'
+  chain: 'Shimmer',
+  usdPrice: 0
 }
 type AppState = typeof initialState
 
@@ -17,7 +18,8 @@ type ACTIONTYPE =
   | { type: "SET_TOKEN_DATA"; payload: IToken[] | any }
   | { type: "SET_POOL_DATA"; payload: IPoolData[] | any }
   | { type: "SET_TX_DATA"; payload: ITx[] | any }
-  | { type: "SET_CHAIN"; payload: string }  
+  | { type: "SET_CHAIN"; payload: string }
+  | { type: 'SET_USD_PRICE'; payload: number }  
 
 function reducer(state: AppState, action: ACTIONTYPE) {
   switch (action.type) {
@@ -32,7 +34,9 @@ function reducer(state: AppState, action: ACTIONTYPE) {
             case "SET_TX_DATA":
               return { ...state, txData: action.payload }
               case "SET_CHAIN":
-                return { ...state, chain: action.payload }               
+                return { ...state, chain: action.payload }
+                case "SET_USD_PRICE":
+                  return { ...state, usdPrice: action.payload }               
       default:
         return state  
   }

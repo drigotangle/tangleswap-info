@@ -25,8 +25,6 @@ const StyledImg = styled.img`
     margin: auto auto;
 `
 
-
-
 const Header = () => {
     const { state } = useContext(AppContext)
     const { chain } = state

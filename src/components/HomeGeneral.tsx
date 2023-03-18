@@ -14,8 +14,9 @@ const SpanWrapper = styled.div`
 
 const HomeGeneral = () => {
     const { state } = useContext(AppContext)
-    const [ fees, setFees ] = useState<number>()
-    const [ lastTvl, setLastTvl ] = useState<number>()
+    const [ fees, setFees ] = useState<number>(0)
+    const [ lastTvl, setLastTvl ] = useState<number>(0)
+    const { usdPrice } = state
     const tvl: ITVL[] = state.tvl
     useEffect(() => {
         feesGenerated(state.chain).then(((res: number) => { setFees(res) }))
@@ -27,15 +28,15 @@ const HomeGeneral = () => {
     console.log(tvl, 'tvl')
     return(
 
-    ![vol24H(state.tvl), fees, lastTvl].includes(undefined)
+    ![vol24H(state.tvl), fees, lastTvl, usdPrice].includes(undefined || 0)
 
     ?
 
     <Paper>
         <PaperWrapper>
-                <SpanWrapper>Volume24h: {vol24H(state.tvl)}</SpanWrapper>
-                <SpanWrapper>Fees generated: {fees}</SpanWrapper>
-                <SpanWrapper>TVL: {lastTvl}</SpanWrapper>
+                <SpanWrapper>Volume24h: ${vol24H(state.tvl) * usdPrice}</SpanWrapper>
+                <SpanWrapper>Fees generated: {fees * usdPrice}</SpanWrapper>
+                <SpanWrapper>TVL: ${lastTvl * usdPrice}</SpanWrapper>
         </PaperWrapper>
     </Paper>
 

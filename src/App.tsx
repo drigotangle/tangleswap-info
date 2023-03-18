@@ -52,6 +52,12 @@ function App() {
       secondary:{
         main: '#7022E7', // lighter purple
       },
+      success:{
+        main: '#1B7A43',
+        dark: '#1B7A43',
+        contrastText: '#1B7A43',
+        light: '#1B7A43'
+      }
     },
   });
 

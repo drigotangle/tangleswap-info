@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import { ColumnWrapper, HomeWrapper, PaperWrapper } from '../../components'
 import Header from '../../components/Header'
 import PoolDataTable from '../../components/PoolsTable'
+import SubHeader from '../../components/SubHeader'
 import { getPools } from '../../functions'
 import { IPoolData } from '../../interfaces'
 import { AppContext } from '../../state'
@@ -30,6 +31,7 @@ const Pools = () => {
     }, [])
 
     return(<>
+        <SubHeader />
         <Header />  
         <HomeWrapper>
             <ColumnWrapper>

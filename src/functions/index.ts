@@ -1,6 +1,6 @@
 import axios from "axios"
 import dayjs from "dayjs"
-import { CandlestickData, GroupedData, GroupedEntry, IFee, IPoolData, IPoolLiquidity, ITVL, ITx, SeriesData } from "../interfaces"
+import { CandlestickData, GroupedData, GroupedEntry, IFee, IPoolData, ITVL, ITx, SeriesData } from "../interfaces"
 
 const WETH_ADDRESS = '0x9a0F333908010331769F1B4764Ff2b3a1e965897'
 
@@ -226,6 +226,17 @@ export const poolsToCandle = (pools: IPoolData[], tokenAddress: string | undefin
       poolsArr.sort((a: IPoolData, b: IPoolData) => Number(b.priceArr[b.priceArr.length - 1]?.price) - Number(a.priceArr[b.priceArr.length - 1].price))
       console.log(poolsArr[0].priceArr, 'poolsToCandle')
       return poolsArr[0].priceArr
+}
+
+export const getUsdPrice = async (chain: string) => {
+  try {
+    const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
+    const data = await axios.get(`${url}/USDPrice`)
+    return data.data
+
+  } catch (error) {
+    console.log(error, 'for getUsdPrice')
+  }
 }
 
 

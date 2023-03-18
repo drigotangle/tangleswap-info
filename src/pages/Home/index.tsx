@@ -6,6 +6,7 @@ import { DailyVolumeChart } from '../../components/DailyVolumeChart'
 import Header from '../../components/Header'
 import HomeGeneral from '../../components/HomeGeneral'
 import PoolDataTable from '../../components/PoolsTable'
+import SubHeader from '../../components/SubHeader'
 import TokenTable from '../../components/TokenTable'
 import TransactionsTable from '../../components/TransactionsTable'
 import { TVLChart } from '../../components/TVLChart'
@@ -77,6 +78,7 @@ const Home = () => {
 
       }, [state.chain])
     return(<>
+        <SubHeader />
         <Header />  
         <HomeWrapper>
             <ColumnWrapper>

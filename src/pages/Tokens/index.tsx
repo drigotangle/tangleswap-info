@@ -3,6 +3,7 @@ import { useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import { ColumnWrapper, PaperWrapper } from '../../components'
 import Header from '../../components/Header'
+import SubHeader from '../../components/SubHeader'
 import TokenTable from '../../components/TokenTable'
 import TopMoversCard from '../../components/TopMoversCard'
 import { getTokens } from '../../functions'
@@ -35,7 +36,8 @@ const Pools = () => {
       }, [state.chain])
 
     return(<>
-        <Header />  
+        <SubHeader />
+        <Header />
         <HomeWrapper>
             <ColumnWrapper>
             <Typography variant='h6'>Your Watchlist</Typography>

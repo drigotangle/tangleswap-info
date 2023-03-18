@@ -24,3 +24,7 @@ export const setTxData = (dispatch: any, payLoad: ITx[]): void => {
 export const setChain = (dispatch: any, payLoad: string | undefined): void => {
     dispatch({type: 'SET_CHAIN', payload: payLoad})
 }
+
+export const setUsdPrice = (dispatch: any, payLoad: number): void => {
+    dispatch({type: 'SET_USD_PRICE', payload: payLoad})
+}
