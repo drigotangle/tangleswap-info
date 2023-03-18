@@ -5,6 +5,7 @@ const liquidityTxCache = new Cache({ stdTTL: 60 * 10 });
 const swapTxCache = new Cache({ stdTTL: 60 * 10 });
 const tvlCache = new Cache({ stdTTL: 60 * 10 });
 const feeCache = new Cache({ stdTTL: 60 * 10 });
+const usdPriceCache = new Cache({ stdTTL: 60 * 10 });
 
 
 const poolCachedMiddleware = (req, res, next) => {
@@ -55,6 +56,18 @@ const tokenCachedMiddleware = (req, res, next) => {
     }
   }
 
+  const usdPriceMiddleware = (req, res, next) => {
+    try {
+      if (usdPriceCache.has("usdPrice")) {
+        return res.send(usdPriceCache.get("usdPrice")).status(200);
+      }
+      return next();
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  }
+
   const swapTxCachedMiddleware = (req, res, next) => {
     try {
       if (swapTxCache.has("swapTx-list")) {
@@ -88,8 +101,10 @@ module.exports = {
     swapTxCache,
     tvlCache,
     feeCache,
+    usdPriceCache,
     liquidityTxCachedMiddleware,
     swapTxCachedMiddleware,
     tvlCachedMiddleware,
-    feeCachedMiddleware
+    feeCachedMiddleware,
+    usdPriceMiddleware
 };

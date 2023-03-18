@@ -6,9 +6,27 @@ const json = bodyParse.json
 const app = express();
 const router = express.Router()
 
+require('dotenv').config();
 
-const { poolCachedMiddleware, tokenCachedMiddleware, tvlCachedMiddleware, feeCachedMiddleware, liquidityTxCachedMiddleware, swapTxCachedMiddleware } = require('./cache/cache')
-const { poolController, tokenController, tvlController, feeControler, liquidityTxController, swapTxController } = require('./controller/tangle.controller')
+
+const { 
+  poolCachedMiddleware, 
+  tokenCachedMiddleware, 
+  tvlCachedMiddleware, 
+  feeCachedMiddleware, 
+  liquidityTxCachedMiddleware, 
+  swapTxCachedMiddleware, 
+  usdPriceMiddleware 
+} = require('./cache/cache')
+const { 
+  poolController, 
+  tokenController, 
+  tvlController, 
+  feeControler, 
+  liquidityTxController, 
+  swapTxController,
+  usdPriceController
+} = require('./controller/tangle.controller')
 
 
 
@@ -29,6 +47,8 @@ const corsOptions = {
 app.listen(PORT, () => {
     console.log(`server is listening on port: ${PORT}`)
 })
+
+router.get('/USDprice', cors(corsOptions), usdPriceMiddleware, usdPriceController)
 
 router.get('/tvl/:limit', cors(corsOptions), tvlCachedMiddleware, tvlController)
 

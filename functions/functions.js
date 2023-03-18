@@ -2,7 +2,6 @@ const ethers  = require("ethers")
 
 const provider = new ethers.JsonRpcProvider('https://json-rpc.evm.testnet.shimmer.network')
 
-
 const { MongoClient, ServerApiVersion } = require('mongodb')
 const uri = `mongodb+srv://burgossrodrigo:BeREmhPli0p3qFTq@tangle.hkje2xt.mongodb.net/?retryWrites=true&w=majority`
 const mongoClient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })

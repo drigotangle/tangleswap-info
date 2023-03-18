@@ -1,7 +1,8 @@
 const poolService = require('../services/pool.service')
 const tokenService = require('../services/token.service')
-const { poolCache, tokenCache, swapTxCache, liquidityTxCache, tvlCache, feeCache } = require('../cache/cache')
-const { getLiquidityTx, getSwapTx, getTvl, getFees } = require('../services/general.service')
+const { poolCache, tokenCache, swapTxCache, liquidityTxCache, tvlCache, feeCache, usdPriceCache } = require('../cache/cache')
+const { getLiquidityTx, getSwapTx, getTvl, getFees, usdPrice } = require('../services/general.service')
+
 
 const poolController = async (req, res) => {
   const limit = Number(req.params.limit)
@@ -72,6 +73,19 @@ const poolController = async (req, res) => {
       }
     }
 
+    const usdPriceController = async (req, res) => {
+        try {
+          const data = await usdPrice();
+          usdPriceCache.set("usdPrice", data);
+          res.send(data);
+          res.status(200);
+        } catch (err) {
+          res.status(500);
+          console.log(err);
+          throw err;
+        }
+      }
+
     const feeControler = async (req, res) => {
       const limit = Number(req.params.limit)
         try {
@@ -92,5 +106,6 @@ const poolController = async (req, res) => {
     liquidityTxController,
     swapTxController,
     tvlController,
-    feeControler
+    feeControler,
+    usdPriceController
   }
