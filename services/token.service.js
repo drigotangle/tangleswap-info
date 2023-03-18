@@ -7,7 +7,6 @@ const WETH_ADDRESS = '0x9a0F333908010331769F1B4764Ff2b3a1e965897'
 const tokenService = async () => {
     try {
             const poolRes = await queryPools(1000)
-            const poolSet = new Set()
             const tokenSet = new Set()
             const interval = ((poolRes.length * 9) * 40 ) + ((poolRes.length * 40 )* 2) * 3
         
@@ -19,11 +18,8 @@ const tokenService = async () => {
                     _tokenAddress = result.token0
                 }
                 else
-                if(tokenSet.has(result.token1)){
-                    _tokenAddress = result.token0
-                }
-                else{
-                    _tokenAddress === result.token1
+                if(result.token0 === WETH_ADDRESS){
+                    _tokenAddress = result.token1
                 }
                 console.log(_tokenAddress, 'tokenAddress')
                 if(_tokenAddress !== undefined){
@@ -88,7 +84,6 @@ const tokenService = async () => {
                                             TVL: TVL()
                                         })
                                         tokenSet.add(_tokenAdddress)
-                                        poolSet.add(result)
                                     }
                         })
                 }  
