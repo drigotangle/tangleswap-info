@@ -24,7 +24,8 @@ const queryTVL = async (limit) => {
             documents.map((data) => {
                     docArr.push({
                         tvl: data.tvl,
-                        time: data.time
+                        time: data.time,
+                        blockNumber: data.blockNumber
                     })
             })
       
