@@ -17,7 +17,7 @@ const queryTVL = async (limit) => {
     try {
         const collection = await mongoClient.db("tangle-db-shimmer").collection("tvl")
         const documents = await collection.find({})
-        .sort({ blockNumber: 1 }) // Sort by blockNumber in ascending order
+        .sort({ blockNumber: -1 }) // Sort by blockNumber in ascending order
         .limit(limit) // Limit to the first 10 results
         .toArray()
         let docArr = []
