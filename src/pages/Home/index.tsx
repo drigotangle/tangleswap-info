@@ -62,17 +62,6 @@ const Home = () => {
 
         //TVL CHART 
         getTVL(30, chain).then((res) => {
-            // console.log(res, 'meu pau')
-            // let chartData: ITVL[] = []
-            // for(const data of res){
-            //     chartData.push({
-            //         time: data.time,
-            //         tvl: data.tvl
-            //     })
-            // }
-            // chartData.sort((a: ITVL, b: ITVL) => {
-            //     return Number(a.time) - Number(b.time)
-            // })   
             setTVL(dispatch, groupDataByDay(res))
         })
 

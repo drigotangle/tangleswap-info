@@ -7,8 +7,9 @@ const WETH_ADDRESS = '0x9a0F333908010331769F1B4764Ff2b3a1e965897'
 export const getTVL = async (from: number, chain: string | undefined): Promise<any | ITVL[]> => {
     try {
         const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
-        const result = await axios.get(`${url}/tvl/${from}`)
+        let result = await axios.get(`${url}/tvl/${from}`)
         console.log(result.data, 'getTVL')
+        result.data.sort((a: ITVL, b: ITVL) => a.blockNumber - b.blockNumber)
         return result.data
     } catch (error) {
         console.log(error, 'for getTVL')
@@ -26,13 +27,13 @@ export const getTokens = async (chain: string | undefined): Promise<any> => {
     }
 }
 
-export const getPools = async (limit: number, chain: string | undefined): Promise<any> => {
+export const getPools = async (limit: number, chain: string | undefined): Promise<IPoolData | any> => {
     try {
         const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
         const result = await axios.get(`${url}/pools/${limit}`)
         console.log(result.data, 'poolsAqui')
         return result.data
-    } catch (error) {
+    } catch (error: any) {
         return error
     }
 }

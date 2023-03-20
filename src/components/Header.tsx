@@ -1,15 +1,21 @@
+import { useTheme } from '@mui/material'
 import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { AppContext } from '../state'
 import ChainMenu from './ChainMenu'
 
-const HeadWrapper = styled.div`
+type HeadWrapperProps = {
+    backgroundColor?: string;
+  };
+
+const HeadWrapper = styled.div<HeadWrapperProps>`
 display: flex;
 flex-direction: row;
 width: 100%;
 gap: 2vw;
 height: max-content;
+background-color: ${(props: any) => props?.backgroundColor || 'transparent'};
 `
 
 const LinksWrapper = styled.div`
@@ -28,8 +34,11 @@ const StyledImg = styled.img`
 const Header = () => {
     const { state } = useContext(AppContext)
     const { chain } = state
+    const theme = useTheme()
+    const background = theme.palette.background.default
+    console.log(theme, 'theme')
     return(
-        <HeadWrapper>
+        <HeadWrapper backgroundColor={background}>
             <StyledImg width={30} src='https://d3m3d54t409w7t.cloudfront.net/logos/Logo_White_Alpha.gif' />                
             <LinksWrapper>
                 {

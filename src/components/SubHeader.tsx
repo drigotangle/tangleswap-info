@@ -3,7 +3,7 @@ import { Stack, Chip, Typography } from '@mui/material'
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import styled from 'styled-components'
 import { AppContext } from '../state'
-import { getTVL, getUsdPrice } from '../functions'
+import { getPools, getTVL, getUsdPrice } from '../functions'
 import { setUsdPrice } from '../state/Actions';
 
 const HeadWrapper = styled.div`
@@ -23,29 +23,24 @@ const Header = () => {
     const { state, dispatch } = useContext(AppContext)
     const { chain, usdPrice } = state
     useEffect(() => {
-        Promise.all([getTVL(1000, chain), getUsdPrice(chain)])
-        .then(([tvl, usdPrice]) => {
+        Promise.all([getTVL(1000, chain), getUsdPrice(chain), getPools(1000, chain)])
+        .then(([tvl, usdPrice, pools]) => {
+            const priceArr = pools[0].priceArr
+            const lastBlockFromPriceArr = priceArr[priceArr.length - 1].blockNumber
+            console.log(lastBlockFromPriceArr, 'subheader')
             // setLastBlockSync(tvl[tvl.length - 1].blockNumber)
             console.log(usdPrice, tvl[tvl.length - 1].blockNumber, 'subheader')
-            setLastBlockSync(tvl[tvl.length - 1].blockNumber)
+            setLastBlockSync(lastBlockFromPriceArr)
             setUsdPrice(dispatch, Number(usdPrice.USD))
         })
     }, [chain])
     return(
         <HeadWrapper>
             {
-                ![lastBlockSync, usdPrice].includes(undefined)
-
-                ?
-                
                 <Stack direction="row" spacing={1}>
-                <StyledSpan><Chip onDelete={_ => {}} deleteIcon={<FiberManualRecordIcon color="success" />} label={`Latest synced block ${lastBlockSync}`} /></StyledSpan>
-                <StyledSpan><Typography variant='subtitle1'>SMR Price: $ {usdPrice}</Typography></StyledSpan>
+                <StyledSpan><Chip onDelete={_ => {}} deleteIcon={<FiberManualRecordIcon color="success" />} label={`Latest synced block ${lastBlockSync ?? 0}`} /></StyledSpan>
+                <StyledSpan><Typography variant='subtitle1'>SMR Price: $ {usdPrice ?? 0}</Typography></StyledSpan>
                 </Stack>
-                
-                :
-
-                <></>
             }       
         </HeadWrapper>
     )

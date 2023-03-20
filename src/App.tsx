@@ -2,11 +2,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { createTheme, ThemeProvider  } from '@mui/material';
 
 import Home from './pages/Home'
-import GlobalStyle from "./style";
 import Pools from "./pages/Pools";
 import PoolPage from './pages/Pools/PoolPage';
 import Tokens from "./pages/Tokens";
 import TokenPage from "./pages/Tokens/TokenPage";
+import { createGlobalStyle } from "styled-components";
 
 function App() {
 
@@ -60,6 +60,15 @@ function App() {
       }
     },
   });
+
+  const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #000000;
+    color: white;
+  }
+`;
 
   return (
     <>

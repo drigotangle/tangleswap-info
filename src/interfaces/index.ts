@@ -85,5 +85,6 @@ export interface IToken {
   export interface SeriesData {
     time: string;
     price: number;
+    blockNumber: number
   }
   

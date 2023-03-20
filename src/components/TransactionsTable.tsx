@@ -12,7 +12,6 @@ interface IProps {
 }
 
 const TransactionsTable: FC<IProps> = (props) => {
-  const { state } = useContext(AppContext)
   const { txData } = props    
   // useEffect(() => {
   //   Promise.all([getLiquidityTx(20),  getSwapTx(20)]).
