@@ -40,6 +40,7 @@ const TransactionsTable: FC<IProps> = (props) => {
           <TableCell>Symbol 1</TableCell>
           <TableCell>Amount 0</TableCell>
           <TableCell>Amount 1</TableCell>
+          <TableCell>Account</TableCell>
           <TableCell>Time</TableCell>
         </StyledTableRow>
       </TableHead>
@@ -51,6 +52,7 @@ const TransactionsTable: FC<IProps> = (props) => {
             <TableCell>{event.symbol1}</TableCell>
             <TableCell>{event.amount0}</TableCell>
             <TableCell>{event.amount1}</TableCell>
+            <TableCell>{event.account}</TableCell>
             <TableCell>{dayjs(event.time).fromNow()}</TableCell>
           </StyledTableRow>
         ))}

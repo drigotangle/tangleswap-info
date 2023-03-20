@@ -50,6 +50,7 @@ export interface IToken {
     symbol1: string
     amount0: number
     amount1: number
+    account: string
     blockNumber: number
     time: any
   }
