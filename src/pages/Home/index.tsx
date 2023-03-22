@@ -47,7 +47,6 @@ const Home = () => {
 
         //POOLS TABLE
         getPools(15, chain).then((res: IPoolData[]) => {
-            console.log(res, 'pools')
             setPoolData(dispatch, res)
         })
 
