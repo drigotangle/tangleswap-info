@@ -1,6 +1,6 @@
 const ethers  = require("ethers")
 
-const provider = new ethers.JsonRpcProvider('https://json-rpc.evm.testnet.shimmer.network')
+const provider = new ethers.JsonRpcProvider ('https://json-rpc.evm.testnet.shimmer.network')
 
 const { MongoClient, ServerApiVersion } = require('mongodb')
 const uri = `mongodb+srv://burgossrodrigo:BeREmhPli0p3qFTq@tangle.hkje2xt.mongodb.net/?retryWrites=true&w=majority`
@@ -10,7 +10,7 @@ const POOL_ABI = require('../artifacts/POOLV3.json')
 const FACTORY_ABI = require('../artifacts/FACTORYV3.json')
 const ERC20_ABI = require('../artifacts/ERC20.json')
 
-const WETH_ADDRESS = '0x9a0F333908010331769F1B4764Ff2b3a1e965897'
+const WETH_ADDRESS = process.env.WETH_ADDRESS
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 const queryTVL = async (limit) => {
@@ -140,7 +140,7 @@ const getWethPriceAndLiquidity = async (address) => {
     const feesArr = [3000, 1000, 10000]
     let poolsArr = []
     try {
-            const factory = new ethers.Contract('0x84c66B601c1c424AcB9Ea1fed5d8b4F613441b95', FACTORY_ABI, provider)
+            const factory = new ethers.Contract(process.env.FACTORY_ADDRESS, FACTORY_ABI, provider)
             for(let i = 0; i < feesArr.length; i++){
                 const fee = feesArr[i]
                 const poolAddress = await factory.getPool(address, WETH_ADDRESS, fee)
