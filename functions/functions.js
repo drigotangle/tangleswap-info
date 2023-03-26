@@ -151,6 +151,9 @@ const getWethPriceAndLiquidity = async (address, decimals) => {
                 let wethDecimals = 18
                 if(poolAddress !== ZERO_ADDRESS && !tokenSet.has({tokenAddress: address, fee: fee})){
                     const poolContract = new ethers.Contract(poolAddress, POOL_ABI, provider)
+                    const wethContract = new ethers.Contract(WETH_ADDRESS, ERC20_ABI, provider)
+                    let wethBalance = await wethContract.balanceOf(poolAddress)
+                    wethBalance = Number(wethBalance._hex) / (10 ** wethDecimals)
                     const slot0 = await poolContract.slot0()
                     if(address > WETH_ADDRESS){
                         [wethDecimals, decimals] = [decimals, wethDecimals]
@@ -160,6 +163,7 @@ const getWethPriceAndLiquidity = async (address, decimals) => {
                     poolsArr.push({
                         poolAddress: poolAddress,
                         price: price,
+                        wethBalance: wethBalance
                     })
 
                     tokenSet.add({tokenAddress: address, fee: fee})
