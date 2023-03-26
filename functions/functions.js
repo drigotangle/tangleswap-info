@@ -138,26 +138,31 @@ const queryPools = async (limit) => {
     }
 }
 
-const getWethPriceAndLiquidity = async (address) => {
+const getWethPriceAndLiquidity = async (address, decimals) => {
     const feesArr = [3000, 1000, 10000]
     let poolsArr = []
     try {
             const factory = new ethers.Contract(process.env.FACTORY_ADDRESS, FACTORY_ABI, provider)
+            const tokenSet = new Set()
             for(let i = 0; i < feesArr.length; i++){
                 const fee = feesArr[i]
+                console.log(address, 'from getWethPriceAndLiquidity')
                 const poolAddress = await factory.getPool(address, WETH_ADDRESS, fee)
-                if(poolAddress !== ZERO_ADDRESS){
+                let wethDecimals = 18
+                if(poolAddress !== ZERO_ADDRESS && !tokenSet.has({tokenAddress: address, fee: fee})){
                     const poolContract = new ethers.Contract(poolAddress, POOL_ABI, provider)
                     const slot0 = await poolContract.slot0()
-                    const wethContract = new ethers.Contract(WETH_ADDRESS, ERC20_ABI, provider)
-                    const wethBalance = await wethContract.balanceOf(poolAddress)
-                    const price = sqrtPriceToPrice(Number(slot0.sqrtPriceX96._hex))
+                    if(address > WETH_ADDRESS){
+                        [wethDecimals, decimals] = [decimals, wethDecimals]
+                    }
+                    const price = sqrtPriceToPrice(Number(slot0.sqrtPriceX96), decimals, wethDecimals)
     
                     poolsArr.push({
                         poolAddress: poolAddress,
                         price: price,
-                        wethBalance: Number(wethBalance._hex) / (10 ** 18)
                     })
+
+                    tokenSet.add({tokenAddress: address, fee: fee})
                 }
             }
             poolsArr.sort((a, b) => {
