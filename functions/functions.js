@@ -1,6 +1,6 @@
 const ethers  = require("ethers")
 
-const provider = new ethers.JsonRpcProvider (process.env.SHIMMER_RPC)
+const provider = new ethers.JsonRpcProvider(process.env.SHIMMER_RPC)
 
 const { MongoClient, ServerApiVersion } = require('mongodb')
 const uri = `mongodb+srv://burgossrodrigo:BeREmhPli0p3qFTq@tangle.hkje2xt.mongodb.net/?retryWrites=true&w=majority`
