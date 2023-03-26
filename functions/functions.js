@@ -1,6 +1,6 @@
 const ethers  = require("ethers")
 
-const provider = new ethers.JsonRpcProvider ('https://json-rpc.evm.testnet.shimmer.network')
+const provider = new ethers.JsonRpcProvider (process.env.SHIMMER_RPC)
 
 const { MongoClient, ServerApiVersion } = require('mongodb')
 const uri = `mongodb+srv://burgossrodrigo:BeREmhPli0p3qFTq@tangle.hkje2xt.mongodb.net/?retryWrites=true&w=majority`
@@ -73,6 +73,7 @@ const queryLiquidityTransactions = async (limit) => {
                     symbol1: data.symbol1,
                     amount0: data.amount0,
                     amount1: data.amount1,
+                    value: data.value,
                     account: data.account,
                     time: data.time,
                     pool: data.pool,
@@ -99,6 +100,7 @@ const querySwapTransactions = async (limit) => {
                     eventName: data.eventName,
                     token0: data.token0Address,
                     token1: data.token1Address,
+                    value: data.value,
                     symbol0: data.symbol0,
                     symbol1: data.symbol1,
                     amount0: data.amount0,
