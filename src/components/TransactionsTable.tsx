@@ -32,7 +32,7 @@ const TransactionsTable: FC<IProps> = (props) => {
         <TableHead>
           <StyledTableRow>
             <TableCell>Event Name</TableCell>
-            {/* <TableCell>Total Value</TableCell> */}
+            <TableCell>Total Value</TableCell>
             <TableCell>First Amount</TableCell>
             <TableCell>Second Amount</TableCell>
             <TableCell>Account</TableCell>
@@ -51,6 +51,7 @@ const TransactionsTable: FC<IProps> = (props) => {
                   ? `Remove ${event.symbol0} and ${event.symbol1}`
                 : event.eventName
               }</TableCell>
+              <TableCell>event.value</TableCell>
               {/* <TableCell>{"$" + toSignificantDigits(event.fiatValue, 3)}</TableCell> */}
               <TableCell>{toSignificantDigits(event.amount0, 3) + " " + event.symbol0}</TableCell>
               <TableCell>{toSignificantDigits(event.amount1, 3) + " " + event.symbol1}</TableCell>
