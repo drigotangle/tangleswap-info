@@ -107,6 +107,7 @@ const querySwapTransactions = async (limit) => {
                     amount0: data.amount0,
                     amount1: data.amount1,
                     time: data.time,
+                    account: data.account,
                     blockNumber: data.block ?? data.blockNumber,
                     hash: data.transactionHash
                 })                        
