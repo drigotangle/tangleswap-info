@@ -53,6 +53,7 @@ export interface IToken {
     account: string
     blockNumber: number
     time: any
+    value: any
   }
 
   export interface IFee {
