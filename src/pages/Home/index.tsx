@@ -33,6 +33,7 @@ const Home = () => {
         //SWAPS TX
         Promise.all([getLiquidityTx(20, chain),  getSwapTx(20, chain)])
         .then(async (res: ITx[][]) => {
+        setTxData(dispatch, undefined)
           const liquidity = res[0]
           const swap = res[1]
           const all = swap.concat(liquidity)
@@ -42,16 +43,19 @@ const Home = () => {
         //DAILY VOLUME CHART
         const from = 10000
         getTVL(from, chain).then((res: ITVL[]) => {
+            setLiquidtyBarData(dispatch, undefined)
             setLiquidtyBarData(dispatch, groupDataByDay(res))
         })
 
         //POOLS TABLE
         getPools(15, chain).then((res: IPoolData[]) => {
+            setPoolData(dispatch, undefined)
             setPoolData(dispatch, res)
         })
 
         //TOKENS TABLE
         getTokens(chain).then((res: IToken[]) => {
+            setTokenData(dispatch, undefined)
             let arr: IToken[] = res
             arr.sort((a: IToken, b: IToken) => {
                 return Number(a.TVL) - Number(b.TVL)
@@ -61,6 +65,7 @@ const Home = () => {
 
         //TVL CHART 
         getTVL(30, chain).then((res) => {
+            setTVL(dispatch, undefined)
             setTVL(dispatch, groupDataByDay(res))
         })
 

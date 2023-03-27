@@ -1,23 +1,23 @@
 import { GroupedEntry, IPoolData, IPoolLiquidity, IToken, ITVL, ITx } from "../interfaces"
 
 
-export const setTVL = (dispatch: any, payload: ITVL[] | GroupedEntry[] | IPoolLiquidity[]): void => {
+export const setTVL = (dispatch: any, payload: ITVL[] | GroupedEntry[] | IPoolLiquidity[] | undefined): void => {
     dispatch({type: 'SET_LIQUIDITY_DATA', payload: payload})
 }
 
-export const setLiquidtyBarData = (dispatch: any, payload: ITVL[] | GroupedEntry[] | IPoolLiquidity[]): void => {
+export const setLiquidtyBarData = (dispatch: any, payload: ITVL[] | GroupedEntry[] | IPoolLiquidity[] | undefined): void => {
     dispatch({type: 'SET_LIQUIDITY_BAR_DATA', payload: payload})
 }
 
-export const setTokenData = (dispatch: any, payLoad: IToken[]): void => {
+export const setTokenData = (dispatch: any, payLoad: IToken[] | undefined): void => {
     dispatch({type: 'SET_TOKEN_DATA', payload: payLoad})
 }
 
-export const setPoolData = (dispatch: any, payLoad: IPoolData[]): void => {
+export const setPoolData = (dispatch: any, payLoad: IPoolData[] | undefined): void => {
     dispatch({type: 'SET_POOL_DATA', payload: payLoad})
 }
 
-export const setTxData = (dispatch: any, payLoad: ITx[]): void => {
+export const setTxData = (dispatch: any, payLoad: ITx[] | undefined): void => {
     dispatch({type: 'SET_TX_DATA', payload: payLoad})
 }
 
