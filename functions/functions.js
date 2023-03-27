@@ -172,7 +172,7 @@ const getWethPriceAndLiquidity = async (address, decimals) => {
                 }
             }
             poolsArr.sort((a, b) => {
-                return b.liquidity - a.liquidity
+                return b.wethBalance - a.wethBalance
             })
             return poolsArr
     } catch (error) {
