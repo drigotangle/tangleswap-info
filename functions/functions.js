@@ -25,7 +25,7 @@ const queryTVL = async (limit) => {
                     docArr.push({
                         tvl: data.tvl,
                         time: data.time,
-                        blockNumber: data.blockNumber
+                        blockNumber: data.block ?? data.blockNumber
                     })
             })
       
@@ -46,7 +46,7 @@ const queryFee = async () => {
                     fee: data.fee,
                     time: data.time,
                     poolAddress: data.poolAddress,
-                    blockNumber: data.blockNumber
+                    blockNumber: data.block ?? data.blockNumber
                 })
         })
         return docArr
@@ -77,7 +77,8 @@ const queryLiquidityTransactions = async (limit) => {
                     account: data.account,
                     time: data.time,
                     pool: data.pool,
-                    blockNumber: data.block
+                    blockNumber: data.block ?? data.blockNumber,
+                    hash: data.transactionHash
                 })                        
         })
         console.log(docArr)
@@ -106,7 +107,8 @@ const querySwapTransactions = async (limit) => {
                     amount0: data.amount0,
                     amount1: data.amount1,
                     time: data.time,
-                    blockNumber: data.block
+                    blockNumber: data.block ?? data.blockNumber,
+                    hash: data.transactionHash
                 })                        
         })
         return docArr
