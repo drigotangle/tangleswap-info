@@ -63,23 +63,26 @@ const queryLiquidityTransactions = async (limit) => {
         .limit(limit) // Limit to the first 10 results
         .toArray()
         let docArr = []
-        
+        const docSet = new Set()
         documents.map((data) => {
-                docArr.push({
-                    eventName: data.eventName,
-                    token0: data.token0Address,
-                    token1: data.token1Address,
-                    symbol0: data.symbol0,
-                    symbol1: data.symbol1,
-                    amount0: data.amount0,
-                    amount1: data.amount1,
-                    value: data.value,
-                    account: data.account,
-                    time: data.time,
-                    pool: data.pool,
-                    blockNumber: data.block ?? data.blockNumber,
-                    hash: data.transactionHash
-                })                        
+        if(!docSet.has(data)){
+            docArr.push({
+                eventName: data.eventName,
+                token0: data.token0Address,
+                token1: data.token1Address,
+                symbol0: data.symbol0,
+                symbol1: data.symbol1,
+                amount0: data.amount0,
+                amount1: data.amount1,
+                value: data.value,
+                account: data.account,
+                time: data.time,
+                pool: data.pool,
+                blockNumber: data.block ?? data.blockNumber,
+                hash: data.hash
+            })
+            docSet.add(data)
+        }                    
         })
         console.log(docArr)
         return docArr
@@ -96,7 +99,9 @@ const querySwapTransactions = async (limit) => {
         .limit(limit) // Limit to the first 10 results
         .toArray()
         let docArr = []
+        const docSet = new Set()
         documents.map((data) => {
+            if(!docSet.has(data)){
                 docArr.push({
                     eventName: data.eventName,
                     token0: data.token0Address,
@@ -109,8 +114,10 @@ const querySwapTransactions = async (limit) => {
                     time: data.time,
                     account: data.account,
                     blockNumber: data.block ?? data.blockNumber,
-                    hash: data.transactionHash
-                })                        
+                    hash: data.hash
+                })               
+                docSet.add(data)
+            }
         })
         return docArr
     } catch (error) {
