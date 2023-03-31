@@ -36,7 +36,8 @@ const Home = () => {
         setTxData(dispatch, undefined)
           const liquidity = res[0]
           const swap = res[1]
-          const all = swap.concat(liquidity)
+          let all = swap.concat(liquidity)
+          all.sort((a: ITx, b: ITx) => { return b.block - a.block})
           setTxData(dispatch, all)
         })
 
@@ -86,7 +87,7 @@ const Home = () => {
                 <Typography variant='h6'>Top pools</Typography>
                 <PoolDataTable pooList={state.poolData} />
                 <Typography variant='h6'>Recent transactions</Typography>
-                <TransactionsTable txData={state.txData} />
+                <TransactionsTable chain={chain} txData={state.txData} />
             </ColumnWrapper>    
         </HomeWrapper>
         </>)

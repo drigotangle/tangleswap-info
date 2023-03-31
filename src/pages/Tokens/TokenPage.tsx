@@ -64,7 +64,7 @@ const TokenPage = () => {
                 <CandleChart data={candleStickData} />
                 <Typography variant='h6'>Recent transactions</Typography>
                 <PoolsTable pooList={poolsArr} />
-                <TransactionsTable txData={txs}  />          
+                <TransactionsTable chain={chain} txData={txs}  />          
               </ColumnWrapper>                
 
         }

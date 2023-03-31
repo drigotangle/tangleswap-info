@@ -102,7 +102,7 @@ const PoolPage = () => {
                 <DailyVolumeChart chartWidth={600} chartData={liquidityData}/>
                 </RowWrapper>
                 <Typography variant='h6'>Recent transactions</Typography>
-                <TransactionsTable txData={txs} />             
+                <TransactionsTable chain={chain} txData={txs} />             
               </ColumnWrapper>                
 
         }

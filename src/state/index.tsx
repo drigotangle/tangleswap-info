@@ -45,7 +45,7 @@ function reducer(state: AppState, action: ACTIONTYPE) {
 const AppContext = createContext<{
   state: AppState
   dispatch: React.Dispatch<ACTIONTYPE>;
-}>({state: initialState, dispatch: () => {} })
+}>({state: initialState, dispatch: () => {}})
 
 export function AppProvider(props: any) {
   const [state, dispatch] = useReducer(reducer, initialState);

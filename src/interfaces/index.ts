@@ -51,9 +51,10 @@ export interface IToken {
     amount0: number
     amount1: number
     account: string
-    blockNumber: number
+    block: number
     time: any
     value: any
+    hash: string | undefined
   }
 
   export interface IFee {

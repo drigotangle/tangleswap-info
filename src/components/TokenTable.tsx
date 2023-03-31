@@ -39,7 +39,7 @@ const TokenTable: FC<IProps> = (props) => {
         </TableHead>
         <TableBody>
           {tokenList.map((token: IToken) => (
-            <StyledTableRow key={token.tokenAddress}  onClick={_ => navigate(`/${chain}/Tokens/${token.tokenAddress}`)}>
+            <StyledTableRow key={token.tokenAddress}  onClick={() => navigate(`/${chain}/Tokens/${token.tokenAddress}`)}>
               <StyledTableCell>{token.tokenName}</StyledTableCell>
               <StyledTableCell>{token.tokenAddress}</StyledTableCell>
               <StyledTableCell>{Number(token.lastPrice).toFixed(2)}</StyledTableCell>

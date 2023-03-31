@@ -240,6 +240,17 @@ export const getUsdPrice = async (chain: string) => {
   }
 }
 
+export const getExplorerUrl = (chain: string | undefined, hash: string | undefined) => {
+  switch(chain){
+    case 'Shimmer':
+      return `https://explorer.evm.testnet.shimmer.network/tx/${hash}`
+    case 'Ethereum':
+      return `https://etherscan.io/tx/${hash}`
+    default:
+      return `https://explorer.evm.testnet.shimmer.network/tx/${hash}`
+  }
+}
+
 
 
 
