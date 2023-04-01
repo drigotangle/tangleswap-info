@@ -41,14 +41,18 @@ const queryFee = async () => {
         const documents = await collection.find({})
         .toArray()
         let docArr = []
-        documents.map((data) => {
+        const feeSet = new Set()
+        if(!feeSet.has(data)){
+            documents.map((data) => {
                 docArr.push({
                     fee: data.fee,
                     time: data.time,
                     poolAddress: data.poolAddress,
                     blockNumber: data.block ?? data.blockNumber
                 })
+                feeSet.add(data)
         })
+        }
         return docArr
     } catch (error) {
         console.log(error, 'queryFee')
@@ -134,15 +138,20 @@ const queryPools = async (limit) => {
     try {
         const collection = await mongoClient.db("tangle-db-shimmer").collection("pools")
         if(limit !== undefined){
+            const poolsArr = []
+            const poolSet = new Set()
             const documents = await collection.find({})
             .sort({ blockNumber: 1 }) // Sort by blockNumber in descending order
             .limit(limit) // Limit to the first 10 results
             .toArray()
-            return documents
+            for(const pool of documents){
+                if(!setArr.has(pool)){
+                    poolsArr.push(pool)
+                    poolSet.add(pool)
+                }
+            }
         }
-        const documents = await collection.find({})
-        .toArray()
-        return documents
+        return poolsArr
     } catch (error) {
         console.log(error, 'for queryPools')
     }
