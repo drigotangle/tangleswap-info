@@ -137,9 +137,9 @@ const sqrtPriceToPrice = (price) => {
 const queryPools = async (limit) => {
     try {
         const collection = await mongoClient.db("tangle-db-shimmer").collection("pools")
+        const poolsArr = []
+        const poolSet = new Set()
         if(limit !== undefined){
-            const poolsArr = []
-            const poolSet = new Set()
             const documents = await collection.find({})
             .sort({ blockNumber: 1 }) // Sort by blockNumber in descending order
             .limit(limit) // Limit to the first 10 results
