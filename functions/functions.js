@@ -42,8 +42,8 @@ const queryFee = async () => {
         .toArray()
         let docArr = []
         const feeSet = new Set()
-        if(!feeSet.has(data)){
             documents.map((data) => {
+                if(!feeSet.has(data)){
                 docArr.push({
                     fee: data.fee,
                     time: data.time,
@@ -51,8 +51,8 @@ const queryFee = async () => {
                     blockNumber: data.block ?? data.blockNumber
                 })
                 feeSet.add(data)
+            }
         })
-        }
         return docArr
     } catch (error) {
         console.log(error, 'queryFee')
