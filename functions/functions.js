@@ -145,7 +145,7 @@ const queryPools = async (limit) => {
             .limit(limit) // Limit to the first 10 results
             .toArray()
             for(const pool of documents){
-                if(!setArr.has(pool)){
+                if(!poolSet.has(pool)){
                     poolsArr.push(pool)
                     poolSet.add(pool)
                 }
