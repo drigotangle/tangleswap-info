@@ -27,11 +27,6 @@ const HomeGeneral = () => {
     }, [state.chain])
     console.log(tvl, 'tvl')
     return(
-
-    ![vol24H(state.tvl), fees, lastTvl, usdPrice].includes(undefined || 0)
-
-    ?
-
     <Paper>
         <PaperWrapper>
                 <SpanWrapper>Volume24h: ${vol24H(state.tvl) * usdPrice}</SpanWrapper>
@@ -39,11 +34,6 @@ const HomeGeneral = () => {
                 <SpanWrapper>TVL: ${lastTvl * usdPrice}</SpanWrapper>
         </PaperWrapper>
     </Paper>
-
-    :
-
-    <SkeletonWrapper><Skeleton variant="rectangular" width={1030} height={30}  /></SkeletonWrapper>
-
     )
 }
 
