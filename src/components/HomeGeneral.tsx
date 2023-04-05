@@ -31,7 +31,7 @@ const HomeGeneral = () => {
         <PaperWrapper>
                 <SpanWrapper>Volume24h: ${vol24H(state.tvl) * usdPrice}</SpanWrapper>
                 <SpanWrapper>Fees generated: ${fees * usdPrice}</SpanWrapper>
-                <SpanWrapper>TVL: ${lastTvl * usdPrice}</SpanWrapper>
+                <SpanWrapper>TVL: ${Number(lastTvl * usdPrice).toFixed(2)}</SpanWrapper>
         </PaperWrapper>
     </Paper>
     )

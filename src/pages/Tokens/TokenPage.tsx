@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useParams } from "react-router-dom"
 import { getCandlestickData, getLiquidityTx, getPools, getTokens, poolsForToken, poolsToCandle, txsForToken } from '../../functions'
 import { CandlestickData, IPoolData, IToken, ITx } from '../../interfaces'
@@ -9,6 +9,8 @@ import CandleChart from '../../components/CandleChart';
 import Header from '../../components/Header'
 import TransactionsTable from '../../components/TransactionsTable';
 import PoolsTable from '../../components/PoolsTable';
+import SubHeader from '../../components/SubHeader';
+import { AppContext } from '../../state';
 
 const LeftWrapper = styled.div`
   display: flex;
@@ -22,6 +24,9 @@ const TokenPage = () => {
     const [ poolsArr, setPoolsArr ] = useState<IPoolData[]>()
     const [ candleStickData, setCandleStickData ] = useState<CandlestickData[]>([{time: '0', open: 0, high: 0, low: 0, close: 0}])
     const { tokenAddress, chain } = useParams()
+
+    const { state } = useContext(AppContext)
+    const { usdPrice } = state
     
     useEffect(() => {
       Promise.all([getLiquidityTx(50, chain), getPools(50, chain), getTokens(chain)])
@@ -40,6 +45,7 @@ const TokenPage = () => {
     }, [])
     
     return (<>
+      <SubHeader />
       <Header />
       <HomeWrapper>
         {
@@ -63,7 +69,7 @@ const TokenPage = () => {
                 </RowWrapper>
                 <CandleChart data={candleStickData} />
                 <Typography variant='h6'>Recent transactions</Typography>
-                <PoolsTable pooList={poolsArr} />
+                <PoolsTable pooList={state.poolData} usdPrice={usdPrice} chain={chain} />
                 <TransactionsTable chain={chain} txData={txs}  />          
               </ColumnWrapper>                
 

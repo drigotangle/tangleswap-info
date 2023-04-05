@@ -1,4 +1,4 @@
-import { FC, useContext } from "react";
+import { FC, useContext, useEffect } from "react";
 import { Paper, Skeleton, Table, TableBody, TableContainer, TableHead, TableCell } from "@mui/material";
 import { ChartWrapper, StyledTableCell, StyledTableRow } from './'
 import { IPoolData } from "../interfaces";
@@ -8,16 +8,18 @@ import { useNavigate } from "react-router-dom";
 
 interface IProps {
   pooList: IPoolData[] | undefined
+  chain: string | undefined
+  usdPrice?: number
 }
 
 const PoolDataTable: FC<IProps> = (props) => {
   const { state } = useContext(AppContext)
-  const { pooList } = props
+  const { pooList, usdPrice } = props
   const navigate = useNavigate()
   
   const { chain } = state
 
-
+  useEffect(() => {pooList?.sort((a: IPoolData, b: IPoolData) => { return b.tvl - a.tvl})}, [])
   
 
   return (<ChartWrapper>
@@ -40,8 +42,8 @@ const PoolDataTable: FC<IProps> = (props) => {
           {pooList?.map((row: IPoolData) => (
             <StyledTableRow onClick={_ => navigate(`/${chain}/Pools/${row.pool}`)} key={`${row.symbol0}-${row.symbol1}`}>
               <StyledTableCell>{row.symbol0}/{row.symbol1}{" "}{row.fee / 10000}%</StyledTableCell>
-              <StyledTableCell>{row.tvl}</StyledTableCell>
-              <StyledTableCell>{row.volume24H}</StyledTableCell>
+              <StyledTableCell>{row.tvl * (usdPrice ?? 1)}</StyledTableCell>
+              <StyledTableCell>{row.volume24H * (usdPrice ?? 1)}</StyledTableCell>
               <StyledTableCell>{row.volume7D}</StyledTableCell> 
             </StyledTableRow>
           ))}

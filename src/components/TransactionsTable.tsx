@@ -11,14 +11,15 @@ import { getExplorerUrl } from '../functions';
 interface IProps {
   txData: ITx[] | undefined
   chain: string | undefined
+  usdPrice?: number
 }
 
 const TransactionsTable: FC<IProps> = (props) => {
-  const { txData, chain } = props    
+  const { txData, chain, usdPrice } = props    
   dayjs.extend(relativeTime)
 
   return (<ChartWrapper>{
-    txData !== undefined && txData.length > 0
+    ![txData, usdPrice, txData].includes(undefined)
       ?
       <TableContainer component={Paper}>
       <Table>
@@ -44,7 +45,7 @@ const TransactionsTable: FC<IProps> = (props) => {
                   ? `Remove ${event.symbol0} and ${event.symbol1}`
                 : event.eventName
               }</StyledTableCell>
-              <StyledTableCell>{event.value}</StyledTableCell>
+              <StyledTableCell>${Number(event.value * (usdPrice ?? 1)).toFixed(2)}</StyledTableCell>
               {/* <StyledTableCell>{"$" + toSignificantDigits(event.fiatValue, 3)}</StyledTableCell> */}
               <StyledTableCell>{toSignificantDigits(event.amount0, 3) + " " + event.symbol0}</StyledTableCell>
               <StyledTableCell>{toSignificantDigits(event.amount1, 3) + " " + event.symbol1}</StyledTableCell>

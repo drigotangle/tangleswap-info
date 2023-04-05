@@ -26,7 +26,7 @@ const HomeWrapper = styled.div`
 const Home = () => {
 
     const { dispatch, state } = useContext(AppContext)
-    const { chain } = state
+    const { chain, usdPrice } = state
 
     useEffect(() => {
 
@@ -85,9 +85,9 @@ const Home = () => {
                 <Typography variant='h6'>Top tokens</Typography>
                 <TokenTable tokenList={state.tokenData} />
                 <Typography variant='h6'>Top pools</Typography>
-                <PoolDataTable pooList={state.poolData} />
+                <PoolDataTable pooList={state.poolData} usdPrice={usdPrice} chain={chain} />
                 <Typography variant='h6'>Recent transactions</Typography>
-                <TransactionsTable chain={chain} txData={state.txData} />
+                <TransactionsTable chain={chain} txData={state.txData} usdPrice={usdPrice} />
             </ColumnWrapper>    
         </HomeWrapper>
         </>)

@@ -8,6 +8,7 @@ import { ColumnWrapper, HomeWrapper, RowWrapper, SkeletonWrapper } from '../../c
 import { DailyVolumeChart } from '../../components/DailyVolumeChart'
 import Header from '../../components/Header'
 import TransactionsTable from '../../components/TransactionsTable';
+import SubHeader from '../../components/SubHeader';
 
 
 const Title = styled(Typography)`
@@ -36,7 +37,7 @@ const LeftWrapper = styled.div`
 const PoolPage = () => {
     const [ poolData, setPoolData ] = useState<IPoolData>()
     const [ liquidityData, setLiquidityData ] = useState<IPoolLiquidity[]>()
-    const [ txs, setTxs ] = useState<ITx[]>()
+    const [ txs, setTxs ] = useState<ITx[] | undefined>()
     const { poolAddress, chain } = useParams()
     
     useEffect(() => {
@@ -61,6 +62,7 @@ const PoolPage = () => {
     }, [])
     
     return (<>
+      <SubHeader />
       <Header />
       <HomeWrapper>
         {
