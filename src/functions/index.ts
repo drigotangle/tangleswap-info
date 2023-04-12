@@ -114,10 +114,10 @@ export const groupDataByDay = (data: ITVL[]): GroupedEntry[] => {
     return Object.keys(groupedData).map((day: string) => ({ day, tvl: groupedData[day] }));
   }
 
-  export const groupLiquidityPerDay = (data: {time: string, liquidity: number}[]): {time: number, liquidity: number}[] => {
-    const result: {time: number, liquidity: number}[] = [];
+  export const groupLiquidityPerDay = (data: {time: string, liquidity: number, block: number}[]): {time: number, liquidity: number, block: number}[] => {
+    const result: {time: number, liquidity: number, block: number}[] = [];
   
-    data.forEach(({ time, liquidity }) => {
+    data.forEach(({ time, liquidity, block }) => {
       const day = Number(dayjs(time).format('DD'));
       const existingEntry = result.find(entry => entry.time === day);
   
@@ -126,7 +126,8 @@ export const groupDataByDay = (data: ITVL[]): GroupedEntry[] => {
       } else {
         result.push({
           time: day,
-          liquidity
+          liquidity,
+          block
         });
       }
     });
@@ -170,7 +171,7 @@ export const getCandlestickData = (series: {time: string, price: number}[], reso
   const candlestickData: CandlestickData[] = [];
   let currentCandle: CandlestickData | null = null;
   let nextCandleTime: number = 0;
-  
+  console.log(series, 'series')
   for (let i = 0; i < series.length; i++) {
     const data = series[i];
     const time = new Date(data.time).getTime();
@@ -217,16 +218,14 @@ export const getCandlestickData = (series: {time: string, price: number}[], reso
 export const poolsToCandle = (pools: IPoolData[], tokenAddress: string | undefined): SeriesData[] => {
     let poolsArr: IPoolData[] = []
     for(const pool of pools) {
-      if ((tokenAddress === pool.token1 && WETH_ADDRESS === pool.token0) || 
-      (tokenAddress === pool.token0 && WETH_ADDRESS === pool.token1)
-      ) {
-        console.log(pool, 'poolsToCandle')
+      if(tokenAddress === pool.token1 || tokenAddress === pool.token0){
+        console.log('chamou:', pool)
         poolsArr.push(pool)
-      }      
+      }
     }
-      poolsArr.sort((a: IPoolData, b: IPoolData) => Number(b.priceArr[b.priceArr.length - 1]?.price) - Number(a.priceArr[b.priceArr.length - 1].price))
-      console.log(poolsArr[0].priceArr, 'poolsToCandle')
-      return poolsArr[0].priceArr
+    poolsArr.sort((a: IPoolData, b: IPoolData) => Number(b.liquidity[b.liquidity.length - 1]?.liquidity) - Number(a.liquidity[b.liquidity.length - 1].liquidity))
+    const result = poolsArr[0].price
+    return result
 }
 
 export const getUsdPrice = async (chain: string) => {
@@ -249,6 +248,16 @@ export const getExplorerUrl = (chain: string | undefined, hash: string | undefin
     default:
       return `https://explorer.evm.testnet.shimmer.network/tx/${hash}`
   }
+}
+
+export const removeUnmatchedPools = (pools: IPoolData[], tokenAddress: string | any): IPoolData[] => {
+  for(const pool of pools){
+    if(![pool.token0, pool.token1].includes(tokenAddress)){
+    const poolIndex = pools.findIndex((item: IPoolData) => item.pool === pool.pool)
+    delete pools[poolIndex]
+    }
+  }
+  return pools
 }
 
 

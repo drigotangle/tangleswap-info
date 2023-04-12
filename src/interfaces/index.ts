@@ -17,6 +17,7 @@ export interface IToken {
   export interface IPoolLiquidity {
     time: number
     liquidity: number
+    block: number
   }
 
   export interface IPoolPrice {
@@ -33,8 +34,8 @@ export interface IToken {
     balance1: any
     tickSpacing: number;
     pool: string
-    priceArr: SeriesData[]
-    liquidityArr: SeriesData[]
+    price: SeriesData[]
+    liquidity: IPoolLiquidity[]
     volume24H: number,
     tvl: number,
     volume7D: number

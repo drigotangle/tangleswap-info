@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import { useParams } from "react-router-dom"
-import { getCandlestickData, getLiquidityTx, getPools, getTokens, poolsForToken, poolsToCandle, txsForToken } from '../../functions'
+import { getCandlestickData, getLiquidityTx, getPools, getTokens, poolsForToken, poolsToCandle, removeUnmatchedPools, txsForToken } from '../../functions'
 import { CandlestickData, IPoolData, IToken, ITx } from '../../interfaces'
 import styled from "styled-components";
 import { Skeleton, Typography } from "@mui/material";
@@ -31,16 +31,18 @@ const TokenPage = () => {
     useEffect(() => {
       Promise.all([getLiquidityTx(50, chain), getPools(50, chain), getTokens(chain)])
         .then(([tx, pools, tokens]) => {
-          console.log(tx, pools, tokens, 'chamou')
-          const index = tokens.findIndex((item: IToken) => tokenAddress === item.tokenAddress)
-          const symbol = tokens[index].tokenSymbol
-          console.log(tokens[index], 'indexToken')
+          const tokenIndex = tokens.findIndex((item: IToken) => tokenAddress === item.tokenAddress)
+          removeUnmatchedPools(pools, tokenAddress)
+          const symbol = tokens[tokenIndex].tokenSymbol
+          console.log(tokens[tokenIndex], 'indexToken')
           setPoolsArr(poolsForToken(pools, tokenAddress))
           setTxs(txsForToken(tx, symbol))
           const _poolsToCandle = poolsToCandle(pools, tokenAddress)
+          console.log(_poolsToCandle, '_poolsToCandle')
           const _candleStickData = getCandlestickData(_poolsToCandle, 15)
           console.log(_poolsToCandle, _candleStickData, 'veho')
-          setCandleStickData(_candleStickData)     
+          setCandleStickData(_candleStickData)
+          console.log(poolsArr, txs, candleStickData, 'candleStickData')     
         })
     }, [])
     

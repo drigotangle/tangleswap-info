@@ -25,12 +25,17 @@ const Header = () => {
     useEffect(() => {
         Promise.all([getTVL(1000, chain), getUsdPrice(chain), getPools(1000, chain)])
         .then(([tvl, usdPrice, pools]) => {
-            const priceArr = pools[0].priceArr
-            const lastBlockFromPriceArr = priceArr[priceArr.length - 1].blockNumber
-            console.log(lastBlockFromPriceArr, 'subheader')
-            // setLastBlockSync(tvl[tvl.length - 1].blockNumber)
-            console.log(usdPrice, tvl[tvl.length - 1].blockNumber, 'subheader')
-            setLastBlockSync(lastBlockFromPriceArr)
+            const price = pools[0].price
+            const liquidity = pools[0].liquidity
+            const lastBlockFromPrice = price[price.length - 1].blockNumber
+            const lastBlockFromLiquidity = liquidity[liquidity.length - 1].blockNumber
+            if(lastBlockFromPrice > lastBlockFromLiquidity){
+                setLastBlockSync(lastBlockFromPrice)
+            }
+
+            if(lastBlockFromLiquidity > lastBlockFromPrice){
+                setLastBlockSync(lastBlockFromLiquidity)
+            }
             setUsdPrice(dispatch, Number(usdPrice.USD))
         })
     }, [chain])

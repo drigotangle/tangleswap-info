@@ -18,7 +18,9 @@ const PoolDataTable: FC<IProps> = (props) => {
   const navigate = useNavigate()
   
   const { chain } = state
-
+  /**
+   * @dev use it to change the orders by the pools are displayed. Currently only TVL.
+   */
   useEffect(() => {pooList?.sort((a: IPoolData, b: IPoolData) => { return b.tvl - a.tvl})}, [])
   
 

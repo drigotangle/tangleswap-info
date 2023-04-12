@@ -227,8 +227,8 @@ This interface represents information about a pool with the following fields:
 -   `balance1`: the balance of the second token in the pool.
 -   `tickSpacing`: the tick spacing of the pool.
 -   `pool`: the contract address of the pool.
--   `priceArr`: an array of `SeriesData` representing the price of the pool over time.
--   `liquidityArr`: an array of `SeriesData` representing the liquidity of the pool over time.
+-   `price`: an array of `SeriesData` representing the price of the pool over time.
+-   `liquidity`: an array of `SeriesData` representing the liquidity of the pool over time.
 -   `volume24H`: the 24-hour trading volume of the pool.
 -   `tvl`: the total value locked in the pool.
 -   `volume7D`: the 7-day trading volume of the pool.
