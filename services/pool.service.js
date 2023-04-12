@@ -38,7 +38,7 @@ const poolService = async (limit) => {
                         let volume;
                         for (let i = 0; i < data.liquidity.length; i++) {
                             if(dayjs(data.liquidity[data.liquidity.length - 1].liquidity - dayjs(data.liquidity[i].time).format('DD')).format('DD') === 7){
-                                volume = Number(liquidityArr[liquidityArr.length - 1].liquidity) - Number(liquidityArr[i].liquidity)
+                                volume = Number(liquidity[liquidity.length - 1].liquidity) - Number(liquidity[i].liquidity)
                                 break
                             }
                             else
@@ -58,8 +58,8 @@ const poolService = async (limit) => {
                         balance1: Number(balance1._hex),
                         pool: data.pool,
                         tvl: tvl,
-                        priceArr: data.price,
-                        liquidityArr: data.liquidity,
+                        price: data.price,
+                        liquidity: data.liquidity,
                         volume24H: volume24H(),
                         volume7D: volume7D(),
                         fee: fee
