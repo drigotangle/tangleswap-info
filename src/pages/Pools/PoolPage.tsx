@@ -41,12 +41,14 @@ const PoolPage = () => {
     const { poolAddress, chain } = useParams()
     
     useEffect(() => {
-      Promise.all([getLiquidityTx(50, chain),  getPools(50, chain)])
+      Promise.all([getLiquidityTx(500, chain),  getPools(500, chain)])
         .then(([tx, pools]) => {
           let txArr: ITx[] = []
           const index = pools.findIndex((item: IPoolData) => item.pool === poolAddress)
           setPoolData(pools[index])
-          setLiquidityData(groupLiquidityPerDay(pools[index].liquidity))
+          const poolLiquidity = groupLiquidityPerDay(pools[index].liquidity)
+          setLiquidityData(poolLiquidity)
+          
             for(const _tx of tx){
               console.log(_tx.pool, poolAddress, 'igual?')
               if(
@@ -56,7 +58,7 @@ const PoolPage = () => {
               }
             }
           setTxs(txArr)
-          console.log(txs, poolData, liquidityData, 'data')
+          console.log(txs, poolLiquidity, liquidityData, 'data')
         })
     }, [])
     
@@ -100,7 +102,7 @@ const PoolPage = () => {
                     </Title>
                   </LeftWrapper>             
                   </ColumnWrapper>
-                <DailyVolumeChart chartWidth={600} chartData={liquidityData}/>
+                  <DailyVolumeChart chartWidth={500} chartData={liquidityData} />
                 </RowWrapper>
                 <Typography variant='h6'>Recent transactions</Typography>
                 <TransactionsTable chain={chain} txData={txs} />             

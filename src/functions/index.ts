@@ -9,7 +9,7 @@ export const getTVL = async (from: number, chain: string | undefined): Promise<a
         const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
         let result = await axios.get(`${url}/tvl/${from}`)
         console.log(result.data, 'getTVL')
-        result.data.sort((a: ITVL, b: ITVL) => a.blockNumber - b.blockNumber)
+        result.data.sort((a: ITVL, b: ITVL) => a.block - b.block)
         return result.data
     } catch (error) {
         console.log(error, 'for getTVL')
@@ -63,7 +63,6 @@ export const getFees = async (chain: string | undefined): Promise<IFee[] | any> 
     try {
         const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
         const result = await axios.get(`${url}/fees`)
-        console.log(result.data, 'fees')
         return result.data
     } catch (error) {
         return error
@@ -89,7 +88,6 @@ export const feesGenerated = async (chain: string | undefined): Promise<number> 
     console.log(feesArr, 'feesArr')
         for(const fees of feesArr){
             if(dayjs(fees.time).format('DD') === dayjs(feesArr[feesArr.length - 1].time).format('DD')){
-                console.log(fees.fee, 'fee')
                 totalFee += fees.fee
             }            
         }
@@ -99,7 +97,8 @@ export const feesGenerated = async (chain: string | undefined): Promise<number> 
 
 export const groupDataByDay = (data: ITVL[]): GroupedEntry[] => {
     const groupedData: GroupedData = {};
-  
+    data.sort((a: ITVL, b: ITVL) => { return b.block - a.block})
+
     data.forEach((entry: ITVL) => {
       const dayStart = entry.time
       const dayFormatted = dayjs(dayStart).format('DD');
@@ -139,10 +138,12 @@ export const poolsForToken = (pools: IPoolData[], tokenAddress: string | undefin
     const poolSet = new Set()
     let poolArr: IPoolData[] = []
     for(const pool of pools){
+
         if(
           (pool.token0 === tokenAddress) ||
           (pool.token1 === tokenAddress) &&
-          !poolSet.has(pool)
+          !poolSet.has(pool) &&
+          pool !== undefined
           ){
             poolSet.add(pool)
             poolArr.push(pool)
@@ -253,7 +254,7 @@ export const getExplorerUrl = (chain: string | undefined, hash: string | undefin
 export const removeUnmatchedPools = (pools: IPoolData[], tokenAddress: string | any): IPoolData[] => {
   for(const pool of pools){
     if(![pool.token0, pool.token1].includes(tokenAddress)){
-    const poolIndex = pools.findIndex((item: IPoolData) => item.pool === pool.pool)
+    const poolIndex = pools.indexOf(pool)
     delete pools[poolIndex]
     }
   }

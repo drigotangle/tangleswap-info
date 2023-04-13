@@ -1,7 +1,7 @@
 export interface ITVL {
     time: number | string
     tvl: number
-    blockNumber: number
+    block: number
 }
 
 export interface IToken {

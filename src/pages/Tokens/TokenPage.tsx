@@ -31,18 +31,16 @@ const TokenPage = () => {
     useEffect(() => {
       Promise.all([getLiquidityTx(50, chain), getPools(50, chain), getTokens(chain)])
         .then(([tx, pools, tokens]) => {
-          const tokenIndex = tokens.findIndex((item: IToken) => tokenAddress === item.tokenAddress)
-          removeUnmatchedPools(pools, tokenAddress)
-          const symbol = tokens[tokenIndex].tokenSymbol
-          console.log(tokens[tokenIndex], 'indexToken')
-          setPoolsArr(poolsForToken(pools, tokenAddress))
-          setTxs(txsForToken(tx, symbol))
-          const _poolsToCandle = poolsToCandle(pools, tokenAddress)
-          console.log(_poolsToCandle, '_poolsToCandle')
-          const _candleStickData = getCandlestickData(_poolsToCandle, 15)
-          console.log(_poolsToCandle, _candleStickData, 'veho')
-          setCandleStickData(_candleStickData)
-          console.log(poolsArr, txs, candleStickData, 'candleStickData')     
+          if(![tx, pools, tokens].includes(undefined)){
+            removeUnmatchedPools(pools, tokenAddress)
+            const tokenIndex = tokens.findIndex((item: IToken) => tokenAddress === item.tokenAddress)
+            const symbol = tokens[tokenIndex].tokenSymbol
+            setPoolsArr(pools)
+            setTxs(txsForToken(tx, symbol))
+            const _poolsToCandle = poolsToCandle(pools, tokenAddress)
+            const _candleStickData = getCandlestickData(_poolsToCandle, 15)
+            setCandleStickData(_candleStickData)
+          }  
         })
     }, [])
     
