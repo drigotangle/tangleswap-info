@@ -12,8 +12,8 @@ const poolService = async (limit) => {
             console.log('chamou')
             if(!dataSet.has(data)){
                 await Promise.all([
-                    tokenBalance(data.token0, data.pool), 
-                    tokenBalance(data.token1, data.pool), 
+                    tokenBalance(data.token0, data.poolAddress), 
+                    tokenBalance(data.token1, data.poolAddress), 
                 ]).then(([balance0, balance1]) => {
                     console.log(promise, 'promise')
                     const tvl = data.liquidity[data.liquidity.length - 1].liquidity
@@ -51,7 +51,7 @@ const poolService = async (limit) => {
                         token1: data.token1,
                         balance0: Number(balance0._hex),
                         balance1: Number(balance1._hex),
-                        pool: data.pool,
+                        pool: data.poolAddress,
                         tvl: tvl,
                         price: data.price,
                         liquidity: data.liquidity,

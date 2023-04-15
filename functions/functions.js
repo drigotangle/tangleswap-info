@@ -45,7 +45,7 @@ const queryFee = async () => {
                 docArr.push({
                     fee: data.fee,
                     time: data.time,
-                    poolAddress: data.poolAddress,
+                    poolAddress: data.poolAddressAddress,
                     blockNumber: data.block ?? data.blockNumber
                 })
                 feeSet.add(data)
@@ -79,7 +79,7 @@ const queryLiquidityTransactions = async (limit) => {
                 value: data.value,
                 account: data.account,
                 time: data.time,
-                pool: data.pool,
+                pool: data.poolAddress,
                 blockNumber: data.block ?? data.blockNumber,
                 hash: data.hash
             })
