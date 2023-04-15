@@ -1,12 +1,11 @@
 const Cache = require("node-cache");
-const poolCache = new Cache({ stdTTL: 60 * 30 });
-const tokenCache = new Cache({ stdTTL: 60 * 30 });
-const liquidityTxCache = new Cache({ stdTTL: 60 * 10 });
-const swapTxCache = new Cache({ stdTTL: 60 * 10 });
-const tvlCache = new Cache({ stdTTL: 60 * 10 });
-const feeCache = new Cache({ stdTTL: 60 * 10 });
-const usdPriceCache = new Cache({ stdTTL: 60 * 10 });
-
+const poolCache = new Cache({ stdTTL: 60 });
+const tokenCache = new Cache({ stdTTL: 60 });
+const liquidityTxCache = new Cache({ stdTTL: 60 });
+const swapTxCache = new Cache({ stdTTL: 60 });
+const tvlCache = new Cache({ stdTTL: 60 });
+const feeCache = new Cache({ stdTTL: 60 });
+const usdPriceCache = new Cache({ stdTTL: 60 });
 
 const poolCachedMiddleware = (req, res, next) => {
   try {
