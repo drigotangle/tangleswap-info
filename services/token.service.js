@@ -32,7 +32,7 @@ const tokenService = async () => {
                                     const priceArr = pool.price
                                     const liquidityArr = pool.liquidity
                                     const lastPrice = () => {
-                                        return priceArr[priceArr.length - 1]
+                                        return priceArr[priceArr.length - 1].price
                                     }
                             
                                     const priceChange = () => {
