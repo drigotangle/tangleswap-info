@@ -32,7 +32,7 @@ const getSwapTx = async (limit) => {
 const getTvl = async (limit) => {
     try {
         const result = await queryTVL(limit)
-        result.sort((a, b) => { return b.blockNumber - a.blockNumber })
+        result.sort((a, b) => { return a.blockNumber - b.blockNumber })
         return result
     } catch (error) {
         console.log(error, 'for getLiquidityTx')

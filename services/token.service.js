@@ -1,4 +1,4 @@
-const { getWethPriceAndLiquidity, timeOut, queryPools } = require('../functions/functions')
+const { queryPools } = require('../functions/functions')
 const dayjs = require('dayjs')
 
 
@@ -25,8 +25,13 @@ const tokenService = async () => {
                 }
                 else
                 if(pool.token0 !== WETH_ADDRESS && pool.token0 !== WETH_ADDRESS){
-                    _tokenAddress = pool.token0
-                    _tokenDecimals = pool.decimals0
+                    if(!tokenSet.has(pool.token1)){
+                        _tokenAddress = pool.token0
+                        _tokenDecimals = pool.decimals0
+                    }else{
+                        _tokenAddress = pool.token1
+                        _tokenDecimals = pool.decimals1
+                    }
                 }
                 if(_tokenAddress !== undefined && _tokenDecimals !== undefined){
                                     const priceArr = pool.price

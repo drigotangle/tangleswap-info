@@ -6,8 +6,6 @@ const { MongoClient, ServerApiVersion } = require('mongodb')
 const uri = `mongodb+srv://burgossrodrigo:BeREmhPli0p3qFTq@tangle.hkje2xt.mongodb.net/?retryWrites=true&w=majority`
 const mongoClient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
 
-const POOL_ABI = require('../artifacts/POOLV3.json')
-const FACTORY_ABI = require('../artifacts/FACTORYV3.json')
 const ERC20_ABI = require('../artifacts/ERC20.json')
 
 const WETH_ADDRESS = process.env.WETH_ADDRESS
@@ -129,11 +127,6 @@ const querySwapTransactions = async (limit) => {
     }
 }
 
-const sqrtPriceToPrice = (price) => {
-    const result = (Number(price) ** 2) / (2 ** 192)
-    return result
-}
-
 const queryPools = async (limit) => {
     try {
         const collection = await mongoClient.db("tangle-db-shimmer").collection("pools")
@@ -154,46 +147,6 @@ const queryPools = async (limit) => {
         return poolsArr
     } catch (error) {
         console.log(error, 'for queryPools')
-    }
-}
-
-const getWethPriceAndLiquidity = async (address, decimals) => {
-    const feesArr = [3000, 1000, 10000]
-    let poolsArr = []
-    try {
-            const factory = new ethers.Contract(process.env.FACTORY_ADDRESS, FACTORY_ABI, provider)
-            const tokenSet = new Set()
-            for(let i = 0; i < feesArr.length; i++){
-                const fee = feesArr[i]
-                console.log(address, 'from getWethPriceAndLiquidity')
-                const poolAddress = await factory.getPool(address, WETH_ADDRESS, fee)
-                let wethDecimals = 18
-                if(poolAddress !== ZERO_ADDRESS && !tokenSet.has({tokenAddress: address, fee: fee})){
-                    const poolContract = new ethers.Contract(poolAddress, POOL_ABI, provider)
-                    const wethContract = new ethers.Contract(WETH_ADDRESS, ERC20_ABI, provider)
-                    let wethBalance = await wethContract.balanceOf(poolAddress)
-                    wethBalance = Number(wethBalance._hex) / (10 ** wethDecimals)
-                    const slot0 = await poolContract.slot0()
-                    if(address > WETH_ADDRESS){
-                        [wethDecimals, decimals] = [decimals, wethDecimals]
-                    }
-                    const price = sqrtPriceToPrice(Number(slot0.sqrtPriceX96), decimals, wethDecimals)
-    
-                    poolsArr.push({
-                        poolAddress: poolAddress,
-                        price: price,
-                        wethBalance: wethBalance
-                    })
-
-                    tokenSet.add({tokenAddress: address, fee: fee})
-                }
-            }
-            poolsArr.sort((a, b) => {
-                return b.wethBalance - a.wethBalance
-            })
-            return poolsArr
-    } catch (error) {
-        console.log(error, 'for getWethPriceAndLiquidity')
     }
 }
 
@@ -238,7 +191,6 @@ module.exports = {
     queryLiquidityTransactions,
     querySwapTransactions,
     queryPools,
-    getWethPriceAndLiquidity,
     _tokenName,
     _tokenSymbol,
     timeOut,

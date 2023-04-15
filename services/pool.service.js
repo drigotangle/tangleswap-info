@@ -14,10 +14,8 @@ const poolService = async (limit) => {
                 await Promise.all([
                     tokenBalance(data.token0, data.pool), 
                     tokenBalance(data.token1, data.pool), 
-                ]).then((promise) => {
+                ]).then(([balance0, balance1]) => {
                     console.log(promise, 'promise')
-                    const balance0 = promise[0]
-                    const balance1 = promise[1]
                     const tvl = data.liquidity[data.liquidity.length - 1].liquidity
                     const fee = data.fee
                     const volume24H = () => {
@@ -40,7 +38,7 @@ const poolService = async (limit) => {
                             }
                             else
                             {
-                                volume = volume24H()
+                                volume = isNan(volume24H()) ? 0 : volume24H()
                             }
                         }
                         return volume
