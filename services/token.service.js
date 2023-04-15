@@ -28,20 +28,13 @@ const tokenService = async () => {
                     _tokenAddress = pool.token0
                     _tokenDecimals = pool.decimals0
                 }
-                console.log(_tokenAddress, 'tokenAddress')
                 if(_tokenAddress !== undefined && _tokenDecimals !== undefined){
-                        await Promise.all([getWethPriceAndLiquidity(_tokenAddress, _tokenDecimals), timeOut(interval)]).then((promises) => {
                             console.log(promises, 'promises')
-                            const wethPriceAndLiquidity = promises[0]
                                     const priceArr = pool.price
-                                    const tvlArr = pool.tvl || []
+                                    const tvlArr = pool.liquidity || []
                                     const liquidityArr = pool.liquidity || []
                                     const lastPrice = () => {
-                                        if(wethPriceAndLiquidity?.length > 0){
-                                            const result = wethPriceAndLiquidity[0]?.price ?? 0
-                                            return result
-                                        }
-                                        return 0
+                                        return priceArr[priceArr.length - 1]
                                     }
                             
                                     const priceChange = () => {
@@ -56,12 +49,7 @@ const tokenService = async () => {
                                     }
                             
                                     const TVL = () => {
-                                        if(wethPriceAndLiquidity.length > 0){
-                                            const accBalance = wethPriceAndLiquidity?.reduce((acc, cur) => {
-                                                return acc + cur.wethBalance
-                                            }, 0)
-                                        return accBalance
-                                        }
+                                            return liquidityArr[liquidityArr.length - 1].liquidity
                                     }
                                     
                                     const volume24H = () => {
@@ -92,7 +80,6 @@ const tokenService = async () => {
                                         })
                                         tokenSet.add(_tokenAdddress)
                                     }
-                        })
                 }  
         }
             return tokenArr

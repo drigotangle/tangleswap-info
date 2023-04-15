@@ -7,7 +7,6 @@ const poolService = async (limit) => {
         const result = await queryPools(limit)
         let arr = []
         const dataSet = new Set()
-        const interval = ((result.length * 40 )* 2) * 3
     
         for (const data of result) {
             console.log('chamou')
@@ -15,11 +14,8 @@ const poolService = async (limit) => {
                 await Promise.all([
                     tokenBalance(data.token0, data.pool), 
                     tokenBalance(data.token1, data.pool), 
-                    timeOut(interval)
                 ]).then((promise) => {
                     console.log(promise, 'promise')
-                    const symbol0 = data.symbol0
-                    const symbol1 = data.symbol1
                     const balance0 = promise[0]
                     const balance1 = promise[1]
                     const tvl = data.liquidity[data.liquidity.length - 1].liquidity
@@ -34,6 +30,7 @@ const poolService = async (limit) => {
                         }
                         return volume
                     }
+
                     const volume7D = () => {
                         let volume;
                         for (let i = 0; i < data.liquidity.length; i++) {
