@@ -29,7 +29,6 @@ const tokenService = async () => {
                     _tokenDecimals = pool.decimals0
                 }
                 if(_tokenAddress !== undefined && _tokenDecimals !== undefined){
-                            console.log(promises, 'promises')
                                     const priceArr = pool.price
                                     const liquidityArr = pool.liquidity
                                     const lastPrice = () => {
