@@ -31,8 +31,7 @@ const tokenService = async () => {
                 if(_tokenAddress !== undefined && _tokenDecimals !== undefined){
                             console.log(promises, 'promises')
                                     const priceArr = pool.price
-                                    const tvlArr = pool.liquidity || []
-                                    const liquidityArr = pool.liquidity || []
+                                    const liquidityArr = pool.liquidity
                                     const lastPrice = () => {
                                         return priceArr[priceArr.length - 1]
                                     }
@@ -49,12 +48,12 @@ const tokenService = async () => {
                                     }
                             
                                     const TVL = () => {
-                                            return liquidityArr[liquidityArr.length - 1].liquidity
+                                        return liquidityArr[liquidityArr.length - 1].liquidity
                                     }
                                     
                                     const volume24H = () => {
                                         let volume
-                                        for(let i = 0; i < tvlArr.length; i++){
+                                        for(let i = 0; i < liquidityArr.length; i++){
                                             if(dayjs(liquidityArr[i].time).format('DD') !== dayjs(liquidityArr[liquidityArr.length - 1].time).format('DD')){
                                                 volume = Number(liquidityArr[liquidityArr.length - 1].liquidity) - Number(liquidityArr[i].liquidity)
                                                 break
