@@ -1,6 +1,6 @@
 const Cache = require("node-cache");
 const poolCache = new Cache({ stdTTL: 60 });
-const tokenCache = new Cache({ stdTTL: 60 });
+const tokenCache = new Cache({ stdTTL: 60 * 10 });
 const liquidityTxCache = new Cache({ stdTTL: 60 });
 const swapTxCache = new Cache({ stdTTL: 60 });
 const tvlCache = new Cache({ stdTTL: 60 });
