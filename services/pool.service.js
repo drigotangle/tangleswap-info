@@ -37,7 +37,7 @@ const poolService = async (limit) => {
                             }
                             else
                             {
-                                volume = isNan(volume24H()) ? 0 : volume24H()
+                                volume = isNaN(volume24H()) ? 0 : volume24H()
                             }
                         }
                         return volume
