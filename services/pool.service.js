@@ -15,7 +15,6 @@ const poolService = async (limit) => {
                     tokenBalance(data.token0, data.pool), 
                     tokenBalance(data.token1, data.pool), 
                 ]).then(([balance0, balance1]) => {
-                    console.log(promise, 'promise')
                     const tvl = data.liquidity[data.liquidity.length - 1].liquidity
                     const fee = data.fee
                     const volume24H = () => {
