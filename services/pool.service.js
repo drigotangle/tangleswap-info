@@ -50,7 +50,7 @@ const poolService = async (limit) => {
                         token1: data.token1,
                         balance0: Number(balance0._hex),
                         balance1: Number(balance1._hex),
-                        pool: data.poolAddress,
+                        pool: data.pool,
                         tvl: tvl,
                         price: data.price,
                         liquidity: data.liquidity,
