@@ -170,11 +170,12 @@ const _tokenSymbol = async (address) => {
     }
 }
 
-const tokenBalance = async (address, poolAddress) => {
+const tokenBalance = async (address, poolAddress, decimals) => {
     try {
         const erc20 = new ethers.Contract(address, ERC20_ABI, provider)
         const balance = await erc20.balanceOf(poolAddress)
-        return balance
+        const formatedBalance = Number(balance) / Number(10 ** decimals)
+        return formatedBalance
     } catch (error) {
         console.log(error, 'for tokenBalance')
     }

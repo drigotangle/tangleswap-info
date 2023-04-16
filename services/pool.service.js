@@ -11,12 +11,11 @@ const poolService = async (limit) => {
         for (const data of result) {
             if(!dataSet.has(data)){
                 await Promise.all([
-                    tokenBalance(data.token0, data.pool), 
-                    tokenBalance(data.token1, data.pool), 
+                    tokenBalance(data.token0, data.pool, data.decimals0), 
+                    tokenBalance(data.token1, data.pool, data.decimals1), 
                 ]).then(([balance0, balance1]) => {
                     const tvl = data.liquidity[data.liquidity.length - 1].liquidity
                     const fee = data.fee
-                    console.log(balance0, balance1, 'balance')
                     const volume24H = () => {
                         let volume;
                         for (let i = 0; i < data.liquidity.length; i++) {
