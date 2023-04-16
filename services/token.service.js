@@ -71,7 +71,6 @@ const tokenService = async () => {
                                     const _tokenAdddress = pool.token1 === WETH_ADDRESS && pool.token0 !== WETH_ADDRESS ? pool.token0 : pool.token1
 
                                     if(!tokenSet.has(_tokenAdddress)){
-                                        console.log('chamou')
                                         tokenArr.push({
                                             tokenName: _tokenName,
                                             tokenSymbol: _tokenSymbol,

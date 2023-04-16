@@ -13,7 +13,6 @@ const getFees = async () => {
 const getLiquidityTx = async (limit) => {
     try {
         const result = await queryLiquidityTransactions(limit)
-        console.log(result, 'here')
         return result
     } catch (error) {
         console.log(error, 'for getLiquidityTx')

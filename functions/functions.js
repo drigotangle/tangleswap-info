@@ -86,7 +86,6 @@ const queryLiquidityTransactions = async (limit) => {
             docSet.add(data)
         }                    
         })
-        console.log(docArr)
         return docArr
     } catch (error) {
         console.log(error, 'for getLastTVL')
