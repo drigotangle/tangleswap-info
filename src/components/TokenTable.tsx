@@ -44,7 +44,7 @@ const TokenTable: FC<IProps> = (props) => {
               <StyledTableCell>{token.tokenAddress}</StyledTableCell>
               <StyledTableCell>{Number(token.lastPrice).toFixed(2)}</StyledTableCell>
               <StyledTableCell>{Number((token.priceChange) / 100).toFixed(2)}%</StyledTableCell>
-              <StyledTableCell>{token.volume24H * Number(token.lastPrice)}</StyledTableCell>
+              <StyledTableCell>{isNaN(token.volume24H * Number(token.lastPrice)) ? 0 : token.volume24H * Number(token.lastPrice)}</StyledTableCell>
               <StyledTableCell>{Number(token.TVL?.toFixed(2)) * Number(token.lastPrice) ?? 'N/A'}</StyledTableCell>
             </StyledTableRow>
           ))}
