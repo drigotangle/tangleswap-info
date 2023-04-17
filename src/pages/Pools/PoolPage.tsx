@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useParams } from "react-router-dom"
-import { getLiquidityTx, getPools, groupLiquidityPerDay } from '../../functions'
-import { IPoolData, IPoolLiquidity, ITx } from '../../interfaces'
+import { filterTx, getLiquidityTx, getPools, getSwapTx, groupLiquidityPerDay } from '../../functions'
+import { GroupedEntry, IPoolData, IPoolLiquidity, ITx } from '../../interfaces'
 import styled from "styled-components";
 import { Skeleton, Typography } from "@mui/material";
 import { ColumnWrapper, HomeWrapper, RowWrapper, SkeletonWrapper } from '../../components'
@@ -9,6 +9,7 @@ import { DailyVolumeChart } from '../../components/DailyVolumeChart'
 import Header from '../../components/Header'
 import TransactionsTable from '../../components/TransactionsTable';
 import SubHeader from '../../components/SubHeader';
+import { AppContext } from '../../state';
 
 
 const Title = styled(Typography)`
@@ -36,29 +37,26 @@ const LeftWrapper = styled.div`
 
 const PoolPage = () => {
     const [ poolData, setPoolData ] = useState<IPoolData>()
-    const [ liquidityData, setLiquidityData ] = useState<IPoolLiquidity[]>()
+    const [ liquidityData, setLiquidityData ] = useState<GroupedEntry[]>()
     const [ txs, setTxs ] = useState<ITx[] | undefined>()
     const { poolAddress, chain } = useParams()
+    const { state } = useContext(AppContext)
+    const { usdPrice } = state
     
     useEffect(() => {
-      Promise.all([getLiquidityTx(500, chain),  getPools(500, chain)])
-        .then(([tx, pools]) => {
-          let txArr: ITx[] = []
+      Promise.all([getLiquidityTx(500, chain), getSwapTx(500, chain),  getPools(500, chain)])
+        .then(([liquidityTx, swapTx, pools]) => {
           const index = pools.findIndex((item: IPoolData) => item.pool === poolAddress)
-          setPoolData(pools[index])
-          const poolLiquidity = groupLiquidityPerDay(pools[index].liquidity)
+          const pool = pools[index]
+          setPoolData(pool)
+          console.log(pool, 'poolPage')
+          const poolLiquidity = groupLiquidityPerDay(pool.liquidity)
           setLiquidityData(poolLiquidity)
-          
-            for(const _tx of tx){
-              console.log(_tx.pool, poolAddress, 'igual?')
-              if(
-                _tx.pool === pools[index].pool
-                ){
-                txArr.push(_tx)
-              }
-            }
-          setTxs(txArr)
-          console.log(txs, poolLiquidity, liquidityData, 'data')
+          const _liquidityTx = filterTx(liquidityTx, pool.token0, pool.token1)
+          const _swapTx = filterTx(swapTx, pool.token0, pool.token1)
+          _liquidityTx.concat(_swapTx)
+          setTxs(_liquidityTx)
+          console.log(txs, 'txs')
         })
     }, [])
     
@@ -105,7 +103,7 @@ const PoolPage = () => {
                   <DailyVolumeChart chartWidth={500} chartData={liquidityData} />
                 </RowWrapper>
                 <Typography variant='h6'>Recent transactions</Typography>
-                <TransactionsTable chain={chain} txData={txs} />             
+                <TransactionsTable chain={chain} txData={txs} usdPrice={usdPrice} />             
               </ColumnWrapper>                
 
         }

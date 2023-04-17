@@ -67,6 +67,7 @@ const Home = () => {
         //TVL CHART 
         getTVL(30, chain).then((res) => {
             setTVL(dispatch, undefined)
+            
             setTVL(dispatch, groupDataByDay(res))
         })
 

@@ -1,15 +1,13 @@
 import axios from "axios"
 import dayjs from "dayjs"
-import { CandlestickData, GroupedData, GroupedEntry, IFee, IPoolData, ITVL, ITx, SeriesData } from "../interfaces"
-
-const WETH_ADDRESS = '0x9a0F333908010331769F1B4764Ff2b3a1e965897'
+import { CandlestickData, GroupedData, GroupedEntry, IFee, IPoolData, IPoolLiquidity, ITVL, ITx, SeriesData } from "../interfaces"
 
 export const getTVL = async (from: number, chain: string | undefined): Promise<any | ITVL[]> => {
     try {
         const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
         let result = await axios.get(`${url}/tvl/${from}`)
+        result.data.sort((a: ITVL, b: ITVL) => a.blockNumber - b.blockNumber)
         console.log(result.data, 'getTVL')
-        result.data.sort((a: ITVL, b: ITVL) => a.block - b.block)
         return result.data
     } catch (error) {
         console.log(error, 'for getTVL')
@@ -97,8 +95,7 @@ export const feesGenerated = async (chain: string | undefined): Promise<number> 
 
 export const groupDataByDay = (data: ITVL[]): GroupedEntry[] => {
     const groupedData: GroupedData = {};
-    data.sort((a: ITVL, b: ITVL) => { return b.block - a.block})
-
+    data.sort((a: ITVL, b: ITVL) => { return a.blockNumber - b.blockNumber });
     data.forEach((entry: ITVL) => {
       const dayStart = entry.time
       const dayFormatted = dayjs(dayStart).format('DD');
@@ -113,26 +110,22 @@ export const groupDataByDay = (data: ITVL[]): GroupedEntry[] => {
     return Object.keys(groupedData).map((day: string) => ({ day, tvl: groupedData[day] }));
   }
 
-  export const groupLiquidityPerDay = (data: {time: string, liquidity: number, block: number}[]): {time: number, liquidity: number, block: number}[] => {
-    const result: {time: number, liquidity: number, block: number}[] = [];
+  export const groupLiquidityPerDay = (data: IPoolLiquidity[]): GroupedEntry[] => {
+    const groupedData: GroupedData = {};
   
-    data.forEach(({ time, liquidity, block }) => {
-      const day = Number(dayjs(time).format('DD'));
-      const existingEntry = result.find(entry => entry.time === day);
+    data.forEach((entry: IPoolLiquidity) => {
+      const dayStart = dayjs(entry.time).format('DD');
+      const dayFormatted = dayjs(dayStart).format('DD');
   
-      if (existingEntry) {
-        existingEntry.liquidity += liquidity;
-      } else {
-        result.push({
-          time: day,
-          liquidity,
-          block
-        });
+      if (!groupedData[dayFormatted]) {
+        groupedData[dayFormatted] = 0;
       }
+  
+      groupedData[dayFormatted] += entry.liquidity;
     });
   
-    return result;
-  }
+    return Object.keys(groupedData).map((day: string) => ({ day, tvl: groupedData[day] }));
+  };
   
 export const poolsForToken = (pools: IPoolData[], tokenAddress: string | undefined): IPoolData[] => {
     const poolSet = new Set()
@@ -168,63 +161,67 @@ export const txsForToken = (txs: ITx[], symbol: string): ITx[] => {
     return txArr
 }
 
-export const getCandlestickData = (series: {time: string, price: number}[], resolution: number): CandlestickData[] => {
-  const candlestickData: CandlestickData[] = [];
-  let currentCandle: CandlestickData | null = null;
-  let nextCandleTime: number = 0;
-  console.log(series, 'series')
-  for (let i = 0; i < series.length; i++) {
-    const data = series[i];
-    const time = new Date(data.time).getTime();
-    const price = data.price;
-    const resolutionMillis = resolution * 60 * 1000;
+export const getCandlestickData = (data: SeriesData[]): CandlestickData[] => {
+  const ohlcData: CandlestickData[] = []
+  let currentOHLC: CandlestickData | any = null
+  console.log(data, 'data')
+  // Sort the data by timestamp
+  data.sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime())
 
-    if (!currentCandle) {
-      const start = Math.floor(time / resolutionMillis) * resolutionMillis;
-      const end = start + resolutionMillis;
-      nextCandleTime = end;
-      currentCandle = {
-        time: new Date(start).toISOString(),
-        open: price,
-        high: price,
-        low: price,
-        close: price
-      };
-    } else {
-      if (time >= nextCandleTime) {
-        candlestickData.push(currentCandle);
-        currentCandle = null;
-        i--;
-        continue;
+  // Loop through each data point and calculate the OHLC values for the time interval
+  for (let i = 0; i < data.length; i++) {
+    const currentData = data[i]
+    const timestamp = new Date(currentData.time).getTime()
+
+    // If the current data point has a price value, update the OHLC values
+    if (currentData.price) {
+      if (!currentOHLC) {
+        // If there is no current OHLC data, start a new time interval
+        currentOHLC = {
+          open: currentData.price,
+          high: currentData.price,
+          low: currentData.price,
+          close: currentData.price,
+          timestamp
+        }
+      } else if (timestamp - currentOHLC.timestamp >= 60000) {
+        // If the current data point is outside the current time interval, push the current OHLC data and start a new time interval
+        ohlcData.push(currentOHLC)
+        currentOHLC = {
+          open: currentData.price,
+          high: currentData.price,
+          low: currentData.price,
+          close: currentData.price,
+          timestamp
+        }
       } else {
-        if (price > currentCandle.high) {
-          currentCandle.high = price;
-        }
-        if (price < currentCandle.low) {
-          currentCandle.low = price;
-        }
-        currentCandle.close = price;
+        // Update the current OHLC data for the time interval
+        currentOHLC.high = Math.max(currentOHLC.high, currentData.price)
+        currentOHLC.low = Math.min(currentOHLC.low, currentData.price)
+        currentOHLC.close = currentData.price
       }
     }
   }
 
-  if (currentCandle) {
-    candlestickData.push(currentCandle);
+  // Push the final OHLC data point
+  if (currentOHLC) {
+    ohlcData.push(currentOHLC)
   }
-  console.log(candlestickData, 'candlestickData')
-  return candlestickData;
+  console.log(ohlcData, 'ohlcData')
+  return ohlcData
 }
 
 
-export const poolsToCandle = (pools: IPoolData[], tokenAddress: string | undefined): SeriesData[] => {
+export const poolsToCandle = (pools: IPoolData[] | any, tokenAddress: string | undefined): SeriesData[] => {
     let poolsArr: IPoolData[] = []
     for(const pool of pools) {
-      if(tokenAddress === pool.token1 || tokenAddress === pool.token0){
+    console.log(pool, 'poolsToCandle')
+      if(tokenAddress === pool?.token1 || tokenAddress === pool?.token0){
         console.log('chamou:', pool)
         poolsArr.push(pool)
       }
     }
-    poolsArr.sort((a: IPoolData, b: IPoolData) => Number(b.liquidity[b.liquidity.length - 1]?.liquidity) - Number(a.liquidity[b.liquidity.length - 1].liquidity))
+    poolsArr.sort((a: IPoolData, b: IPoolData) => Number(b.liquidity[b.liquidity.length - 1]?.liquidity) - Number(a.liquidity[b.liquidity.length - 1]?.liquidity))
     const result = poolsArr[0].price
     return result
 }
@@ -234,7 +231,6 @@ export const getUsdPrice = async (chain: string) => {
     const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
     const data = await axios.get(`${url}/USDPrice`)
     return data.data
-
   } catch (error) {
     console.log(error, 'for getUsdPrice')
   }
@@ -252,13 +248,35 @@ export const getExplorerUrl = (chain: string | undefined, hash: string | undefin
 }
 
 export const removeUnmatchedPools = (pools: IPoolData[], tokenAddress: string | any): IPoolData[] => {
+  const formattedArr: IPoolData[] = []
+  const set = new Set()
   for(const pool of pools){
-    if(![pool.token0, pool.token1].includes(tokenAddress)){
-    const poolIndex = pools.indexOf(pool)
-    delete pools[poolIndex]
+    if([pool.token0, pool.token1].includes(tokenAddress) && !set.has(pool)){
+      formattedArr.push(pool)
+      set.add(pool)
     }
   }
-  return pools
+  return formattedArr
+}
+
+export const filterTx = (txs: ITx[], token0: string, token1: string) => {
+  let txArr: ITx[] = []
+  const set = new Set()
+  for(const tx of txs){
+    if(
+      [tx.token0, tx.token1].includes(token0) &&
+      [tx.token0, tx.token1].includes(token1) &&
+      !set.has(tx)
+      ){
+        txArr.push(tx)
+        set.add(tx)
+    }
+  }
+  return txArr
+}
+
+export const tradingVolume24h = (swaps: ITx) => {
+  
 }
 
 

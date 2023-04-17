@@ -1,7 +1,7 @@
 export interface ITVL {
     time: number | string
     tvl: number
-    block: number
+    blockNumber: number
 }
 
 export interface IToken {
@@ -87,7 +87,7 @@ export interface IToken {
   }
   
   export interface SeriesData {
-    time: string;
+    time: Date;
     price: number;
     blockNumber: number
   }
