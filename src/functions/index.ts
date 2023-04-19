@@ -221,7 +221,7 @@ export const poolsToCandle = (pools: IPoolData[] | any, tokenAddress: string | u
         poolsArr.push(pool)
       }
     }
-    poolsArr.sort((a: IPoolData, b: IPoolData) => Number(b.liquidity[b.liquidity.length - 1]?.liquidity) - Number(a.liquidity[b.liquidity.length - 1]?.liquidity))
+    poolsArr.sort((a: IPoolData, b: IPoolData) => { return a.tvl - b.tvl})
     const result = poolsArr[0].price
     return result
 }
@@ -256,6 +256,7 @@ export const removeUnmatchedPools = (pools: IPoolData[], tokenAddress: string | 
       set.add(pool)
     }
   }
+  formattedArr.sort((a: IPoolData, b: IPoolData) => { return a.liquidity[a.liquidity.length - 1].liquidity - b.liquidity[b.liquidity.length - 1].liquidity })
   return formattedArr
 }
 
@@ -275,8 +276,44 @@ export const filterTx = (txs: ITx[], token0: string, token1: string) => {
   return txArr
 }
 
-export const tradingVolume24h = (swaps: ITx) => {
-  
+export const tradingVolume24h = (swaps: ITx[], tokenAddress: string | any): GroupedEntry[] => {
+
+  let formatedSwaps: GroupedEntry[] = []
+  const amount = (tokenAddress0: string, amount0: number, amount1: number): number => { return tokenAddress === tokenAddress0 ? amount0 : amount1 }
+  let entryTime = dayjs(swaps[0].time).format('DD')
+
+  formatedSwaps[0] = {
+    day: entryTime,
+    tvl:  amount(swaps[0].token0, swaps[0].amount0, swaps[0].amount1)
+  } 
+
+  for(const swap of swaps){
+    if(dayjs(swap.time).format('DD') === entryTime){
+      const index = formatedSwaps.findIndex((item) => item.day === entryTime)
+      formatedSwaps[index].tvl += amount(swap.token0, swap.amount0, swap.amount1)
+    }else{
+      formatedSwaps.push({
+        day: dayjs(swap.time).format('DD'),
+        tvl: amount(swap.token0, swap.amount0, swap.amount1)
+      })
+      entryTime = dayjs(swap.time).format('DD')
+    }
+  }
+
+  return formatedSwaps
+
+}
+
+export const volume7D = (groupedEntry: GroupedEntry[]): number => {
+  let volume7D = 0
+  for(const data of groupedEntry){
+    if(groupedEntry.indexOf(data) <= 7){
+      console.log(volume7D, 'volume7D')
+      volume7D += data.tvl
+    }
+    break
+  }
+  return volume7D
 }
 
 

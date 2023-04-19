@@ -79,7 +79,7 @@ export interface IToken {
   }
 
   export interface CandlestickData {
-    time: string;
+    timestamp: string;
     open: number;
     high: number;
     low: number;

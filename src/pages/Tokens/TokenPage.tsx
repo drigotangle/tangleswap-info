@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import { useParams } from "react-router-dom"
-import { getCandlestickData, getLiquidityTx, getPools, getSwapTx, getTokens, poolsForToken, poolsToCandle, removeUnmatchedPools, txsForToken } from '../../functions'
-import { CandlestickData, IPoolData, IToken, ITx } from '../../interfaces'
+import { getCandlestickData, getLiquidityTx, getPools, getSwapTx, getTokens, volume7D, poolsToCandle, removeUnmatchedPools, tradingVolume24h, txsForToken } from '../../functions'
+import { CandlestickData, GroupedData, GroupedEntry, IPoolData, IToken, ITx } from '../../interfaces'
 import styled from "styled-components";
 import { Skeleton, Typography } from "@mui/material";
 import { ColumnWrapper, HomeWrapper, RowWrapper, SkeletonWrapper } from '../../components'
@@ -22,6 +22,8 @@ const LeftWrapper = styled.div`
 const TokenPage = () => {
     const [ txs, setTxs ] = useState<ITx[]>()
     const [ token, setToken ] = useState<IToken>()
+    const [ _tradingVolume24h, _setTradingVolume24h ] = useState<number>()
+    const [ tokenVolume7D, setTokenVolume7D ] = useState<number>()
     const [ poolsArr, setPoolsArr ] = useState<IPoolData[]>([])
     const [ candleStickData, setCandleStickData ] = useState<CandlestickData[] | any>([])
     const { tokenAddress, chain } = useParams()
@@ -45,6 +47,10 @@ const TokenPage = () => {
           const _poolsToCandle = poolsToCandle(verifyedPool, tokenAddress)
           const _candleStickData = getCandlestickData(_poolsToCandle)
           setCandleStickData(_candleStickData)
+          const trandingVolume = tradingVolume24h(_swapTxs, tokenAddress)
+          _setTradingVolume24h(trandingVolume[trandingVolume.length - 1].tvl * verifyedPool[0].price[verifyedPool[0].price.length - 1].price * usdPrice)
+          const _volume7D: number = volume7D(trandingVolume) * verifyedPool[0].price[verifyedPool[0].price.length - 1].price * usdPrice
+          setTokenVolume7D(_volume7D)
         }
       )
     }, [])
@@ -78,16 +84,14 @@ const TokenPage = () => {
                   <ColumnWrapper>
                   <LeftWrapper>
                   <>
-                Tvl: ${(Number(token?.TVL ?? 0) * usdPrice).toFixed(4)}<br />
-                24h trading volume: {}<br />
-                7d trading volume: {}<br />
-
-              </>
+                    Tvl: ${(Number(token?.TVL ?? 0) * usdPrice).toFixed(4)}<br />
+                    24h trading volume: {tokenVolume7D}<br />
+                    7d trading volume: {tokenVolume7D}<br />
+                  </>
                   </LeftWrapper>             
                   </ColumnWrapper>
                 </RowWrapper>
-                <CandleChart data={candleStickData} />
-                <Typography variant='h6'>Pools using</Typography>
+                {candleStickData.length > 0 ? <CandleChart props={candleStickData} /> : null }
                 <PoolsTable pooList={poolsArr} usdPrice={usdPrice} chain={chain} />
                 <Typography variant='h6'>Recent transactions</Typography>
                 <TransactionsTable chain={chain} txData={txs} usdPrice={usdPrice}  />          

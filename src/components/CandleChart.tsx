@@ -1,9 +1,10 @@
 import { ApexOptions } from "apexcharts";
+import dayjs from "dayjs";
 import React from "react";
-import Chart from "react-apexcharts";
+import ReactApexChart from "react-apexcharts";
 
 interface OhlcData {
-  time: string;
+  timestamp: string;
   open: number;
   high: number;
   low: number;
@@ -11,23 +12,34 @@ interface OhlcData {
 }
 
 interface Props {
-  data: OhlcData[];
+  props: OhlcData[];
 }
 
-const CandleChart: React.FC<Props> = ({ data }) => {
-  console.log(data)
-const options: ApexOptions = {
+const CandleChart: React.FC<Props> = ({ props }) => {
+  console.log(
+    JSON.stringify(props.map((d) => ({
+      x: dayjs(d.timestamp).format('DD-MM'),
+      y: [d.open, d.high, d.low, d.close]
+    }))),
+    'data from the chart'
+  )
+  if (!props || props.length === 0) {
+    return <div>No data available</div>;
+  }
+const options: any = {
   chart: {
-    type: "candlestick",
-    height: 350,
-    id: "ohlc-chart",
-    toolbar: {
-      autoSelected: "zoom",
-      show: false
-    },
-    zoom: {
-      enabled: false
+    type: 'candlestick',
+    height: 350
+  },
+  candlestick: {
+    colors: {
+      upward: '#3C90EB',
+      downward: '#DF7D46'
     }
+  },
+  title: {
+    text: 'CandleStick Chart',
+    align: 'left'
   },
   xaxis: {
     type: 'datetime'
@@ -37,24 +49,23 @@ const options: ApexOptions = {
       enabled: true
     }
   },
-  plotOptions: {
-    candlestick: {
-      colors: {
-        upward: "#4CAF50",
-        downward: "#F44336"
-      }
+  theme: {
+    monochrome: {
+      enabled: true,
+      color: '#255aee',
+      shadeTo: 'light',
+      shadeIntensity: 0.65
     }
-  },
-  series: [
-    {
-      data: data.map((d) => ({
-        x: new Date(d.time).getTime(),
-        y: [d.open, d.high, d.low, d.close]
-      }))
-    }
-  ]
-};
-return data.length > 0 ? <Chart options={options} /> : <></>
+  }
+}
+
+const series = [{
+  data: props.map((d) => ({
+    x: new Date(d.timestamp),
+    y: [d.open, d.high, d.low, d.close]
+  }))
+}]
+return <ReactApexChart options={options} series={series} type="candlestick" />;
 };
 
 export default CandleChart;
