@@ -16,7 +16,7 @@ const TokenTable: FC<IProps> = (props) => {
   const { tokenList } = props
   const navigate = useNavigate()
   
-  const { chain } = state   
+  const { chain, usdPrice } = state   
 
   return (<ChartWrapper>
     {
@@ -42,10 +42,10 @@ const TokenTable: FC<IProps> = (props) => {
             <StyledTableRow key={token.tokenAddress}  onClick={() => navigate(`/${chain}/Tokens/${token.tokenAddress}`)}>
               <StyledTableCell>{token.tokenName}</StyledTableCell>
               <StyledTableCell>{token.tokenAddress}</StyledTableCell>
-              <StyledTableCell>{Number(token.lastPrice).toFixed(2)}</StyledTableCell>
+              <StyledTableCell>${Number(Number(token.lastPrice) * usdPrice).toFixed(2)}</StyledTableCell>
               <StyledTableCell>{isNaN(Number(token.priceChange / 100)) ? 0 : Number(token.priceChange / 100)}%</StyledTableCell>
-              <StyledTableCell>{isNaN(token.volume24H * Number(token.lastPrice)) ? 0 : token.volume24H * Number(token.lastPrice)}</StyledTableCell>
-              <StyledTableCell>{Number(token.TVL?.toFixed(2)) * Number(token.lastPrice) ?? 'N/A'}</StyledTableCell>
+              <StyledTableCell>${isNaN(token.volume24H * Number(token.lastPrice)) ? 0 : token.volume24H * Number(token.lastPrice) * usdPrice}</StyledTableCell>
+              <StyledTableCell>${(Number(token.TVL?.toFixed(2)) * Number(token.lastPrice)) * usdPrice ?? 'N/A'}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
