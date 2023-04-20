@@ -44,8 +44,8 @@ const PoolDataTable: FC<IProps> = (props) => {
           {pooList?.map((row: IPoolData) => (
             <StyledTableRow onClick={_ => navigate(`/${chain}/Pools/${row.pool}`)} key={`${row.symbol0}-${row.symbol1}`}>
               <StyledTableCell>{row.symbol0}/{row.symbol1}{" "}{row.fee / 10000}%</StyledTableCell>
-              <StyledTableCell>{row.tvl * (usdPrice ?? 1)}</StyledTableCell>
-              <StyledTableCell>{row.volume24H * (usdPrice ?? 1)}</StyledTableCell>
+              <StyledTableCell>${row.tvl * (usdPrice ?? 1)}</StyledTableCell>
+              <StyledTableCell>${row.volume24H * (usdPrice ?? 1)}</StyledTableCell>
               <StyledTableCell>{row.volume7D}</StyledTableCell> 
             </StyledTableRow>
           ))}
