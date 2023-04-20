@@ -46,7 +46,7 @@ const PoolDataTable: FC<IProps> = (props) => {
               <StyledTableCell>{row.symbol0}/{row.symbol1}{" "}{row.fee / 10000}%</StyledTableCell>
               <StyledTableCell>${row.tvl * (usdPrice ?? 1)}</StyledTableCell>
               <StyledTableCell>${row.volume24H * (usdPrice ?? 1)}</StyledTableCell>
-              <StyledTableCell>{row.volume7D}</StyledTableCell> 
+              <StyledTableCell>${row.volume7D * usdPrice}</StyledTableCell> 
             </StyledTableRow>
           ))}
         </TableBody>
