@@ -11,7 +11,6 @@ const tokenService = async () => {
 
         let tokenArr = []
         for (const pool of poolRes) {
-            console.log(pool.pool, 'pool')
             if (tokenSet.has(pool.token0)) {
                 const swaps = await getSwapTx(500)
                 swaps.filter((entry) => entry.pool === pool.pool)
@@ -25,7 +24,7 @@ const tokenService = async () => {
                 let tradingVolume24h
                 let tradingVolume7d
                 indexedToken.price < _lastPrice ? indexedToken.price = _lastPrice : indexedToken.price
-                indexedToken.tvl += liquidityArr[liquidityArr.length - 1].liquidity
+                indexedToken.TVL += liquidityArr[liquidityArr.length - 1].liquidity
                 for (let i = 0; i < liquidityArr.length; i++) {
                     const daysDifference = getDaysDifference(liquidityArr[liquidityArr.length - 1].liquidity, liquidityArr[i].time)
                     if (daysDifference === 1) {
@@ -127,17 +126,6 @@ const tokenService = async () => {
                 }
 
                 tokenSet.add(tokenAddress)
-                console.log(
-                    'tokenName:', tokenName,
-                    'tokenSymbol:', tokenSymbol,
-                    'tokenAddress:', tokenAddress,
-                    'lastPrice:', lastPrice(),
-                    'priceChange:', priceChange(),
-                    'volume24H:', volume24h(),
-                    'tradingVolume24h:', tradingVolume24h(),
-                    'tradingVolume7D:', tradingVolume7D(),
-                    'TVL:', TVL()
-                )
                 tokenArr.push({
                     tokenName: tokenName,
                     tokenSymbol: tokenSymbol,
@@ -166,7 +154,9 @@ const tokenService = async () => {
                 let tradingVolume24h
                 let tradingVolume7d
                 indexedToken.price < _lastPrice ? indexedToken.price = _lastPrice : indexedToken.price
-                indexedToken.tvl += liquidityArr[liquidityArr.length - 1].liquidity
+                console.log(indexedToken.TVL, 'prev')
+                indexedToken.TVL += liquidityArr[liquidityArr.length - 1].liquidity
+                console.log(indexedToken.TVL, 'curr')
                 for (let i = 0; i < liquidityArr.length; i++) {
                     const daysDifference = getDaysDifference(liquidityArr[liquidityArr.length - 1].time, liquidityArr[i].time)
                     if (daysDifference === 1) {
@@ -200,7 +190,7 @@ const tokenService = async () => {
                         break
                     }
                 }
-                indexedToken.tradingVolume24h += tradingVolume7d
+                indexedToken.tradingVolume7d += tradingVolume7d
 
             } else {
                 const tokenSymbol = pool.symbol1
