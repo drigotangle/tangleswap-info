@@ -17,7 +17,7 @@ const poolService = async (limit) => {
                 const volume24H = () => {
                     let volume = 0;
                     for (let i = 0; i < liquidityArr.length; i++) {
-                        volume += Number(liquidityArr[liquidityArr.length - 1].liquidity) - Number(liquidityArr[i].liquidity)
+                        volume += Number(liquidityArr[i].liquidity)
                         if (getDaysDifference(liquidityArr[liquidityArr.length - 1].liquidity, liquidityArr[i].time) === 1) {
                             break
                         }
@@ -28,7 +28,7 @@ const poolService = async (limit) => {
                 const volume7D = () => {
                     let volume = 0;
                     for (let i = 0; i < liquidityArr.length; i++) {
-                        volume += Number(liquidityArr[liquidityArr.length - 1].liquidity) - Number(liquidityArr[i].liquidity)
+                        volume += Number(liquidityArr[i].liquidity)
                         if (getDaysDifference(liquidityArr[liquidityArr.length - 1].liquidity, liquidityArr[i].time) === 7) {
                             break
                         }
