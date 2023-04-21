@@ -16,9 +16,9 @@ const poolService = async (limit) => {
                 const fee = pool.fee
                 const volume24H = () => {
                     let volume = 0;
-                    for (let i = 0; i < liquidityArr.length; i++) {
-                        volume += Number(liquidityArr[i].liquidity)
-                        if (getDaysDifference(liquidityArr[liquidityArr.length - 1].liquidity, liquidityArr[i].time) === 1) {
+                    for (const liquidity of liquidityArr) {
+                        volume += Number(liquidity.liquidity)
+                        if (getDaysDifference(liquidityArr[liquidityArr.length - 1].time, liquidity.liquidity) === 1) {
                             break
                         }
                     }
@@ -27,9 +27,9 @@ const poolService = async (limit) => {
 
                 const volume7D = () => {
                     let volume = 0;
-                    for (let i = 0; i < liquidityArr.length; i++) {
-                        volume += Number(liquidityArr[i].liquidity)
-                        if (getDaysDifference(liquidityArr[liquidityArr.length - 1].liquidity, liquidityArr[i].time) === 7) {
+                    for (const liquidity of liquidityArr) {
+                        volume += Number(liquidity.liquidity)
+                        if (getDaysDifference(liquidityArr[liquidityArr.length - 1].time, liquidity.liquidity) === 7) {
                             break
                         }
                     }
@@ -54,10 +54,10 @@ const poolService = async (limit) => {
                 })
             }
         }
-return arr
+        return arr
     } catch (error) {
-    console.log(error, 'for pool service')
-}
+        console.log(error, 'for pool service')
+    }
 }
 
 
