@@ -24,7 +24,7 @@ const tokenService = async () => {
                 let tradingVolume24h
                 let tradingVolume7d
                 indexedToken.price < _lastPrice ? indexedToken.price = _lastPrice : indexedToken.price
-                indexedToken.TVL += liquidityArr[liquidityArr.length - 1].liquidity
+                indexedToken.TVL = liquidityArr[liquidityArr.length - 1].liquidity + indexedToken.TVL
                 for (let i = 0; i < liquidityArr.length; i++) {
                     const daysDifference = getDaysDifference(liquidityArr[liquidityArr.length - 1].liquidity, liquidityArr[i].time)
                     if (daysDifference === 1) {
@@ -154,9 +154,7 @@ const tokenService = async () => {
                 let tradingVolume24h
                 let tradingVolume7d
                 indexedToken.price < _lastPrice ? indexedToken.price = _lastPrice : indexedToken.price
-                console.log(indexedToken.TVL, 'prev')
                 indexedToken.TVL += liquidityArr[liquidityArr.length - 1].liquidity
-                console.log(indexedToken.TVL, 'curr')
                 for (let i = 0; i < liquidityArr.length; i++) {
                     const daysDifference = getDaysDifference(liquidityArr[liquidityArr.length - 1].time, liquidityArr[i].time)
                     if (daysDifference === 1) {
