@@ -1,70 +1,63 @@
-const { queryPools, getDaysDifference, tokenBalance} = require('../functions/functions')
+const { queryPools, getDaysDifference, tokenBalance } = require('../functions/functions')
 const dayjs = require('dayjs')
 
 
 const poolService = async (limit) => {
     try {
-        const result = await queryPools(limit)
+        const pools = await queryPools(limit)
         let arr = []
-        const dataSet = new Set()
-    
-        for (const data of result) {
-            if(!dataSet.has(data)){
-                await Promise.all([
-                    tokenBalance(data.token0, data.pool, data.decimals0), 
-                    tokenBalance(data.token1, data.pool, data.decimals1), 
-                ]).then(([balance0, balance1]) => {
-                    const tvl = data.liquidity[data.liquidity.length - 1].liquidity
-                    const fee = data.fee
-                    const volume24H = () => {
-                        let volume;
-                        for (let i = 0; i < data.liquidity.length; i++) {
-                            if(dayjs(data.liquidity[i].time).format('DD') !== dayjs(data.liquidity[data.liquidity.length - 1].liquidity).format('DD')){
-                                volume = Number(data.liquidity[data.liquidity.length - 1].liquidity) - Number(data.liquidity[i].liquidity)
-                                break
-                            }
-                        }
-                        return volume
-                    }
+        const poolSet = new Set()
 
-                    const volume7D = () => {
-                        let volume;
-                        for (let i = 0; i < data.liquidity.length; i++) {
-                            if(getDaysDifference(data.liquidity[data.liquidity.length - 1].liquidity, data.liquidity[i].time) === 7){
-                                volume = Number(liquidity[liquidity.length - 1].liquidity) - Number(liquidity[i].liquidity)
-                                break
-                            }
-                            else
-                            {
-                                volume = volume24H()
-                            }
+        for (const pool of pools) {
+            if (!poolSet.has(pool)) {
+                const liquidityArr = pool.liquidity
+                const [balance0, balance1] = await Promise.all([tokenBalance(pool.token0, pool.pool, pool.decimals0), tokenBalance(pool.token1, pool.pool, pool.decimals1)])
+                const tvl = liquidityArr[liquidityArr.length - 1].liquidity
+                const fee = pool.fee
+                const volume24H = () => {
+                    let volume = 0;
+                    for (let i = 0; i < liquidityArr.length; i++) {
+                        volume += Number(liquidityArr[liquidityArr.length - 1].liquidity) - Number(liquidityArr[i].liquidity)
+                        if (getDaysDifference(liquidityArr[liquidityArr.length - 1].liquidity, liquidityArr[i].time) === 1) {
+                            break
                         }
-                        return volume
                     }
-                    
-                    dataSet.add(data)
-                    arr.push({
-                        symbol0: data.symbol0,
-                        symbol1: data.symbol1,
-                        token0: data.token0,
-                        token1: data.token1,
-                        balance0: Number(balance0),
-                        balance1: Number(balance1),
-                        pool: data.pool,
-                        tvl: tvl,
-                        price: data.price,
-                        liquidity: data.liquidity,
-                        volume24H: volume24H(),
-                        volume7D: volume7D(),
-                        fee: fee
-                    })
+                    return volume
+                }
+
+                const volume7D = () => {
+                    let volume = 0;
+                    for (let i = 0; i < liquidityArr.length; i++) {
+                        volume += Number(liquidityArr[liquidityArr.length - 1].liquidity) - Number(liquidityArr[i].liquidity)
+                        if (getDaysDifference(liquidityArr[liquidityArr.length - 1].liquidity, liquidityArr[i].time) === 7) {
+                            break
+                        }
+                    }
+                    return volume
+                }
+
+                poolSet.add(pool)
+                arr.push({
+                    symbol0: pool.symbol0,
+                    symbol1: pool.symbol1,
+                    token0: pool.token0,
+                    token1: pool.token1,
+                    balance0: Number(balance0),
+                    balance1: Number(balance1),
+                    pool: pool.pool,
+                    tvl: tvl,
+                    price: pool.price,
+                    liquidity: liquidityArr,
+                    volume24H: volume24H(),
+                    volume7D: volume7D(),
+                    fee: fee
                 })
             }
         }
-        return arr
+return arr
     } catch (error) {
-        console.log(error, 'for pool service')
-    }
+    console.log(error, 'for pool service')
+}
 }
 
 

@@ -23,6 +23,7 @@ const tokenService = async () => {
                 let volume7d
                 let tradingVolume24h
                 let tradingVolume7d
+                console.log(liquidityArr[liquidityArr.length - 1].liquidity, 'for:', pool.pool)
                 indexedToken.price < _lastPrice ? indexedToken.price = _lastPrice : indexedToken.price
                 indexedToken.TVL = liquidityArr[liquidityArr.length - 1].liquidity + indexedToken.TVL
                 for (let i = 0; i < liquidityArr.length; i++) {
