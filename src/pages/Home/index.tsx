@@ -1,7 +1,7 @@
 import { Typography, Container, Grid, Box } from '@mui/material'
 import { useContext, useEffect } from 'react'
 import styled from 'styled-components'
-import { ColumnWrapper, RowWrapper } from '../../components'
+import { ColumnWrapper, GlassPanelWrapper, RowWrapper } from '../../components'
 import { DailyVolumeChart } from '../../components/DailyVolumeChart'
 import Header from '../../components/Header'
 import HomeGeneral from '../../components/HomeGeneral'
@@ -14,6 +14,7 @@ import { getLiquidityTx, getPools, getSwapTx, getTokens, getTVL, groupDataByDay 
 import { IPoolData, IToken, ITVL, ITx } from '../../interfaces'
 import { AppContext } from '../../state'
 import { setLiquidtyBarData, setPoolData, setTokenData, setTVL, setTxData } from '../../state/Actions'
+import Loading from '../../components/Loading'
 
 const HomeWrapper = styled.div`
     display: flex;
@@ -26,7 +27,7 @@ const HomeWrapper = styled.div`
 const Home = () => {
 
     const { dispatch, state } = useContext(AppContext)
-    const { chain, usdPrice } = state
+    const { chain, usdPrice, tvl, tokenData, txData, poolData, barChart } = state
 
     useEffect(() => {
 
@@ -72,6 +73,22 @@ const Home = () => {
         })
 
     }, [state.chain])
+
+    if (
+        !chain ||
+        !tvl ||
+        !usdPrice ||
+        !tokenData ||
+        !poolData ||
+        !txData) {
+        return (<>
+            <SubHeader />
+            <Header />
+            <Loading />
+        </>)
+    }
+
+
     return (
         <>
             <SubHeader />
@@ -80,14 +97,20 @@ const Home = () => {
                 <Box mt={4} mb={4}>
                     <Typography variant="h4">TangleSwap general</Typography>
                 </Box>
-                <Grid container spacing={4}>
+                <Grid container spacing={3}>
                     <Grid item xs={12} sm={6}>
-                        <Typography variant="h6">TVL</Typography>
-                        <TVLChart chartWidth={500} chartData={state.tvl} />
+                        <GlassPanelWrapper>
+                            <Typography variant="h6">TVL</Typography>
+                            <Typography variant="h3">{Number(tvl[tvl.length - 1]?.tvl * usdPrice).toFixed(2)}</Typography>
+                            <TVLChart chartWidth={500} chartData={state.tvl} />
+                        </GlassPanelWrapper>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <Typography variant="h6">Volume 24h</Typography>
-                        <DailyVolumeChart chartWidth={500} chartData={state.barChart} />
+                        <GlassPanelWrapper>
+                            <Typography variant="h6">Volume 24h</Typography>
+                            <Typography variant="h3">${Number(barChart[barChart?.length - 1]?.tvl * usdPrice).toFixed(2)}</Typography>
+                            <DailyVolumeChart chartWidth={500} chartData={state.barChart} />
+                        </GlassPanelWrapper>
                     </Grid>
                 </Grid>
                 <Box mt={4}>

@@ -8,7 +8,7 @@ import styled from 'styled-components'
 
 interface IChart {
     chartWidth: number
-    chartData: IPoolLiquidity[] | GroupedEntry[] | undefined
+    chartData: IPoolLiquidity[] | GroupedEntry[] | any
 }
 
 const Wrapper = styled.div`

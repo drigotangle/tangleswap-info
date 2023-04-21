@@ -2,8 +2,8 @@ import { createContext, useReducer } from 'react'
 import { GroupedEntry, IPoolData, IToken, ITVL, ITx } from '../interfaces';
 
 const initialState = {
-  tvl: [], 
-  barChart: [],
+  tvl: [{time: '', tvl: 0, blockNumer: 0}], 
+  barChart: [{time: '', tvl: 0, blockNumer: 0}],
   tokenData: [],
   poolData: [],
   txData: [],

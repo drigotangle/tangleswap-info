@@ -31,7 +31,6 @@ const Header = () => {
             );
           })}
         </Box>
-        <ChainMenu />
       </Toolbar>
     </AppBar>
   );

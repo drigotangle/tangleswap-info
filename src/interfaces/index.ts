@@ -1,6 +1,6 @@
 export interface ITVL {
     time: number | string
-    tvl: number
+    tvl: number | any
     blockNumber: number
 }
 
@@ -90,5 +90,15 @@ export interface IToken {
     time: Date;
     price: number;
     blockNumber: number
+  }
+
+  export interface IState {
+    chain: string; // or a more specific type if you have one
+    usdPrice: number;
+    tvl: any; // replace 'any' with the specific type of your tvl data
+    tokenData: any; // replace 'any' with the specific type of your tokenData
+    txData: any; // replace 'any' with the specific type of your txData
+    poolData: any; // replace 'any' with the specific type of your poolData
+    barChart: any; // replace 'any' with the specific type of your barChart data
   }
   

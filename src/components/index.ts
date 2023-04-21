@@ -1,4 +1,4 @@
-import { TableCell, TableRow } from "@mui/material";
+import { Grid, TableCell, TableRow } from "@mui/material";
 import styled from "styled-components";
 
 export const RowWrapper = styled.div`
@@ -50,4 +50,14 @@ export const ChartWrapper = styled.div`
 
 export const PriceChangeSpan = styled.span`
   color: ${(props: { priceChange: number }) => props.priceChange < 0 ? 'red' : 'green'};
+`;
+
+export const GlassPanelWrapper = styled(Grid)`
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  position: relative;
+  height: max-content;
+  width: max-content;
+  padding: 5vh;
 `;

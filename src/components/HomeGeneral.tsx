@@ -16,20 +16,19 @@ const HomeGeneral = () => {
     const { state } = useContext(AppContext)
     const [fees, setFees] = useState<number>(0)
     const [lastTvl, setLastTvl] = useState<number>(0)
-    const { usdPrice } = state
-    const tvl: ITVL[] = state.tvl
+    const { usdPrice, chain, barChart } = state
     useEffect(() => {
-        feesGenerated(state.chain).then(((res: number) => { setFees(res) }))
-        getTVL(10, state.chain).then((res: ITVL[]) => {
-            const lastIndex = res[res.length - 1].tvl
+        Promise.all([feesGenerated(chain), getTVL(100, chain)]).then(([fee, tvl]) => {
+            setFees(fee)
+            const lastIndex = tvl[tvl.length - 1].tvl
             setLastTvl(lastIndex)
+
         })
     }, [state.chain])
-    console.log(tvl, 'tvl')
     return (
         <Paper>
             <PaperWrapper>
-                <SpanWrapper><Typography variant="h5">Volume24h: ${vol24H(state.tvl) * usdPrice}</Typography></SpanWrapper>
+                <SpanWrapper><Typography variant="h5">Volume24h: ${barChart[barChart.length - 1].tvl * usdPrice}</Typography></SpanWrapper>
                 <SpanWrapper><Typography variant="h5">Fees generated: ${fees * usdPrice}</Typography></SpanWrapper>
                 <SpanWrapper><Typography variant="h5">TVL: ${Number(lastTvl * usdPrice).toFixed(2)}</Typography></SpanWrapper>
             </PaperWrapper>
