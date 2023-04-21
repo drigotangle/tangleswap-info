@@ -47,3 +47,7 @@ export const StyledTableCell = styled(TableCell)`
 export const ChartWrapper = styled.div`
     margin-bottom: 5vh;
 `
+
+export const PriceChangeSpan = styled.span`
+  color: ${(props: { priceChange: number}) => props.priceChange < 0 ? 'red' : 'green'};
+`;
