@@ -30,7 +30,7 @@ const poolService = async (limit) => {
                     const volume7D = () => {
                         let volume;
                         for (let i = 0; i < data.liquidity.length; i++) {
-                            if(dayjs(data.liquidity[data.liquidity.length - 1].liquidity - dayjs(data.liquidity[i].time).format('DD')).format('DD') === 7){
+                            if(getDaysDifference(data.liquidity[data.liquidity.length - 1].liquidity, data.liquidity[i].time) === 7){
                                 volume = Number(liquidity[liquidity.length - 1].liquidity) - Number(liquidity[i].liquidity)
                                 break
                             }
@@ -41,6 +41,7 @@ const poolService = async (limit) => {
                         }
                         return volume
                     }
+                    
                     dataSet.add(data)
                     arr.push({
                         symbol0: data.symbol0,

@@ -1,4 +1,5 @@
 const ethers  = require("ethers")
+const dayjs = require("dayjs")
 
 const provider = new ethers.JsonRpcProvider(process.env.SHIMMER_RPC)
 
@@ -185,6 +186,15 @@ const timeOut = (interval) => {
     return new Promise(resolve => setTimeout(resolve, interval));
 }
 
+const getDaysDifference = (dateTimeString1, dateTimeString2) => {
+    const date1 = dayjs(dateTimeString1);
+    const date2 = dayjs(dateTimeString2);
+  
+    const diffInDays = date1.diff(date2, 'day');
+  
+    return Math.abs(diffInDays);
+  }
+
 module.exports = {
     queryTVL,
     queryFee,
@@ -194,5 +204,6 @@ module.exports = {
     _tokenName,
     _tokenSymbol,
     timeOut,
-    tokenBalance
+    tokenBalance,
+    getDaysDifference
 }
