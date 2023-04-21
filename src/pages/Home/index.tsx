@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material'
+import { Typography, Container, Grid, Box } from '@mui/material'
 import { useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import { ColumnWrapper, RowWrapper } from '../../components'
@@ -31,15 +31,15 @@ const Home = () => {
     useEffect(() => {
 
         //SWAPS TX
-        Promise.all([getLiquidityTx(20, chain),  getSwapTx(20, chain)])
-        .then(async (res: ITx[][]) => {
-        setTxData(dispatch, undefined)
-          const liquidity = res[0]
-          const swap = res[1]
-          let all = swap.concat(liquidity)
-          all.sort((a: ITx, b: ITx) => { return b.block - a.block})
-          setTxData(dispatch, all)
-        })
+        Promise.all([getLiquidityTx(20, chain), getSwapTx(20, chain)])
+            .then(async (res: ITx[][]) => {
+                setTxData(dispatch, undefined)
+                const liquidity = res[0]
+                const swap = res[1]
+                let all = swap.concat(liquidity)
+                all.sort((a: ITx, b: ITx) => { return b.block - a.block })
+                setTxData(dispatch, all)
+            })
 
         //DAILY VOLUME CHART
         const from = 10000
@@ -67,31 +67,47 @@ const Home = () => {
         //TVL CHART 
         getTVL(30, chain).then((res) => {
             setTVL(dispatch, undefined)
-            
+
             setTVL(dispatch, groupDataByDay(res))
         })
 
-      }, [state.chain])
-    return(<>
-        <SubHeader />
-        <Header />  
-        <HomeWrapper>
-            <ColumnWrapper>
-                <Typography variant='h6'>TangleSwap general</Typography>
-                <RowWrapper>
-                    <TVLChart chartWidth={500} chartData={state.tvl} />
-                    <DailyVolumeChart chartWidth={500} chartData={state.barChart} />
-                </RowWrapper>
-                <HomeGeneral />
-                <Typography variant='h6'>Top tokens</Typography>
+    }, [state.chain])
+    return (
+        <>
+            <SubHeader />
+            <Header />
+            <Container maxWidth="lg">
+                <Box mt={4} mb={4}>
+                    <Typography variant="h4">TangleSwap general</Typography>
+                </Box>
+                <Grid container spacing={4}>
+                    <Grid item xs={12} sm={6}>
+                        <Typography variant="h6">TVL</Typography>
+                        <TVLChart chartWidth={500} chartData={state.tvl} />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <Typography variant="h6">Volume 24h</Typography>
+                        <DailyVolumeChart chartWidth={500} chartData={state.barChart} />
+                    </Grid>
+                </Grid>
+                <Box mt={4}>
+                    <HomeGeneral />
+                </Box>
+                <Box mt={4} mb={4}>
+                    <Typography variant="h4">Top tokens</Typography>
+                </Box>
                 <TokenTable tokenList={state.tokenData} />
-                <Typography variant='h6'>Top pools</Typography>
+                <Box mt={4} mb={4}>
+                    <Typography variant="h4">Top pools</Typography>
+                </Box>
                 <PoolDataTable pooList={state.poolData} usdPrice={usdPrice} chain={chain} />
-                <Typography variant='h6'>Recent transactions</Typography>
+                <Box mt={4} mb={4}>
+                    <Typography variant="h4">Recent transactions</Typography>
+                </Box>
                 <TransactionsTable chain={chain} txData={state.txData} usdPrice={usdPrice} />
-            </ColumnWrapper>    
-        </HomeWrapper>
-        </>)
+            </Container>
+        </>
+    )
 }
 
 export default Home

@@ -1,4 +1,4 @@
-import { Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead } from '@mui/material';
+import { Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, Typography } from '@mui/material';
 import { FC, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChartWrapper, PriceChangeSpan, SkeletonWrapper, StyledTableCell } from '.';
@@ -25,37 +25,52 @@ const TokenTable: FC<IProps> = (props) => {
 
         ?
 
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <StyledTableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Address</TableCell>
-                <TableCell>Last Price</TableCell>
-                <TableCell>Price Change</TableCell>
-                <TableCell>Volume 24H</TableCell>
-                <TableCell>TVL</TableCell>
-              </StyledTableRow>
-            </TableHead>
-            <TableBody>
-              {tokenList.map((token: IToken) => (
-                <StyledTableRow key={token.tokenAddress} onClick={() => navigate(`/${chain}/Tokens/${token.tokenAddress}`)}>
-                  <StyledTableCell>{token.tokenName}</StyledTableCell>
-                  <StyledTableCell>{token.tokenAddress}</StyledTableCell>
-                  <StyledTableCell>${Number(Number(token.lastPrice) * usdPrice).toFixed(2)}</StyledTableCell>
-                  <StyledTableCell>{
-                    isNaN(Number(token.priceChange / 100))
-                      ?
-                      0
-                      :
-                      <PriceChangeSpan priceChange={token.priceChange / 100}>{Number(token.priceChange / 100)}%</PriceChangeSpan>}</StyledTableCell>
-                  <StyledTableCell>${isNaN(token.volume24H) ? 0 : token.volume24H * usdPrice}</StyledTableCell>
-                  <StyledTableCell>${(Number(token.TVL?.toFixed(2))) * usdPrice ?? 'N/A'}</StyledTableCell>
-                </StyledTableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+<TableContainer component={Paper}>
+  <Table>
+    <TableHead>
+      <StyledTableRow>
+        <TableCell><Typography variant="h5">Name</Typography></TableCell>
+        <TableCell><Typography variant="h5">Address</Typography></TableCell>
+        <TableCell><Typography variant="h5">Last Price</Typography></TableCell>
+        <TableCell><Typography variant="h5">Price Change</Typography></TableCell>
+        <TableCell><Typography variant="h5">Volume 24H</Typography></TableCell>
+        <TableCell><Typography variant="h5">TVL</Typography></TableCell>
+      </StyledTableRow>
+    </TableHead>
+    <TableBody>
+      {tokenList.map((token: IToken) => (
+        <StyledTableRow key={token.tokenAddress} onClick={() => navigate(`/${chain}/Tokens/${token.tokenAddress}`)}>
+          <StyledTableCell>
+            <Typography variant="h5">{token.tokenName}</Typography>
+          </StyledTableCell>
+          <StyledTableCell>
+            <Typography variant="h5">{token.tokenAddress}</Typography>
+          </StyledTableCell>
+          <StyledTableCell>
+            <Typography variant="h5">${Number(Number(token.lastPrice) * usdPrice).toFixed(2)}</Typography>
+          </StyledTableCell>
+          <StyledTableCell>
+            <Typography variant="h5">
+              {
+                isNaN(Number(token.priceChange / 100))
+                  ?
+                  0
+                  :
+                  <PriceChangeSpan priceChange={token.priceChange / 100}>{Number(token.priceChange / 100)}%</PriceChangeSpan>
+              }
+            </Typography>
+          </StyledTableCell>
+          <StyledTableCell>
+            <Typography variant="h5">${isNaN(token.volume24H) ? 0 : token.volume24H * usdPrice}</Typography>
+          </StyledTableCell>
+          <StyledTableCell>
+            <Typography variant="h5">${(Number(token.TVL?.toFixed(2))) * usdPrice ?? 'N/A'}</Typography>
+          </StyledTableCell>
+        </StyledTableRow>
+      ))}
+    </TableBody>
+  </Table>
+</TableContainer>
 
         :
 

@@ -93,7 +93,7 @@ const TokenPage = () => {
                 </RowWrapper>
                 {candleStickData.length > 0 ? <CandleChart props={candleStickData} /> : null }
                 <PoolsTable pooList={poolsArr} usdPrice={usdPrice} chain={chain} />
-                <Typography variant='h6'>Recent transactions</Typography>
+                <Typography variant='h4'>Recent transactions</Typography>
                 <TransactionsTable chain={chain} txData={txs} usdPrice={usdPrice}  />          
               </ColumnWrapper>                
 

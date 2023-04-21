@@ -37,9 +37,9 @@ const Pools = () => {
         <Header />  
         <HomeWrapper>
             <ColumnWrapper>
-            <Typography variant='h6'>Your Watchlist</Typography>
+            <Typography variant='h4'>Your Watchlist</Typography>
             <Paper><PaperWrapper>Your saved pools will appear here</PaperWrapper></Paper>
-            <Typography variant='h6'>All pools</Typography>
+            <Typography variant='h4'>All pools</Typography>
             <PoolDataTable pooList={state.poolData} usdPrice={usdPrice} chain={chain} />
             </ColumnWrapper>    
         </HomeWrapper>

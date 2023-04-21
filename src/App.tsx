@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { createTheme, ThemeProvider  } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material';
 
 import Home from './pages/Home'
 import Pools from "./pages/Pools";
@@ -32,27 +32,29 @@ function App() {
       },
       h4: {
         color: '#FFFFFF', // white
+        fontSize: '24px'
       },
       h5: {
         color: '#FFFFFF', // white
+        fontSize: '18px'
       },
       h6: {
         color: '#FFFFFF', // white
       },
     },
-    palette:{
+    palette: {
       mode: 'dark',
-      background:{
+      background: {
         paper: '#2C2F3D', // dark gray
         default: '#191B1F', // darkest gray
       },
-      primary:{
+      primary: {
         main: '#740E95', // purple
       },
-      secondary:{
+      secondary: {
         main: '#7022E7', // lighter purple
       },
-      success:{
+      success: {
         main: '#1B7A43',
         dark: '#1B7A43',
         contrastText: '#1B7A43',
@@ -73,16 +75,16 @@ function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
-      <GlobalStyle />
+        <GlobalStyle />
         <BrowserRouter>
           <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/:chain/Pools/" element={<Pools />} />
-              <Route path="/:chain/Pools/:poolAddress" element={<PoolPage />} />
-              <Route path="/:chain/Tokens" element={<Tokens />} />
-              <Route path="/:chain/Tokens/:tokenAddress" element={<TokenPage />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/:chain/Pools/" element={<Pools />} />
+            <Route path="/:chain/Pools/:poolAddress" element={<PoolPage />} />
+            <Route path="/:chain/Tokens" element={<Tokens />} />
+            <Route path="/:chain/Tokens/:tokenAddress" element={<TokenPage />} />
           </Routes>
-        </BrowserRouter>        
+        </BrowserRouter>
       </ThemeProvider>
     </>
   )

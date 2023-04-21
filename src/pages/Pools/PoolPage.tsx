@@ -84,25 +84,25 @@ const PoolPage = () => {
                     <> 
                       Total tokens locked
                       <BalanceContainer>
-                        <Typography variant="h6">{poolData?.symbol0} balance</Typography>
-                        <Balance variant="h6">{' '}{poolData?.balance0 ?? 0}</Balance>
+                        <Typography variant="h4">{poolData?.symbol0} balance</Typography>
+                        <Balance variant="h4">{' '}{poolData?.balance0 ?? 0}</Balance>
                       </BalanceContainer>
                       <BalanceContainer>
-                        <Typography variant="h6">{poolData?.symbol1} balance</Typography>
-                        <Balance variant="h6">{' '}{poolData?.balance1 ?? 0}</Balance>
+                        <Typography variant="h4">{poolData?.symbol1} balance</Typography>
+                        <Balance variant="h4">{' '}{poolData?.balance1 ?? 0}</Balance>
                       </BalanceContainer>                    
                     </>
-                    <Title variant="h6" style={{ marginTop: 32 }}>
+                    <Title variant="h4" style={{ marginTop: 32 }}>
                       TVL: {poolData?.tvl}
                     </Title>
-                    <Title variant="h6" style={{ marginTop: 16 }}>
+                    <Title variant="h4" style={{ marginTop: 16 }}>
                       Volume (24h): {poolData?.volume24H}
                     </Title>
                   </LeftWrapper>             
                   </ColumnWrapper>
                   <DailyVolumeChart chartWidth={500} chartData={liquidityData} />
                 </RowWrapper>
-                <Typography variant='h6'>Recent transactions</Typography>
+                <Typography variant='h4'>Recent transactions</Typography>
                 <TransactionsTable chain={chain} txData={txs} usdPrice={usdPrice} />             
               </ColumnWrapper>                
 

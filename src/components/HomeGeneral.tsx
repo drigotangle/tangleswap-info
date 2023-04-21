@@ -1,4 +1,4 @@
-import { Paper } from '@mui/material'
+import { Paper, Typography } from '@mui/material'
 import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { PaperWrapper } from '.'
@@ -14,8 +14,8 @@ const SpanWrapper = styled.div`
 
 const HomeGeneral = () => {
     const { state } = useContext(AppContext)
-    const [ fees, setFees ] = useState<number>(0)
-    const [ lastTvl, setLastTvl ] = useState<number>(0)
+    const [fees, setFees] = useState<number>(0)
+    const [lastTvl, setLastTvl] = useState<number>(0)
     const { usdPrice } = state
     const tvl: ITVL[] = state.tvl
     useEffect(() => {
@@ -26,14 +26,14 @@ const HomeGeneral = () => {
         })
     }, [state.chain])
     console.log(tvl, 'tvl')
-    return(
-    <Paper>
-        <PaperWrapper>
-                <SpanWrapper>Volume24h: ${vol24H(state.tvl) * usdPrice}</SpanWrapper>
-                <SpanWrapper>Fees generated: ${fees * usdPrice}</SpanWrapper>
-                <SpanWrapper>TVL: ${Number(lastTvl * usdPrice).toFixed(2)}</SpanWrapper>
-        </PaperWrapper>
-    </Paper>
+    return (
+        <Paper>
+            <PaperWrapper>
+                <SpanWrapper><Typography variant="h5">Volume24h: ${vol24H(state.tvl) * usdPrice}</Typography></SpanWrapper>
+                <SpanWrapper><Typography variant="h5">Fees generated: ${fees * usdPrice}</Typography></SpanWrapper>
+                <SpanWrapper><Typography variant="h5">TVL: ${Number(lastTvl * usdPrice).toFixed(2)}</Typography></SpanWrapper>
+            </PaperWrapper>
+        </Paper>
     )
 }
 

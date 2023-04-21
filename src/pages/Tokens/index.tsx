@@ -40,13 +40,13 @@ const Pools = () => {
         <Header />
         <HomeWrapper>
             <ColumnWrapper>
-            <Typography variant='h6'>Your Watchlist</Typography>
+            <Typography variant='h4'>Your Watchlist</Typography>
             <Paper><PaperWrapper>Your saved pools will appear here</PaperWrapper></Paper>
-            <Typography variant='h6'>Top movers</Typography>
+            <Typography variant='h4'>Top movers</Typography>
             <Paper>
                 <TopMoversCard />
             </Paper>
-            <Typography variant='h6'>Top tokens</Typography>
+            <Typography variant='h4'>Top tokens</Typography>
                 <TokenTable tokenList={state.tokenData} />
             </ColumnWrapper>    
         </HomeWrapper>
