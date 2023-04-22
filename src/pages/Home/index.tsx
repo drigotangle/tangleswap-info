@@ -29,7 +29,7 @@ const Home = () => {
     const { state } = useContext(AppContext)
     const [localState, setLocalState] = useState<any>(initialState)
     const { chain, usdPrice, tvl } = state
-    const [barChart, setBarChart] = useState<ITVL[] | any[] | any>(undefined)
+    const [barChart, setBarChart] = useState<ITVL[] | any[] | any>([{}])
     const storedData = localStorage.getItem('data');
 
     useEffect(() => {
@@ -40,14 +40,14 @@ const Home = () => {
         }
     }, [storedData, state])
 
-    if (localState === initialState && storedData !== null || undefined) {
+    if (localState === initialState || storedData === null || barChart.length < 1) {
+        console.log(localState, storedData, barChart, 'aca')
         return (<>
             <SubHeader />
             <Header />
             <Loading />
         </>)
-    }
-
+    }else{
         return (
             <>
                 <SubHeader />
@@ -67,7 +67,7 @@ const Home = () => {
                         <Grid item xs={12} sm={6}>
                             <GlassPanelWrapper>
                                 <Typography variant="h6">Volume 24h</Typography>
-                                <Typography variant="h3">${Number(barChart[barChart.length - 1]?.tvl * usdPrice).toFixed(2)}</Typography>
+                                <Typography variant="h3">${Number(barChart[barChart?.length - 1]?.tvl ?? 0 * usdPrice).toFixed(2)}</Typography>
                                 <DailyVolumeChart chartWidth={500} chartData={barChart} />
                             </GlassPanelWrapper>
                         </Grid>
@@ -89,7 +89,7 @@ const Home = () => {
                     <TransactionsTable chain={chain} txData={localState.txData} usdPrice={usdPrice} />
                 </Container>
             </>
-        )
+        )}
     }
 
 export default Home
