@@ -49,7 +49,7 @@ function App() {
         default: '#191B1F', // darkest gray
       },
       primary: {
-        main: '#740E95', // purple
+        main: '#9C27B0', // purple
       },
       secondary: {
         main: '#7022E7', // lighter purple
