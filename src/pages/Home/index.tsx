@@ -46,51 +46,50 @@ const Home = () => {
             <Header />
             <Loading />
         </>)
+    } else {
+        return (
+            <>
+                <SubHeader />
+                <Header />
+                <Container maxWidth="lg">
+                    <Box mt={4} mb={4}>
+                        <Typography variant="h4">TangleSwap general</Typography>
+                    </Box>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} sm={6}>
+                            <GlassPanelWrapper>
+                                <Typography variant="h6">TVL</Typography>
+                                <Typography variant="h3">${Number(tvl[tvl.length - 1]?.tvl * usdPrice).toFixed(2)}</Typography>
+                                <TVLChart chartWidth={500} chartData={state.tvl} />
+                            </GlassPanelWrapper>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <GlassPanelWrapper>
+                                <Typography variant="h6">Volume 24h</Typography>
+                                <Typography variant="h3">${Number(barChart[barChart.length - 1]?.tvl * usdPrice).toFixed(2)}</Typography>
+                                <DailyVolumeChart chartWidth={500} chartData={barChart} />
+                            </GlassPanelWrapper>
+                        </Grid>
+                    </Grid>
+                    <Box mt={4}>
+                        <HomeGeneral />
+                    </Box>
+                    <Box mt={4} mb={4}>
+                        <Typography variant="h4">Top tokens</Typography>
+                    </Box>
+                    <TokenTable tokenList={state.tokenData} />
+                    <Box mt={4} mb={4}>
+                        <Typography variant="h4">Top pools</Typography>
+                    </Box>
+                    <PoolDataTable pooList={state.poolData} usdPrice={usdPrice} chain={chain} />
+                    <Box mt={4} mb={4}>
+                        <Typography variant="h4">Recent transactions</Typography>
+                    </Box>
+                    <TransactionsTable chain={chain} txData={state.txData} usdPrice={usdPrice} />
+                </Container>
+            </>
+        )
     }
-
-
-    return (
-        <>
-            <SubHeader />
-            <Header />
-            <Container maxWidth="lg">
-                <Box mt={4} mb={4}>
-                    <Typography variant="h4">TangleSwap general</Typography>
-                </Box>
-                <Grid container spacing={3}>
-                    <Grid item xs={12} sm={6}>
-                        <GlassPanelWrapper>
-                            <Typography variant="h6">TVL</Typography>
-                            <Typography variant="h3">${Number(tvl[tvl.length - 1]?.tvl * usdPrice).toFixed(2)}</Typography>
-                            <TVLChart chartWidth={500} chartData={state.tvl} />
-                        </GlassPanelWrapper>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <GlassPanelWrapper>
-                            <Typography variant="h6">Volume 24h</Typography>
-                            <Typography variant="h3">${Number(barChart[barChart.length - 1]?.tvl * usdPrice).toFixed(2)}</Typography>
-                            <DailyVolumeChart chartWidth={500} chartData={barChart} />
-                        </GlassPanelWrapper>
-                    </Grid>
-                </Grid>
-                <Box mt={4}>
-                    <HomeGeneral />
-                </Box>
-                <Box mt={4} mb={4}>
-                    <Typography variant="h4">Top tokens</Typography>
-                </Box>
-                <TokenTable tokenList={state.tokenData} />
-                <Box mt={4} mb={4}>
-                    <Typography variant="h4">Top pools</Typography>
-                </Box>
-                <PoolDataTable pooList={state.poolData} usdPrice={usdPrice} chain={chain} />
-                <Box mt={4} mb={4}>
-                    <Typography variant="h4">Recent transactions</Typography>
-                </Box>
-                <TransactionsTable chain={chain} txData={state.txData} usdPrice={usdPrice} />
-            </Container>
-        </>
-    )
 }
 
 export default Home
