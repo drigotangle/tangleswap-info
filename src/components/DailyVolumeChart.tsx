@@ -3,8 +3,8 @@ import { FC, useContext } from 'react'
 import { AppContext } from '../state'
 import { Skeleton } from '@mui/material'
 import { GroupedEntry, IPoolLiquidity } from '../interfaces'
-import { ChartWrapper } from '.'
 import styled from 'styled-components'
+import dayjs from 'dayjs'
 
 interface IChart {
     chartWidth: number
@@ -33,16 +33,17 @@ export const DailyVolumeChart: FC<IChart> = (props) => {
                             axisLine={false}
                             tickLine={false}
                             minTickGap={10}
+                            tickFormatter={(value) => dayjs(value).format('DD')}
                         />
                         <Bar
                             dataKey="tvl"
                             barSize={10}
-                            fill="#740E95"
+                            fill="#2172E5"
                         />
                         <Tooltip
                             labelFormatter={(value: any) => `Day: ${value}`}
                             formatter={(value: any) => [`$${Number(value * usdPrice).toFixed(2)}`]}
-                            cursor={{ fill: 'rgba(255, 0, 0, 0.1)' }}
+                            cursor={{ fill: 'rgba(1, 0, 0, 0.1)' }}
                         />
                     </BarChart>
 
