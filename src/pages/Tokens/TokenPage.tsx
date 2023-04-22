@@ -48,7 +48,10 @@ const TokenPage = () => {
       // const _volume24h = _token.volume24h * usdPrice
       // setTokenVolume24H(_volume24h)
       // setTokenVolume7D(_volume7D)
-      setTxs(txData)
+      console.log(txData, 'before')
+      const filteredTxData = txData.filter((entry: ITx) => { return entry.token0 === tokenAddress || entry.token1 === tokenAddress})
+      console.log(filteredTxData, 'after')
+      setTxs(filteredTxData)
       const _poolsToCandle = poolsToCandle(verifyedPool, tokenAddress)
       const _candleStickData = getCandlestickData(_poolsToCandle)
       setCandleStickData(_candleStickData)

@@ -56,7 +56,8 @@ const PoolPage = () => {
           console.log(pool, 'poolPage')
           const poolLiquidity = groupLiquidityPerDay(pool?.liquidity)
           setLiquidityData(poolLiquidity)
-          setTxs(txData)
+          const filteredTx = txData.filter((entry: ITx) => entry.token0 === pool.token0 && entry.token1 === pool.token1)
+          setTxs(filteredTx)
           console.log(txs, 'txs')
     }, [])
     
