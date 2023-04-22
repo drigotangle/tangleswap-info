@@ -12,7 +12,7 @@ import TransactionsTable from '../../components/TransactionsTable'
 import { TVLChart } from '../../components/TVLChart'
 import { groupTVLPerDay } from '../../functions'
 import { ITVL } from '../../interfaces'
-import { AppContext } from '../../state'
+import { AppContext, initialState } from '../../state'
 import Loading from '../../components/Loading'
 import { AnyNsRecord } from 'dns'
 
@@ -32,21 +32,20 @@ const Home = () => {
     const storedData = localStorage.getItem('data');
 
     useEffect(() => {
-        console.log(state, 'state')
-        console.log(storedData, 'storedData')
         if (tvl.length > 0) {
             const _barChart = groupTVLPerDay(tvl)
             setBarChart(_barChart)
         }
     }, [storedData, state])
 
-    if (!storedData || !tvl || !barChart || tvl.length < 1 || barChart.length < 1) {
+    if (state === initialState) {
         return (<>
             <SubHeader />
             <Header />
             <Loading />
         </>)
-    } else {
+    }
+
         return (
             <>
                 <SubHeader />
@@ -90,6 +89,5 @@ const Home = () => {
             </>
         )
     }
-}
 
 export default Home
