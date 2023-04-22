@@ -1,10 +1,11 @@
 import { Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, Typography } from '@mui/material';
 import { FC, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChartWrapper, PriceChangeSpan, SkeletonWrapper, StyledTableCell } from '.';
+import { ChartWrapper, PriceChangeSpan, SkeletonWrapper, StyledTableCell, TokenImage } from '.';
 import { IToken } from '../interfaces';
 import { AppContext } from '../state';
 import { StyledTableRow } from './'
+import { logo, xLogo } from '../constants';
 
 interface IProps {
   tokenList: IToken[] | any
@@ -41,7 +42,7 @@ const TokenTable: FC<IProps> = (props) => {
       {tokenList.map((token: IToken) => (
         <StyledTableRow key={token.tokenAddress} onClick={() => navigate(`/${chain}/Tokens/${token.tokenAddress}`)}>
           <StyledTableCell>
-            <Typography variant="h5">{token.tokenName}</Typography>
+            <Typography variant="h5"><span><TokenImage src={logo[token.tokenAddress] ?? xLogo} />{token.tokenName}</span></Typography>
           </StyledTableCell>
           <StyledTableCell>
             <Typography variant="h5">{token.tokenAddress}</Typography>

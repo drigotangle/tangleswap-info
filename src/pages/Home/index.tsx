@@ -33,7 +33,7 @@ const Home = () => {
     const storedData = localStorage.getItem('data');
 
     useEffect(() => {
-        if (tvl.length > 0) {
+        if (tvl.length > 1) {
             const _barChart = groupTVLPerDay(tvl);
             setBarChart(_barChart);
             setLoading(false); // Set loading to false when the data is updated

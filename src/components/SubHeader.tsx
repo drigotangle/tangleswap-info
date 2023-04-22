@@ -22,7 +22,7 @@ interface HeaderProps {
     setLoading: (loading: boolean) => void;
 }
 
-const Header: FC<HeaderProps> = ({ setLoading }) => {
+const SubHeader: FC<HeaderProps> = ({ setLoading }) => {
     const [lastBlockSync, setLastBlockSync] = useState<number>()
     const { state, dispatch } = useContext(AppContext)
     const { chain, usdPrice } = state
@@ -127,4 +127,4 @@ const Header: FC<HeaderProps> = ({ setLoading }) => {
     )
 }
 
-export default Header
+export default SubHeader

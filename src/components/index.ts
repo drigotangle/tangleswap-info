@@ -65,3 +65,10 @@ export const GlassPanelWrapper = styled(Grid)`
 export const SpanWrapper = styled.div`
     width: max-content;
 `
+
+export const TokenImage = styled.img`
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  margin-right: 8px;
+`;

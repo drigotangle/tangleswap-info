@@ -101,4 +101,8 @@ export interface IToken {
     poolData: any; // replace 'any' with the specific type of your poolData
     barChart: any; // replace 'any' with the specific type of your barChart data
   }
+
+  export interface LogoMap {
+    [key: string]: string;
+  }
   
