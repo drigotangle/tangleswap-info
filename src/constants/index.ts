@@ -13,3 +13,7 @@ export const setUrl = (chain: string, pool: string) => {
 
     return [ url, nestedUrl ]
 }
+
+export const logo = [
+    ''
+]

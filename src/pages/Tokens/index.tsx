@@ -1,5 +1,5 @@
 import { Paper, Typography } from '@mui/material'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { ColumnWrapper, PaperWrapper } from '../../components'
 import Header from '../../components/Header'
@@ -10,6 +10,7 @@ import { getTokens } from '../../functions'
 import { IToken } from '../../interfaces'
 import { AppContext } from '../../state'
 import { setTokenData } from '../../state/Actions'
+import Loading from '../../components/Loading'
 
 const HomeWrapper = styled.div`
     display: flex;
@@ -23,6 +24,7 @@ const HomeWrapper = styled.div`
 const Pools = () => {
 
     const { dispatch, state } = useContext(AppContext)
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         //TOKENS TABLE
@@ -35,8 +37,16 @@ const Pools = () => {
         })    
       }, [state.chain])
 
+      if (loading) {
+        return (<>
+            <SubHeader setLoading={setLoading} />
+            <Header />
+            <Loading />
+        </>)
+    }
+
     return(<>
-        <SubHeader />
+        <SubHeader setLoading={setLoading} />
         <Header />
         <HomeWrapper>
             <ColumnWrapper>

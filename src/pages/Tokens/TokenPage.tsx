@@ -24,6 +24,7 @@ const TokenPage = () => {
   const [txs, setTxs] = useState<ITx[]>()
   const [token, setToken] = useState<IToken | any>()
   const [_tradingVolume24h, _setTradingVolume24h] = useState<number>()
+  const [loading, setLoading] = useState(true);
   const [tokenVolume7D, setTokenVolume7D] = useState<number>()
   const [tokenVolume24H, setTokenVolume24H] = useState<number>()
   const [ tokenName, setTokenName] = useState<string | any>()
@@ -65,8 +66,16 @@ const TokenPage = () => {
     console.log('candleStickData here:', JSON.stringify(candleStickData))
   }, [candleStickData])
 
+  if (loading) {
+    return (<>
+        <SubHeader setLoading={setLoading} />
+        <Header />
+        <Loading />
+    </>)
+}
+
   return (<>
-    <SubHeader />
+    <SubHeader setLoading={setLoading} />
     <Header />
     <HomeWrapper>
       {

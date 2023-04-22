@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useState, FC } from 'react'
 import { Stack, Chip, Typography } from '@mui/material'
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import styled from 'styled-components'
@@ -18,35 +18,44 @@ const StyledSpan = styled.span`
     margin: auto auto;
 `
 
-const Header = () => {
+interface HeaderProps {
+    setLoading: (loading: boolean) => void;
+}
+
+const Header: FC<HeaderProps> = ({ setLoading }) => {
     const [lastBlockSync, setLastBlockSync] = useState<number>()
     const { state, dispatch } = useContext(AppContext)
     const { chain, usdPrice } = state
 
-    const loadDataFromLocalStorage = useCallback(() => {
-        const storedData = localStorage.getItem('data');
-        if (storedData) {
+    const loadDataFromLocalStorage = useCallback(
+        (setLoading: (loading: boolean) => void) => {
+          const storedData = localStorage.getItem("data");
+          if (storedData) {
             const {
-                tvl,
-                usdPrice,
-                pools,
-                tokens,
-                liquidityTx,
-                swapTx,
+              tvl,
+              usdPrice,
+              pools,
+              tokens,
+              liquidityTx,
+              swapTx,
             } = JSON.parse(storedData);
-
+      
             setTVL(dispatch, tvl);
             setUsdPrice(dispatch, Number(usdPrice.USD));
             setPoolData(dispatch, pools);
             setTokenData(dispatch, tokens);
             setTxData(dispatch, [...liquidityTx, ...swapTx]);
-        }
-        console.log(storedData, 'dat afrom storage')
-        console.log(state, 'state')
-    }, [dispatch]);
+      
+            setLoading(false); // Set loading to false when the data is loaded
+          }
+          console.log(storedData, "data from storage");
+          console.log(state, "state");
+        },
+        [dispatch]
+      );
 
     useEffect(() => {
-        loadDataFromLocalStorage();
+        loadDataFromLocalStorage(setLoading);
       
         const fetchData = async () => {
           try {
@@ -93,7 +102,7 @@ const Header = () => {
       }, [chain, dispatch, loadDataFromLocalStorage]);
 
     useEffect(() => {
-        loadDataFromLocalStorage();
+        loadDataFromLocalStorage(setLoading);
 
         // Schedule local storage deletion every 5 minutes
         const deleteLocalStorageInterval = setTimeout(() => {

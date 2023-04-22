@@ -43,6 +43,7 @@ const Balance = styled(Typography)`
 
 const PoolPage = () => {
     const [ _poolData, setPoolData ] = useState<IPoolData | any>()
+    const [loading, setLoading] = useState(true);
     const [ liquidityData, setLiquidityData ] = useState<GroupedEntry[]>()
     const [ txs, setTxs ] = useState<ITx[] | undefined>()
     const { poolAddress, chain } = useParams()
@@ -60,10 +61,18 @@ const PoolPage = () => {
           setTxs(filteredTx)
           console.log(txs, 'txs')
     }, [])
+
+    if (loading) {
+      return (<>
+          <SubHeader setLoading={setLoading} />
+          <Header />
+          <Loading />
+      </>)
+  }
     
     return (
       <>
-        <SubHeader />
+        <SubHeader setLoading={setLoading} />
         <Header />
         <HomeWrapper>
           {_poolData === undefined || liquidityData === undefined || txs === undefined ? (

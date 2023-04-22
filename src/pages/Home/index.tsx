@@ -27,30 +27,29 @@ const HomeWrapper = styled.div`
 const Home = () => {
 
     const { state } = useContext(AppContext)
-    const [localState, setLocalState] = useState<any>(initialState)
+    const [loading, setLoading] = useState(true);
     const { chain, usdPrice, tvl } = state
     const [barChart, setBarChart] = useState<ITVL[] | any[] | any>([{}])
     const storedData = localStorage.getItem('data');
 
     useEffect(() => {
         if (tvl.length > 0) {
-            const _barChart = groupTVLPerDay(tvl)
-            setBarChart(_barChart)
-            setLocalState(state)
+            const _barChart = groupTVLPerDay(tvl);
+            setBarChart(_barChart);
+            setLoading(false); // Set loading to false when the data is updated
         }
-    }, [storedData, state])
+    }, [storedData, state]);
 
-    if (localState === initialState || storedData === null || barChart.length < 1) {
-        console.log(localState, storedData, barChart, 'aca')
+    if (loading) {
         return (<>
-            <SubHeader />
+            <SubHeader setLoading={setLoading} />
             <Header />
             <Loading />
         </>)
     }else{
         return (
             <>
-                <SubHeader />
+                <SubHeader setLoading={setLoading} />
                 <Header />
                 <Container maxWidth="lg">
                     <Box mt={4} mb={4}>
@@ -78,15 +77,15 @@ const Home = () => {
                     <Box mt={4} mb={4}>
                         <Typography variant="h4">Top tokens</Typography>
                     </Box>
-                    <TokenTable tokenList={localState.tokenData} />
+                    <TokenTable tokenList={state.tokenData} />
                     <Box mt={4} mb={4}>
                         <Typography variant="h4">Top pools</Typography>
                     </Box>
-                    <PoolDataTable pooList={localState.poolData} usdPrice={usdPrice} chain={chain} />
+                    <PoolDataTable pooList={state.poolData} usdPrice={usdPrice} chain={chain} />
                     <Box mt={4} mb={4}>
                         <Typography variant="h4">Recent transactions</Typography>
                     </Box>
-                    <TransactionsTable chain={chain} txData={localState.txData} usdPrice={usdPrice} />
+                    <TransactionsTable chain={chain} txData={state.txData} usdPrice={usdPrice} />
                 </Container>
             </>
         )}
