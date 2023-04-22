@@ -66,13 +66,6 @@ const TokenPage = () => {
     console.log('candleStickData here:', JSON.stringify(candleStickData))
   }, [candleStickData])
 
-  if (loading) {
-    return (<>
-        <SubHeader  />
-        <Header />
-        <Loading />
-    </>)
-}
 
   return (<>
     <SubHeader  />

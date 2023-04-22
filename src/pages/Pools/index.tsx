@@ -34,14 +34,6 @@ const Pools = () => {
         })       
     }, [])
 
-    if (loading) {
-        return (<>
-            <SubHeader  />
-            <Header />
-            <Loading />
-        </>)
-    }
-
     return(<>
         <SubHeader  />
         <Header />  

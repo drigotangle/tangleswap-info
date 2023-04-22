@@ -24,7 +24,6 @@ const HomeWrapper = styled.div`
 const Pools = () => {
 
     const { dispatch, state } = useContext(AppContext)
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         //TOKENS TABLE
@@ -37,13 +36,6 @@ const Pools = () => {
         })    
       }, [state.chain])
 
-      if (loading) {
-        return (<>
-            <SubHeader  />
-            <Header />
-            <Loading />
-        </>)
-    }
 
     return(<>
         <SubHeader  />

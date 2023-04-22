@@ -61,14 +61,6 @@ const PoolPage = () => {
           setTxs(filteredTx)
           console.log(txs, 'txs')
     }, [])
-
-    if (loading) {
-      return (<>
-          <SubHeader  />
-          <Header />
-          <Loading />
-      </>)
-  }
     
     return (
       <>
