@@ -1,5 +1,5 @@
 import { FC, useContext, useEffect } from "react";
-import { Paper, Skeleton, Table, TableBody, TableContainer, TableHead, TableCell, Typography } from "@mui/material";
+import { Paper, Skeleton, Table, TableBody, TableContainer, TableHead, TableCell, Typography, Chip } from "@mui/material";
 import { ChartWrapper, StyledTableCell, StyledTableRow } from './'
 import { IPoolData } from "../interfaces";
 import { AppContext } from "../state";
@@ -44,16 +44,16 @@ const PoolDataTable: FC<IProps> = (props) => {
       {pooList?.map((row: IPoolData) => (
         <StyledTableRow onClick={_ => navigate(`/${chain}/Pools/${row.pool}`)} key={`${row.symbol0}-${row.symbol1}`}>
           <StyledTableCell>
-            <Typography variant="h5">{row.symbol0}/{row.symbol1}{" "}{row.fee / 10000}%</Typography>
+            <Typography variant="h5">{row.symbol0}/{row.symbol1}{" "}<Chip label={(row.fee / 10000) + '%'}/></Typography>
           </StyledTableCell>
           <StyledTableCell>
-            <Typography variant="h5">${row.tvl * (usdPrice ?? 0)}</Typography>
+            <Typography variant="h5">${Number(row.tvl * (usdPrice ?? 0)).toFixed(2)}</Typography>
           </StyledTableCell>
           <StyledTableCell>
-            <Typography variant="h5">${row.volume24H * (usdPrice ?? 0)}</Typography>
+            <Typography variant="h5">${Number(row.volume24H * (usdPrice ?? 0)).toFixed(2)}</Typography>
           </StyledTableCell>
           <StyledTableCell>
-            <Typography variant="h5">${row.volume7D * (usdPrice ?? 0)}</Typography>
+            <Typography variant="h5">${Number(row.volume7D * (usdPrice ?? 0)).toFixed(2)}</Typography>
           </StyledTableCell> 
         </StyledTableRow>
       ))}

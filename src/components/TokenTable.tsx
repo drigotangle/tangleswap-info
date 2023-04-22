@@ -56,12 +56,12 @@ const TokenTable: FC<IProps> = (props) => {
                   ?
                   'N/A'
                   :
-                  <PriceChangeSpan priceChange={token.priceChange / 100}>{Number(token.priceChange / 100)}%</PriceChangeSpan>
+                  <PriceChangeSpan priceChange={token.priceChange / 100}>{Number(token.priceChange / 100).toFixed(2)}%</PriceChangeSpan>
               }
             </Typography>
           </StyledTableCell>
           <StyledTableCell>
-            <Typography variant="h5">${isNaN(token.volume24H) ? 0 : token.volume24H * usdPrice}</Typography>
+            <Typography variant="h5">${isNaN(token.volume24H) ? 0 : Number(token.volume24H * usdPrice).toFixed(2)}</Typography>
           </StyledTableCell>
           <StyledTableCell>
             <Typography variant="h5">${(Number(token.TVL?.toFixed(2))) * usdPrice ?? 'N/A'}</Typography>

@@ -83,8 +83,8 @@ const PoolPage = () => {
                   <Typography variant="h6">{_poolData?.symbol1} </Typography>
                   <Balance variant="h6">{Number(_poolData?.balance1).toFixed(2)}</Balance>
                 </BalanceContainer>
-                <Title variant="h4">TVL: {Number(_poolData?.tvl * usdPrice).toFixed(2)}</Title>
-                <Title variant="h4">Volume (24h): {Number(_poolData?.volume24H * usdPrice).toFixed(2)}</Title>
+                <Title variant="h4">TVL: ${Number(_poolData?.tvl * usdPrice).toFixed(2)}</Title>
+                <Title variant="h4">Volume (24h): ${Number(_poolData?.volume24H * usdPrice).toFixed(2)}</Title>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <DailyVolumeChart chartWidth={500} chartData={liquidityData} />

@@ -68,17 +68,23 @@ const Header = () => {
                 const firstLiquidityArr = pools[0].liquidity;
                 const lastBlockFromPrice = firstPriceArr[firstPriceArr.length - 1].block;
                 const lastBlockFromLiquidity = firstLiquidityArr[firstLiquidityArr.length - 1].block;
-                const lastBlockFromLiquidityTx = liquidityTx[liquidityTx.length - 1].block;
+                const lastBlockFromLiquidityTx = liquidityTx[liquidityTx.length - 1].blockNumber;
                 // const lastBlockFromSwapTx = swapTx[swapTx.length - 1].block;
 
-                const maxBlockNumber = Math.max(
-                    lastBlockFromPrice,
-                    lastBlockFromLiquidity,
-                    lastBlockFromLiquidityTx
-                    // lastBlockFromSwapTx,
-                );
+                // const blockNumbers = [
+                //     lastBlockFromPrice,
+                //     lastBlockFromLiquidity,
+                //     lastBlockFromLiquidityTx
+                //     // lastBlockFromSwapTx,
+                //   ];
+                  
+                //   const validBlockNumbers = blockNumbers.filter(blockNumber => !isNaN(blockNumber));
+                // console.log(lastBlockFromLiquidityTx, 'invalidBlockNumbers')
+                //   console.log(validBlockNumbers, 'validBlockNumbers')
+                  
+                //   const maxBlockNumber = Math.max(...validBlockNumbers);
 
-                setLastBlockSync(maxBlockNumber);
+                setLastBlockSync(lastBlockFromLiquidityTx);
                 setUsdPrice(dispatch, Number(usdPrice.USD));
 
                 // Store the fetched data in local storage
