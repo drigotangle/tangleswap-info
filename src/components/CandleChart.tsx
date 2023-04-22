@@ -29,7 +29,8 @@ const CandleChart: React.FC<Props> = ({ props }) => {
 const options: any = {
   chart: {
     type: 'candlestick',
-    height: 350
+    height: 500,
+    with: 300
   },
   candlestick: {
     colors: {

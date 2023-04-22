@@ -7,7 +7,7 @@ import { AppContext } from '../state';
 import { StyledTableRow } from './'
 
 interface IProps {
-  tokenList: IToken[] | undefined
+  tokenList: IToken[] | any
 }
 
 const TokenTable: FC<IProps> = (props) => {
@@ -54,7 +54,7 @@ const TokenTable: FC<IProps> = (props) => {
               {
                 isNaN(Number(token.priceChange / 100))
                   ?
-                  0
+                  'N/A'
                   :
                   <PriceChangeSpan priceChange={token.priceChange / 100}>{Number(token.priceChange / 100)}%</PriceChangeSpan>
               }

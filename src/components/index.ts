@@ -61,3 +61,7 @@ export const GlassPanelWrapper = styled(Grid)`
   width: max-content;
   padding: 5vh;
 `;
+
+export const SpanWrapper = styled.div`
+    width: max-content;
+`

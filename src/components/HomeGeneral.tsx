@@ -2,7 +2,7 @@ import { Paper, Typography } from '@mui/material'
 import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { PaperWrapper } from '.'
-import { feesGenerated, getTVL, vol24H } from '../functions'
+import { calculateTVLPercentageDifference, feesGenerated, getTVL, vol24H } from '../functions'
 import { ITVL } from '../interfaces'
 import { AppContext } from '../state'
 
@@ -22,13 +22,14 @@ const HomeGeneral = () => {
             setFees(fee)
             const lastIndex = tvl[tvl.length - 1].tvl
             setLastTvl(lastIndex)
-
+            const tvlChange = calculateTVLPercentageDifference(tvl)
+            console.log(tvlChange, 'tvlChange')
         })
     }, [state.chain])
     return (
         <Paper>
             <PaperWrapper>
-                <SpanWrapper><Typography variant="h5">Volume24h: ${barChart[barChart.length - 1].tvl * usdPrice}</Typography></SpanWrapper>
+                <SpanWrapper><Typography variant="h5">Volume24h: ${Number(barChart[barChart.length - 1].tvl * usdPrice).toFixed(2)}</Typography></SpanWrapper>
                 <SpanWrapper><Typography variant="h5">Fees generated: ${fees * usdPrice}</Typography></SpanWrapper>
                 <SpanWrapper><Typography variant="h5">TVL: ${Number(lastTvl * usdPrice).toFixed(2)}</Typography></SpanWrapper>
             </PaperWrapper>

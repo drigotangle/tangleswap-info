@@ -12,9 +12,9 @@ const CardWrapper = styled.div`
 
 const TopMoversCard = () => {
     const { state } = useContext(AppContext)
-    const tokenArr: IToken[] = state.tokenData
+    const { tokenData } = state
     return(<>
-        {tokenArr.map((data: IToken) => {
+        {tokenData.map((data: IToken | any) => {
             return(<>
                 <Card>
                     <CardWrapper>

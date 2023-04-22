@@ -1,7 +1,7 @@
 import { Typography, Container, Grid, Box } from '@mui/material'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { ColumnWrapper, GlassPanelWrapper, RowWrapper } from '../../components'
+import { GlassPanelWrapper } from '../../components'
 import { DailyVolumeChart } from '../../components/DailyVolumeChart'
 import Header from '../../components/Header'
 import HomeGeneral from '../../components/HomeGeneral'
@@ -10,11 +10,11 @@ import SubHeader from '../../components/SubHeader'
 import TokenTable from '../../components/TokenTable'
 import TransactionsTable from '../../components/TransactionsTable'
 import { TVLChart } from '../../components/TVLChart'
-import { getLiquidityTx, getPools, getSwapTx, getTokens, getTVL, groupDataByDay } from '../../functions'
-import { IPoolData, IToken, ITVL, ITx } from '../../interfaces'
+import { groupTVLPerDay } from '../../functions'
+import { ITVL } from '../../interfaces'
 import { AppContext } from '../../state'
-import { setLiquidtyBarData, setPoolData, setTokenData, setTVL, setTxData } from '../../state/Actions'
 import Loading from '../../components/Loading'
+import { AnyNsRecord } from 'dns'
 
 const HomeWrapper = styled.div`
     display: flex;
@@ -26,61 +26,21 @@ const HomeWrapper = styled.div`
 
 const Home = () => {
 
-    const { dispatch, state } = useContext(AppContext)
-    const { chain, usdPrice, tvl, tokenData, txData, poolData, barChart } = state
+    const { state } = useContext(AppContext)
+    const { chain, usdPrice, tvl } = state
+    const [barChart, setBarChart] = useState<ITVL[] | any[] | any>(undefined)
+    const storedData = localStorage.getItem('data');
 
     useEffect(() => {
+        console.log(state, 'state')
+        console.log(storedData, 'storedData')
+        if (tvl.length > 0) {
+            const _barChart = groupTVLPerDay(tvl)
+            setBarChart(_barChart)
+        }
+    }, [storedData, state])
 
-        //SWAPS TX
-        Promise.all([getLiquidityTx(20, chain), getSwapTx(20, chain)])
-            .then(async (res: ITx[][]) => {
-                setTxData(dispatch, undefined)
-                const liquidity = res[0]
-                const swap = res[1]
-                let all = swap.concat(liquidity)
-                all.sort((a: ITx, b: ITx) => { return b.block - a.block })
-                setTxData(dispatch, all)
-            })
-
-        //DAILY VOLUME CHART
-        const from = 10000
-        getTVL(from, chain).then((res: ITVL[]) => {
-            setLiquidtyBarData(dispatch, undefined)
-            setLiquidtyBarData(dispatch, groupDataByDay(res))
-        })
-
-        //POOLS TABLE
-        getPools(15, chain).then((res: IPoolData[]) => {
-            setPoolData(dispatch, undefined)
-            setPoolData(dispatch, res)
-        })
-
-        //TOKENS TABLE
-        getTokens(chain).then((res: IToken[]) => {
-            setTokenData(dispatch, undefined)
-            let arr: IToken[] = res
-            arr.sort((a: IToken, b: IToken) => {
-                return Number(a.TVL) - Number(b.TVL)
-            })
-            setTokenData(dispatch, arr)
-        })
-
-        //TVL CHART 
-        getTVL(30, chain).then((res) => {
-            setTVL(dispatch, undefined)
-
-            setTVL(dispatch, groupDataByDay(res))
-        })
-
-    }, [state.chain])
-
-    if (
-        !chain ||
-        !tvl ||
-        !usdPrice ||
-        !tokenData ||
-        !poolData ||
-        !txData) {
+    if (!storedData || !tvl || !barChart) {
         return (<>
             <SubHeader />
             <Header />
@@ -101,15 +61,15 @@ const Home = () => {
                     <Grid item xs={12} sm={6}>
                         <GlassPanelWrapper>
                             <Typography variant="h6">TVL</Typography>
-                            <Typography variant="h3">{Number(tvl[tvl.length - 1]?.tvl * usdPrice).toFixed(2)}</Typography>
+                            <Typography variant="h3">${Number(tvl[tvl.length - 1]?.tvl * usdPrice).toFixed(2)}</Typography>
                             <TVLChart chartWidth={500} chartData={state.tvl} />
                         </GlassPanelWrapper>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <GlassPanelWrapper>
                             <Typography variant="h6">Volume 24h</Typography>
-                            <Typography variant="h3">${Number(barChart[barChart?.length - 1]?.tvl * usdPrice).toFixed(2)}</Typography>
-                            <DailyVolumeChart chartWidth={500} chartData={state.barChart} />
+                            <Typography variant="h3">${Number(barChart[barChart.length - 1]?.tvl * usdPrice).toFixed(2)}</Typography>
+                            <DailyVolumeChart chartWidth={500} chartData={barChart} />
                         </GlassPanelWrapper>
                     </Grid>
                 </Grid>

@@ -2,163 +2,162 @@ import axios from "axios"
 import dayjs from "dayjs"
 import { CandlestickData, GroupedData, GroupedEntry, IFee, IPoolData, IPoolLiquidity, ITVL, ITx, SeriesData } from "../interfaces"
 
-export const getTVL = async (from: number, chain: string | undefined): Promise<any | ITVL[]> => {
-    try {
-        const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
-        let result = await axios.get(`${url}/tvl/${from}`)
-        result.data.sort((a: ITVL, b: ITVL) => a.blockNumber - b.blockNumber)
-        console.log(result.data, 'getTVL')
-        return result.data
-    } catch (error) {
-        console.log(error, 'for getTVL')
-    }
+export const getTVL = async (from: number, chain: string | any): Promise<any | ITVL[]> => {
+  try {
+    const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
+    let result = await axios.get(`${url}/tvl/${from}`)
+    result.data.sort((a: ITVL | any, b: ITVL | any) => a?.blockNumber - b?.blockNumber)
+    return result.data
+  } catch (error) {
+    console.log(error, 'for getTVL')
+  }
 }
 
 export const getTokens = async (chain: string | undefined): Promise<any> => {
-    try {
-        const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
-        const result = await axios.get(`${url}/tokens`)
-        console.log(result.data, 'tokens')
-        return result.data
-    } catch (error) {
-        return error
-    }
+  try {
+    const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
+    const result = await axios.get(`${url}/tokens`)
+    console.log(result.data, 'tokens')
+    return result.data
+  } catch (error) {
+    return error
+  }
 }
 
 export const getPools = async (limit: number, chain: string | undefined): Promise<IPoolData | any> => {
-    try {
-        const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
-        const result = await axios.get(`${url}/pools/${limit}`)
-        console.log(result.data, 'poolsAqui')
-        return result.data
-    } catch (error: any) {
-        return error
-    }
+  try {
+    const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
+    const result = await axios.get(`${url}/pools/${limit}`)
+    console.log(result.data, 'poolsAqui')
+    return result.data
+  } catch (error: any) {
+    return error
+  }
 }
 
 export const getLiquidityTx = async (limit: number, chain: string | undefined): Promise<any> => {
-    try {
-        const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
-        const result = await axios.get(`${url}/liquidityTransactions/${limit}`)
-        console.log(result.data, 'getLiquidityTx')
-        return result.data
-    } catch (error) {
-        return error
-    }
+  try {
+    const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
+    const result = await axios.get(`${url}/liquidityTransactions/${limit}`)
+    console.log(result.data, 'getLiquidityTx')
+    return result.data
+  } catch (error) {
+    return error
+  }
 }
 
 export const getSwapTx = async (limit: number, chain: string | undefined): Promise<any> => {
-    try {
-        const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
-        const result = await axios.get(`${url}/swapTransactions/${limit}`)
-        return result.data
-    } catch (error) {
-        return error
-    }
+  try {
+    const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
+    const result = await axios.get(`${url}/swapTransactions/${limit}`)
+    return result.data
+  } catch (error) {
+    return error
+  }
 }
 
 export const getFees = async (chain: string | undefined): Promise<IFee[] | any> => {
-    try {
-        const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
-        const result = await axios.get(`${url}/fees`)
-        return result.data
-    } catch (error) {
-        return error
-    }
+  try {
+    const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
+    const result = await axios.get(`${url}/fees`)
+    return result.data
+  } catch (error) {
+    return error
+  }
 }
 
 //
 
 export const vol24H = (liquidity: ITVL[]) => {
-    let volume = 0;
-    for (const tvl of liquidity) {
-        if(dayjs(tvl.time).format('DD') === dayjs(liquidity[liquidity.length - 1].tvl).format('DD')){
-            volume = Number(liquidity[liquidity.length - 1].tvl) - Number(tvl.tvl)
-            break
-        }
+  let volume = 0;
+  for (const tvl of liquidity) {
+    if (dayjs(tvl.time).format('DD') === dayjs(liquidity[liquidity.length - 1].tvl).format('DD')) {
+      volume = Number(liquidity[liquidity.length - 1].tvl) - Number(tvl.tvl)
+      break
     }
-    return Math.abs(volume)
+  }
+  return Math.abs(volume)
 }
 
 export const feesGenerated = async (chain: string | undefined): Promise<number> => {
-    const feesArr: IFee[] = await getFees(chain)
-    let totalFee = 0
-    console.log(feesArr, 'feesArr')
-        for(const fees of feesArr){
-            if(dayjs(fees.time).format('DD') === dayjs(feesArr[feesArr.length - 1].time).format('DD')){
-                totalFee += fees.fee
-            }            
-        }
-        console.log(totalFee, 'totalFee')
-    return Math.abs(totalFee)
+  const feesArr: IFee[] = await getFees(chain)
+  let totalFee = 0
+  console.log(feesArr, 'feesArr')
+  for (const fees of feesArr) {
+    if (dayjs(fees.time).format('DD') === dayjs(feesArr[feesArr.length - 1].time).format('DD')) {
+      totalFee += fees.fee
+    }
+  }
+  console.log(totalFee, 'totalFee')
+  return Math.abs(totalFee)
 }
 
-export const groupDataByDay = (data: ITVL[]): GroupedEntry[] => {
-    const groupedData: GroupedData = {};
-    data.sort((a: ITVL, b: ITVL) => { return a.blockNumber - b.blockNumber });
-    data.forEach((entry: ITVL) => {
-      const dayStart = entry.time
-      const dayFormatted = dayjs(dayStart).format('DD');
-  
-      if (!groupedData[dayFormatted]) {
-        groupedData[dayFormatted] = 0;
-      }
-  
-      groupedData[dayFormatted] += entry.tvl;
-    });
-  
-    return Object.keys(groupedData).map((day: string) => ({ day, tvl: groupedData[day] }));
-  }
+export const groupLiquidityPerDay = (data: IPoolLiquidity[]): GroupedEntry[] => {
+  const groupedData: GroupedData = {};
 
-  export const groupLiquidityPerDay = (data: IPoolLiquidity[]): GroupedEntry[] => {
-    const groupedData: GroupedData = {};
-  
-    data.forEach((entry: IPoolLiquidity) => {
-      const dayStart = dayjs(entry.time).format('DD');
-      const dayFormatted = dayjs(dayStart).format('DD');
-  
-      if (!groupedData[dayFormatted]) {
-        groupedData[dayFormatted] = 0;
-      }
-  
-      groupedData[dayFormatted] += entry.liquidity;
-    });
-  
-    return Object.keys(groupedData).map((day: string) => ({ day, tvl: groupedData[day] }));
-  };
-  
+  data.forEach((entry: IPoolLiquidity) => {
+    const date = new Date(entry.time);
+    const dayFormatted = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
+    if (!groupedData[dayFormatted]) {
+      groupedData[dayFormatted] = 0;
+    }
+
+    groupedData[dayFormatted] += entry.liquidity;
+  });
+
+  return Object.keys(groupedData).map((day: string) => ({ day, tvl: groupedData[day] }));
+};
+
+export const groupTVLPerDay = (data: ITVL[]): GroupedEntry[] => {
+  const groupedData: GroupedData = {};
+
+  data.forEach((entry: ITVL) => {
+    const date = new Date(entry.time);
+    const dayFormatted = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
+    if (!groupedData[dayFormatted]) {
+      groupedData[dayFormatted] = 0;
+    }
+
+    groupedData[dayFormatted] += entry.tvl;
+  });
+
+  return Object.keys(groupedData).map((day: string) => ({ day, tvl: groupedData[day] }));
+};
+
 export const poolsForToken = (pools: IPoolData[], tokenAddress: string | undefined): IPoolData[] => {
-    const poolSet = new Set()
-    let poolArr: IPoolData[] = []
-    for(const pool of pools){
+  const poolSet = new Set()
+  let poolArr: IPoolData[] = []
+  for (const pool of pools) {
 
-        if(
-          (pool.token0 === tokenAddress) ||
-          (pool.token1 === tokenAddress) &&
-          !poolSet.has(pool) &&
-          pool !== undefined
-          ){
-            poolSet.add(pool)
-            poolArr.push(pool)
-        }
-    }     
-      return poolArr
+    if (
+      (pool.token0 === tokenAddress) ||
+      (pool.token1 === tokenAddress) &&
+      !poolSet.has(pool) &&
+      pool !== undefined
+    ) {
+      poolSet.add(pool)
+      poolArr.push(pool)
+    }
+  }
+  return poolArr
 }
 
 export const txsForToken = (txs: ITx[], symbol: string): ITx[] => {
-    const txSet = new Set()
-    let txArr: ITx[] = []
-    for(const tx of txs){
-        if(
-            (tx.symbol0 === symbol) ||
-            (tx.symbol1 === symbol) &&
-            !txSet.has(tx)
-        ){  
-            txSet.add(tx)
-            txArr.push(tx)
-        }
+  const txSet = new Set()
+  let txArr: ITx[] = []
+  for (const tx of txs) {
+    if (
+      (tx.symbol0 === symbol) ||
+      (tx.symbol1 === symbol) &&
+      !txSet.has(tx)
+    ) {
+      txSet.add(tx)
+      txArr.push(tx)
     }
-    return txArr
+  }
+  return txArr
 }
 
 export const getCandlestickData = (data: SeriesData[]): CandlestickData[] => {
@@ -213,17 +212,17 @@ export const getCandlestickData = (data: SeriesData[]): CandlestickData[] => {
 
 
 export const poolsToCandle = (pools: IPoolData[] | any, tokenAddress: string | undefined): SeriesData[] => {
-    let poolsArr: IPoolData[] = []
-    for(const pool of pools) {
+  let poolsArr: IPoolData[] = []
+  for (const pool of pools) {
     console.log(pool, 'poolsToCandle')
-      if(tokenAddress === pool?.token1 || tokenAddress === pool?.token0){
-        console.log('chamou:', pool)
-        poolsArr.push(pool)
-      }
+    if (tokenAddress === pool?.token1 || tokenAddress === pool?.token0) {
+      console.log('chamou:', pool)
+      poolsArr.push(pool)
     }
-    poolsArr.sort((a: IPoolData, b: IPoolData) => { return a.tvl - b.tvl})
-    const result = poolsArr[0].price
-    return result
+  }
+  poolsArr.sort((a: IPoolData, b: IPoolData) => { return a.tvl - b.tvl })
+  const result = poolsArr[0].price
+  return result
 }
 
 export const getUsdPrice = async (chain: string) => {
@@ -237,7 +236,7 @@ export const getUsdPrice = async (chain: string) => {
 }
 
 export const getExplorerUrl = (chain: string | undefined, hash: string | undefined) => {
-  switch(chain){
+  switch (chain) {
     case 'Shimmer':
       return `https://explorer.evm.testnet.shimmer.network/tx/${hash}`
     case 'Ethereum':
@@ -250,8 +249,8 @@ export const getExplorerUrl = (chain: string | undefined, hash: string | undefin
 export const removeUnmatchedPools = (pools: IPoolData[], tokenAddress: string | any): IPoolData[] => {
   const formattedArr: IPoolData[] = []
   const set = new Set()
-  for(const pool of pools){
-    if([pool.token0, pool.token1].includes(tokenAddress) && !set.has(pool)){
+  for (const pool of pools) {
+    if ([pool.token0, pool.token1].includes(tokenAddress) && !set.has(pool)) {
       formattedArr.push(pool)
       set.add(pool)
     }
@@ -263,14 +262,14 @@ export const removeUnmatchedPools = (pools: IPoolData[], tokenAddress: string | 
 export const filterTx = (txs: ITx[], token0: string, token1: string) => {
   let txArr: ITx[] = []
   const set = new Set()
-  for(const tx of txs){
-    if(
+  for (const tx of txs) {
+    if (
       [tx.token0, tx.token1].includes(token0) &&
       [tx.token0, tx.token1].includes(token1) &&
       !set.has(tx)
-      ){
-        txArr.push(tx)
-        set.add(tx)
+    ) {
+      txArr.push(tx)
+      set.add(tx)
     }
   }
   return txArr
@@ -284,14 +283,14 @@ export const tradingVolume24h = (swaps: ITx[], tokenAddress: string | any): Grou
 
   formatedSwaps[0] = {
     day: entryTime,
-    tvl:  amount(swaps[0].token0, swaps[0].amount0, swaps[0].amount1)
-  } 
+    tvl: amount(swaps[0].token0, swaps[0].amount0, swaps[0].amount1)
+  }
 
-  for(const swap of swaps){
-    if(dayjs(swap.time).format('DD') === entryTime){
+  for (const swap of swaps) {
+    if (dayjs(swap.time).format('DD') === entryTime) {
       const index = formatedSwaps.findIndex((item) => item.day === entryTime)
       formatedSwaps[index].tvl += amount(swap.token0, swap.amount0, swap.amount1)
-    }else{
+    } else {
       formatedSwaps.push({
         day: dayjs(swap.time).format('DD'),
         tvl: amount(swap.token0, swap.amount0, swap.amount1)
@@ -306,8 +305,8 @@ export const tradingVolume24h = (swaps: ITx[], tokenAddress: string | any): Grou
 
 export const volume7D = (groupedEntry: GroupedEntry[]): number => {
   let volume7D = 0
-  for(const data of groupedEntry){
-    if(groupedEntry.indexOf(data) <= 7){
+  for (const data of groupedEntry) {
+    if (groupedEntry.indexOf(data) <= 7) {
       console.log(volume7D, 'volume7D')
       volume7D += data.tvl
     }
@@ -316,6 +315,45 @@ export const volume7D = (groupedEntry: GroupedEntry[]): number => {
   return volume7D
 }
 
+export const volume24h = (groupedEntry: GroupedEntry[]): number => {
+  let volume7D = 0
+  for (const data of groupedEntry) {
+    if (groupedEntry.indexOf(data) <= 1) {
+      console.log(volume7D, 'volume7D')
+      volume7D += data.tvl
+    }
+    break
+  }
+  return volume7D
+}
+
+export const calculateTVLPercentageDifference = (barChart: ITVL[]): number | null => {
+  if (!barChart || barChart.length === 0) {
+    return null;
+  }
+
+  // Find the most recent data point
+  const mostRecentDataPoint = barChart[barChart.length - 1];
+
+  // Find the data point from 24 hours ago
+  const currentTime = new Date(mostRecentDataPoint.time);
+  const time24HoursAgo = new Date(currentTime.getTime() - 24 * 60 * 60 * 1000).toISOString();
+
+  const dataPoint24HoursAgo = barChart
+    .slice()
+    .reverse()
+    .find((data) => new Date(data.time).getTime() <= new Date(time24HoursAgo).getTime());
+
+  if (!dataPoint24HoursAgo || dataPoint24HoursAgo.tvl === 0) {
+    return null;
+  }
+
+  // Calculate the percentage difference
+  const difference = mostRecentDataPoint.tvl - dataPoint24HoursAgo.tvl;
+  const percentageDifference = (difference / dataPoint24HoursAgo.tvl) * 100;
+
+  return percentageDifference;
+}
 
 
 

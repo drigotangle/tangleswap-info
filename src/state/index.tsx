@@ -4,7 +4,17 @@ import { GroupedEntry, IPoolData, IToken, ITVL, ITx } from '../interfaces';
 const initialState = {
   tvl: [{time: '', tvl: 0, blockNumer: 0}], 
   barChart: [{time: '', tvl: 0, blockNumer: 0}],
-  tokenData: [],
+  tokenData: [{
+    tokenName: '',
+    tokenSymbol: '',
+    lastPrice: 0,
+    priceChange: 0,
+    volume24h: 0,
+    volume7d: 0,
+    tradingVolume24h: 0,
+    tradingVolume7D: 0,
+    TVL: 0
+  }],
   poolData: [],
   txData: [],
   chain: 'Shimmer',
