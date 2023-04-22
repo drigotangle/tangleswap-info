@@ -40,7 +40,7 @@ const Home = () => {
         }
     }, [storedData, state])
 
-    if (!storedData || !tvl || !barChart) {
+    if (!storedData || !tvl || !barChart || tvl.length < 1 || barChart.length < 1) {
         return (<>
             <SubHeader />
             <Header />
