@@ -40,7 +40,7 @@ const Home = () => {
         }
     }, [storedData, state])
 
-    if (localState === initialState) {
+    if (localState === initialState && storedData !== null || undefined) {
         return (<>
             <SubHeader />
             <Header />
@@ -78,15 +78,15 @@ const Home = () => {
                     <Box mt={4} mb={4}>
                         <Typography variant="h4">Top tokens</Typography>
                     </Box>
-                    <TokenTable tokenList={state.tokenData} />
+                    <TokenTable tokenList={localState.tokenData} />
                     <Box mt={4} mb={4}>
                         <Typography variant="h4">Top pools</Typography>
                     </Box>
-                    <PoolDataTable pooList={state.poolData} usdPrice={usdPrice} chain={chain} />
+                    <PoolDataTable pooList={localState.poolData} usdPrice={usdPrice} chain={chain} />
                     <Box mt={4} mb={4}>
                         <Typography variant="h4">Recent transactions</Typography>
                     </Box>
-                    <TransactionsTable chain={chain} txData={state.txData} usdPrice={usdPrice} />
+                    <TransactionsTable chain={chain} txData={localState.txData} usdPrice={usdPrice} />
                 </Container>
             </>
         )
