@@ -47,60 +47,50 @@ const Header = () => {
 
     useEffect(() => {
         loadDataFromLocalStorage();
-
-        Promise.all([
-            getTVL(1000, chain),
-            getUsdPrice(chain),
-            getPools(1000, chain),
-            getTokens(chain),
-            getLiquidityTx(20, chain),
-            getSwapTx(20, chain),
-        ])
-            .then(([
-                tvl,
-                usdPrice,
-                pools,
-                tokens,
-                liquidityTx,
-                swapTx,
-            ]) => {
-                const firstPriceArr = pools[0].price;
-                const firstLiquidityArr = pools[0].liquidity;
-                const lastBlockFromPrice = firstPriceArr[firstPriceArr.length - 1].block;
-                const lastBlockFromLiquidity = firstLiquidityArr[firstLiquidityArr.length - 1].block;
-                const lastBlockFromLiquidityTx = liquidityTx[liquidityTx.length - 1].blockNumber;
-                // const lastBlockFromSwapTx = swapTx[swapTx.length - 1].block;
-
-                // const blockNumbers = [
-                //     lastBlockFromPrice,
-                //     lastBlockFromLiquidity,
-                //     lastBlockFromLiquidityTx
-                //     // lastBlockFromSwapTx,
-                //   ];
-                  
-                //   const validBlockNumbers = blockNumbers.filter(blockNumber => !isNaN(blockNumber));
-                // console.log(lastBlockFromLiquidityTx, 'invalidBlockNumbers')
-                //   console.log(validBlockNumbers, 'validBlockNumbers')
-                  
-                //   const maxBlockNumber = Math.max(...validBlockNumbers);
-
-                setLastBlockSync(lastBlockFromLiquidityTx);
-                setUsdPrice(dispatch, Number(usdPrice.USD));
-
-                // Store the fetched data in local storage
-                localStorage.setItem('data', JSON.stringify({
-                    tvl,
-                    usdPrice,
-                    pools,
-                    tokens,
-                    liquidityTx,
-                    swapTx,
-                }));
-            });
-
-        const storedData = localStorage.getItem('data');
-        console.log(storedData, 'dat afrom storage')
-    }, [chain, dispatch, loadDataFromLocalStorage]);
+      
+        const fetchData = async () => {
+          try {
+            const [
+              tvl,
+              usdPrice,
+              pools,
+              tokens,
+              liquidityTx,
+              swapTx,
+            ] = await Promise.all([
+              getTVL(1000, chain),
+              getUsdPrice(chain),
+              getPools(1000, chain),
+              getTokens(chain),
+              getLiquidityTx(20, chain),
+              getSwapTx(20, chain),
+            ]);
+      
+            const firstPriceArr = pools[0].price;
+            const firstLiquidityArr = pools[0].liquidity;
+            const lastBlockFromPrice = firstPriceArr[firstPriceArr.length - 1].block;
+            const lastBlockFromLiquidity = firstLiquidityArr[firstLiquidityArr.length - 1].block;
+            const lastBlockFromLiquidityTx = liquidityTx[liquidityTx.length - 1].blockNumber;
+      
+            setLastBlockSync(lastBlockFromLiquidityTx);
+            setUsdPrice(dispatch, Number(usdPrice.USD));
+      
+            // Store the fetched data in local storage
+            localStorage.setItem('data', JSON.stringify({
+              tvl,
+              usdPrice,
+              pools,
+              tokens,
+              liquidityTx,
+              swapTx,
+            }));
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+        };
+      
+        fetchData();
+      }, [chain, dispatch, loadDataFromLocalStorage]);
 
     useEffect(() => {
         loadDataFromLocalStorage();

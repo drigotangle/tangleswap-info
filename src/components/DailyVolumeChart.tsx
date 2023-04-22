@@ -1,4 +1,4 @@
-import { BarChart, XAxis, Bar } from 'recharts'
+import { BarChart, XAxis, Bar, Tooltip } from 'recharts'
 import { FC, useContext } from 'react'
 import { AppContext } from '../state'
 import { Skeleton } from '@mui/material'
@@ -16,34 +16,41 @@ const Wrapper = styled.div`
 `
 
 export const DailyVolumeChart: FC<IChart> = (props) => {
+    const { state } = useContext(AppContext)
+    const { usdPrice } = state
     const { chartWidth, chartData } = props
-    
-    return(
+
+    return (
         <Wrapper>
-        {
+            {
 
-            chartData !== undefined
+                chartData !== undefined
 
-                ?
+                    ?
                     <BarChart width={chartWidth} height={300} data={chartData}>
                         <XAxis
-                        dataKey="day"
-                        axisLine={false}
-                        tickLine={false}
-                        minTickGap={10}
+                            dataKey="day"
+                            axisLine={false}
+                            tickLine={false}
+                            minTickGap={10}
                         />
-                        <Bar 
-                            dataKey="tvl" 
+                        <Bar
+                            dataKey="tvl"
                             barSize={10}
                             fill="#740E95"
-                        />              
+                        />
+                        <Tooltip
+                            labelFormatter={(value: any) => `Day: ${value}`}
+                            formatter={(value: any) => [`$${Number(value * usdPrice).toFixed(2)}`]}
+                            cursor={{ fill: 'rgba(255, 0, 0, 0.1)' }}
+                        />
                     </BarChart>
 
-                :
+                    :
 
-                    <Skeleton variant="rectangular" width={500} height={300}  />
+                    <Skeleton variant="rectangular" width={500} height={300} />
 
-        }
+            }
         </Wrapper>
     )
 }

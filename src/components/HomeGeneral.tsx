@@ -1,16 +1,11 @@
 import { Paper, Typography } from '@mui/material'
 import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { PaperWrapper } from '.'
+import { PaperWrapper, SpanWrapper } from '.'
 import { calculateTVLPercentageDifference, feesGenerated, getTVL, vol24H } from '../functions'
 import { ITVL } from '../interfaces'
 import { AppContext } from '../state'
 
-
-
-const SpanWrapper = styled.div`
-    width: max-content;
-`
 
 const HomeGeneral = () => {
     const { state } = useContext(AppContext)

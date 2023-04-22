@@ -1,4 +1,4 @@
-import { Area, AreaChart, XAxis } from 'recharts'
+import { Area, AreaChart, XAxis, Tooltip } from 'recharts'
 import { FC, useContext } from 'react'
 import { AppContext } from '../state'
 import dayjs from 'dayjs'
@@ -18,7 +18,7 @@ const Wrapper = styled.div`
 export const TVLChart: FC<IChart> = (props) => {
     const { chartWidth, chartData } = props
     const { state } = useContext(AppContext)
-
+    const { usdPrice } = state
     // useEffect(() => {
     //     const from = 10000       
     //     getTVL(from).then((res) => {
@@ -41,36 +41,41 @@ export const TVLChart: FC<IChart> = (props) => {
     // HERE WE CHECK IF THE DATA LENGTH IS GREATER THEN 0
     // IF IT DOES WE DISPLAY THE CHART OR WE DISPLAY THE
     // SKELETON
-    
-    return(
+
+    return (
         <Wrapper>
-        {
+            {
 
-            chartData !== undefined 
+                chartData !== undefined
 
-                ?
+                    ?
 
                     <AreaChart width={chartWidth} height={300} data={chartData}>
                         <XAxis
-                        dataKey="day"
-                        axisLine={false}
-                        tickLine={false}
-                        minTickGap={10}
-                        color='#191B1F'
+                            dataKey="day"
+                            axisLine={false}
+                            tickLine={false}
+                            minTickGap={10}
+                            color='#191B1F'
                         />
-                        <Area 
-                            dataKey="tvl" 
+                        <Area
+                            dataKey="tvl"
                             strokeWidth={2}
                             fill='#2172E5'
-                            fillOpacity={1} 
-                        />              
+                            fillOpacity={1}
+                        />
+                        <Tooltip
+                            labelFormatter={(value: any) => `Day: ${value}`}
+                            formatter={(value: any) => [`$${Number(value * usdPrice).toFixed(2)}`]}
+                            cursor={{ stroke: 'red', strokeWidth: 1 }}
+                        />
                     </AreaChart>
 
-                :
+                    :
 
-                    <Skeleton variant="rectangular" width={500} height={300}  />
+                    <Skeleton variant="rectangular" width={500} height={300} />
 
-        }
+            }
         </Wrapper>
     )
 }

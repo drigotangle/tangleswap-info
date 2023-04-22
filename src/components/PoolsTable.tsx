@@ -5,6 +5,7 @@ import { IPoolData } from "../interfaces";
 import { AppContext } from "../state";
 import { SkeletonWrapper } from ".";
 import { useNavigate } from "react-router-dom";
+import Loading from "./Loading";
 
 interface IProps {
   pooList: IPoolData[] | undefined
@@ -63,7 +64,7 @@ const PoolDataTable: FC<IProps> = (props) => {
 
     :
 
-    <SkeletonWrapper><Skeleton variant="rectangular" width={1030} height={300}  /></SkeletonWrapper>
+    <Loading />
     
     }</ChartWrapper>);
 };
