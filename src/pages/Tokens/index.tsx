@@ -39,14 +39,14 @@ const Pools = () => {
 
       if (loading) {
         return (<>
-            <SubHeader setLoading={setLoading} />
+            <SubHeader  />
             <Header />
             <Loading />
         </>)
     }
 
     return(<>
-        <SubHeader setLoading={setLoading} />
+        <SubHeader  />
         <Header />
         <HomeWrapper>
             <ColumnWrapper>

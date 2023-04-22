@@ -68,14 +68,14 @@ const TokenPage = () => {
 
   if (loading) {
     return (<>
-        <SubHeader setLoading={setLoading} />
+        <SubHeader  />
         <Header />
         <Loading />
     </>)
 }
 
   return (<>
-    <SubHeader setLoading={setLoading} />
+    <SubHeader  />
     <Header />
     <HomeWrapper>
       {

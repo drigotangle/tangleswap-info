@@ -18,88 +18,89 @@ const StyledSpan = styled.span`
     margin: auto auto;
 `
 
-interface HeaderProps {
-    setLoading: (loading: boolean) => void;
-}
-
-const SubHeader: FC<HeaderProps> = ({ setLoading }) => {
+const SubHeader = () => {
     const [lastBlockSync, setLastBlockSync] = useState<number>()
+    const [loading, setLoading] = useState(true);
     const { state, dispatch } = useContext(AppContext)
     const { chain, usdPrice } = state
 
     const loadDataFromLocalStorage = useCallback(
         (setLoading: (loading: boolean) => void) => {
-          const storedData = localStorage.getItem("data");
-          if (storedData) {
-            const {
-              tvl,
-              usdPrice,
-              pools,
-              tokens,
-              liquidityTx,
-              swapTx,
-            } = JSON.parse(storedData);
-      
-            setTVL(dispatch, tvl);
-            setUsdPrice(dispatch, Number(usdPrice.USD));
-            setPoolData(dispatch, pools);
-            setTokenData(dispatch, tokens);
-            setTxData(dispatch, [...liquidityTx, ...swapTx]);
-      
-            setLoading(false); // Set loading to false when the data is loaded
-          }
-          console.log(storedData, "data from storage");
-          console.log(state, "state");
+            const storedData = localStorage.getItem('data');
+            if (storedData) {
+                const {
+                    tvl,
+                    usdPrice,
+                    pools,
+                    tokens,
+                    liquidityTx,
+                    swapTx,
+                } = JSON.parse(storedData);
+
+                setTVL(dispatch, tvl);
+                setUsdPrice(dispatch, Number(usdPrice.USD));
+                setPoolData(dispatch, pools);
+                setTokenData(dispatch, tokens);
+                setTxData(dispatch, [...liquidityTx, ...swapTx]);
+            }
         },
-        [dispatch]
-      );
+        [dispatch],
+    );
 
     useEffect(() => {
         loadDataFromLocalStorage(setLoading);
-      
+
         const fetchData = async () => {
-          try {
-            const [
-              tvl,
-              usdPrice,
-              pools,
-              tokens,
-              liquidityTx,
-              swapTx,
-            ] = await Promise.all([
-              getTVL(1000, chain),
-              getUsdPrice(chain),
-              getPools(1000, chain),
-              getTokens(chain),
-              getLiquidityTx(20, chain),
-              getSwapTx(20, chain),
-            ]);
-      
-            const firstPriceArr = pools[0].price;
-            const firstLiquidityArr = pools[0].liquidity;
-            const lastBlockFromPrice = firstPriceArr[firstPriceArr.length - 1].block;
-            const lastBlockFromLiquidity = firstLiquidityArr[firstLiquidityArr.length - 1].block;
-            const lastBlockFromLiquidityTx = liquidityTx[liquidityTx.length - 1].blockNumber;
-      
-            setLastBlockSync(lastBlockFromLiquidityTx);
-            setUsdPrice(dispatch, Number(usdPrice.USD));
-      
-            // Store the fetched data in local storage
-            localStorage.setItem('data', JSON.stringify({
-              tvl,
-              usdPrice,
-              pools,
-              tokens,
-              liquidityTx,
-              swapTx,
-            }));
-          } catch (error) {
-            console.error('Error fetching data:', error);
-          }
+            try {
+                const [
+                    tvl,
+                    usdPrice,
+                    pools,
+                    tokens,
+                    liquidityTx,
+                    swapTx,
+                ] = await Promise.all([
+                    getTVL(1000, chain),
+                    getUsdPrice(chain),
+                    getPools(1000, chain),
+                    getTokens(chain),
+                    getLiquidityTx(20, chain),
+                    getSwapTx(20, chain),
+                ]);
+
+                const firstPriceArr = pools[0].price;
+                const firstLiquidityArr = pools[0].liquidity;
+                const lastBlockFromPrice = firstPriceArr[firstPriceArr.length - 1].block;
+                const lastBlockFromLiquidity = firstLiquidityArr[firstLiquidityArr.length - 1].block;
+                const lastBlockFromLiquidityTx = liquidityTx[liquidityTx.length - 1].blockNumber;
+
+                setLastBlockSync(lastBlockFromLiquidityTx);
+                setUsdPrice(dispatch, Number(usdPrice.USD));
+
+                // Store the fetched data in local storage
+                localStorage.setItem('data', JSON.stringify({
+                    tvl,
+                    usdPrice,
+                    pools,
+                    tokens,
+                    liquidityTx,
+                    swapTx,
+                }));
+
+                // Update the state with the fetched data
+                setTVL(dispatch, tvl);
+                setPoolData(dispatch, pools);
+                setTokenData(dispatch, tokens);
+                setTxData(dispatch, [...liquidityTx, ...swapTx]);
+
+                setLoading(false); // Set loading to false when the data is loaded
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
         };
-      
+
         fetchData();
-      }, [chain, dispatch, loadDataFromLocalStorage]);
+    }, [chain, dispatch, loadDataFromLocalStorage, setLoading]);
 
       useEffect(() => {
         // Schedule local storage deletion every 5 minutes

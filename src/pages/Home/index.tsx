@@ -36,20 +36,19 @@ const Home = () => {
         if (tvl.length > 1) {
             const _barChart = groupTVLPerDay(tvl);
             setBarChart(_barChart);
-            setLoading(false); // Set loading to false when the data is updated
         }
     }, [storedData, state]);
 
-    if (loading) {
-        return (<>
-            <SubHeader setLoading={setLoading} />
-            <Header />
-            <Loading />
-        </>)
-    }else{
-        return (
+    // if (loading) {
+    //     console.log(state, 'state')
+    //     return (<>
+    //         <SubHeader  />
+    //         <Header />
+    //         <Loading />
+    //     </>)
+        return(
             <>
-                <SubHeader setLoading={setLoading} />
+                <SubHeader  />
                 <Header />
                 <Container maxWidth="lg">
                     <Box mt={4} mb={4}>
@@ -88,7 +87,7 @@ const Home = () => {
                     <TransactionsTable chain={chain} txData={state.txData} usdPrice={usdPrice} />
                 </Container>
             </>
-        )}
+        )
     }
 
 export default Home

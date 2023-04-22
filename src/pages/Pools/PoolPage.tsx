@@ -64,7 +64,7 @@ const PoolPage = () => {
 
     if (loading) {
       return (<>
-          <SubHeader setLoading={setLoading} />
+          <SubHeader  />
           <Header />
           <Loading />
       </>)
@@ -72,7 +72,7 @@ const PoolPage = () => {
     
     return (
       <>
-        <SubHeader setLoading={setLoading} />
+        <SubHeader  />
         <Header />
         <HomeWrapper>
           {_poolData === undefined || liquidityData === undefined || txs === undefined ? (
