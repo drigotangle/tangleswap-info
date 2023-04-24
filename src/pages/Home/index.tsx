@@ -39,13 +39,13 @@ const Home = () => {
         }
     }, [storedData, state]);
 
-    // if (loading) {
-    //     console.log(state, 'state')
-    //     return (<>
-    //         <SubHeader  />
-    //         <Header />
-    //         <Loading />
-    //     </>)
+    if (state === initialState) {
+        return (<>
+            <SubHeader  />
+            <Header />
+        </>)
+    }
+
         return(
             <>
                 <SubHeader  />
