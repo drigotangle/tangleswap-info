@@ -65,7 +65,7 @@ const Home = () => {
                         </Grid>
                     </Grid>
                     <Box mt={4}>
-                        <HomeGeneral />
+                    <Skeleton variant="rectangular" width="100%" height={20} />
                     </Box>
                     <Box mt={4} mb={4}>
                         <Typography variant="h4">Top tokens</Typography>
