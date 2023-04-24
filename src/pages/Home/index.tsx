@@ -43,6 +43,7 @@ const Home = () => {
         return (<>
             <SubHeader  />
             <Header />
+            <Loading />
         </>)
     }
 

@@ -8,7 +8,7 @@ import TokenTable from '../../components/TokenTable'
 import TopMoversCard from '../../components/TopMoversCard'
 import { getTokens } from '../../functions'
 import { IToken } from '../../interfaces'
-import { AppContext } from '../../state'
+import { AppContext, initialState } from '../../state'
 import { setTokenData } from '../../state/Actions'
 import Loading from '../../components/Loading'
 
@@ -35,6 +35,15 @@ const Pools = () => {
             setTokenData(dispatch, arr)
         })    
       }, [state.chain])
+
+      if (state === initialState) {
+        return (<>
+            <SubHeader  />
+            <Header />
+            <Loading />
+        </>)
+    }
+
 
 
     return(<>

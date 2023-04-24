@@ -7,7 +7,7 @@ import PoolDataTable from '../../components/PoolsTable'
 import SubHeader from '../../components/SubHeader'
 import { getPools } from '../../functions'
 import { IPoolData } from '../../interfaces'
-import { AppContext } from '../../state'
+import { AppContext, initialState } from '../../state'
 import { setPoolData, setChain } from '../../state/Actions'
 import Loading from '../../components/Loading'
 
@@ -33,6 +33,15 @@ const Pools = () => {
             setPoolData(dispatch, res)
         })       
     }, [])
+
+    if (state === initialState) {
+        return (<>
+            <SubHeader  />
+            <Header />
+            <Loading />
+        </>)
+    }
+
 
     return(<>
         <SubHeader  />

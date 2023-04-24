@@ -9,7 +9,7 @@ import { DailyVolumeChart } from '../../components/DailyVolumeChart'
 import Header from '../../components/Header'
 import TransactionsTable from '../../components/TransactionsTable';
 import SubHeader from '../../components/SubHeader';
-import { AppContext } from '../../state';
+import { AppContext, initialState } from '../../state';
 import Loading from '../../components/Loading';
 
 
@@ -61,6 +61,15 @@ const PoolPage = () => {
           setTxs(filteredTx)
           console.log(txs, 'txs')
     }, [])
+
+    if (state === initialState) {
+      return (<>
+          <SubHeader  />
+          <Header />
+          <Loading />
+      </>)
+  }
+
     
     return (
       <>

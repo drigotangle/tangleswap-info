@@ -10,7 +10,7 @@ import Header from '../../components/Header'
 import TransactionsTable from '../../components/TransactionsTable';
 import PoolsTable from '../../components/PoolsTable';
 import SubHeader from '../../components/SubHeader';
-import { AppContext } from '../../state';
+import { AppContext, initialState } from '../../state';
 import Loading from '../../components/Loading';
 
 const LeftWrapper = styled.div`
@@ -65,6 +65,15 @@ const TokenPage = () => {
   useEffect(() => {
     console.log('candleStickData here:', JSON.stringify(candleStickData))
   }, [candleStickData])
+
+  if (state === initialState) {
+    return (<>
+        <SubHeader  />
+        <Header />
+        <Loading />
+    </>)
+}
+
 
 
   return (<>
