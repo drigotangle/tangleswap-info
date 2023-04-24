@@ -3,7 +3,7 @@ import { FC, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChartWrapper, PriceChangeSpan, SkeletonWrapper, StyledTableCell, TokenImage } from '.';
 import { IToken } from '../interfaces';
-import { AppContext } from '../state';
+import { AppContext, initialState } from '../state';
 import { StyledTableRow } from './'
 import { logo, xLogo } from '../constants';
 
@@ -22,7 +22,7 @@ const TokenTable: FC<IProps> = (props) => {
   return (<ChartWrapper>
     {
 
-      tokenList !== undefined && tokenList.length > 0
+      tokenList !== undefined && tokenList.length > 0 && usdPrice !== initialState.usdPrice
 
         ?
 
@@ -65,7 +65,7 @@ const TokenTable: FC<IProps> = (props) => {
                     <Typography variant="h5">${isNaN(token.volume24H) ? 0 : Number(token.volume24H * usdPrice).toFixed(2)}</Typography>
                   </StyledTableCell>
                   <StyledTableCell>
-                    <Typography variant="h5">${Number(token?.TVL * usdPrice).toFixed(2) ?? 'N/A'}</Typography>
+                    <Typography variant="h5">${Number(token.TVL * usdPrice).toFixed(2) ?? 'N/A'}</Typography>
                   </StyledTableCell>
                 </StyledTableRow>
               ))}
