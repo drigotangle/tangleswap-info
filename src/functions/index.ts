@@ -13,6 +13,16 @@ export const getTVL = async (from: number, chain: string | any): Promise<any | I
   }
 }
 
+export const getUsdPrice = async (chain: string) => {
+  try {
+    const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
+    const data = await axios.get(`${url}/USDPrice`)
+    return data.data
+  } catch (error) {
+    console.log(error, 'for getUsdPrice')
+  }
+}
+
 export const getTokens = async (chain: string | undefined): Promise<any> => {
   try {
     const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
@@ -225,15 +235,6 @@ export const poolsToCandle = (pools: IPoolData[] | any, tokenAddress: string | u
   return result
 }
 
-export const getUsdPrice = async (chain: string) => {
-  try {
-    const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
-    const data = await axios.get(`${url}/USDPrice`)
-    return data.data
-  } catch (error) {
-    console.log(error, 'for getUsdPrice')
-  }
-}
 
 export const getExplorerUrl = (chain: string | undefined, hash: string | undefined) => {
   switch (chain) {

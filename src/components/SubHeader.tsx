@@ -102,18 +102,18 @@ const SubHeader = () => {
         fetchData();
     }, [chain, dispatch, loadDataFromLocalStorage, setLoading]);
 
-      useEffect(() => {
+    useEffect(() => {
         // Schedule local storage deletion every 5 minutes
         const deleteLocalStorageInterval = setTimeout(() => {
             localStorage.removeItem('data');
         }, 3 * 60 * 1000);
-    
+
         // Cleanup function to clear the timeout when the component is unmounted
         return () => {
             clearTimeout(deleteLocalStorageInterval);
         };
     }, []);
-    
+
     return (
         <HeadWrapper>
             {

@@ -1,4 +1,4 @@
-import { Paper, Typography } from '@mui/material'
+import { Paper, Skeleton, Typography } from '@mui/material'
 import { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { ColumnWrapper, HomeWrapper, PaperWrapper } from '../../components'
@@ -34,11 +34,22 @@ const Pools = () => {
     }, [])
 
     if (state === initialState) {
-        return (<>
-            <SubHeader />
-            <Header />
-            <Loading />
-        </>)
+        return (
+            <>
+                <SubHeader />
+                <Header />
+                <HomeWrapper>
+                    <ColumnWrapper>
+                        <Typography variant="h4">Your Watchlist</Typography>
+                        <Paper>
+                            <Skeleton variant="rectangular" width="100%" height={100} />
+                        </Paper>
+                        <Typography variant="h4">All pools</Typography>
+                        <Skeleton variant="rectangular" width="100%" height={300} />
+                    </ColumnWrapper>
+                </HomeWrapper>
+            </>
+        );
     }
 
 

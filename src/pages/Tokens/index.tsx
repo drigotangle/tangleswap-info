@@ -1,4 +1,4 @@
-import { Paper, Typography } from '@mui/material'
+import { Paper, Skeleton, Typography } from '@mui/material'
 import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { ColumnWrapper, PaperWrapper } from '../../components'
@@ -37,11 +37,24 @@ const Pools = () => {
     }, [state.chain])
 
     if (state === initialState) {
-        return (<>
-            <SubHeader />
-            <Header />
-            <Loading />
-        </>)
+        return (
+            <>
+                <SubHeader />
+                <Header />
+                <HomeWrapper>
+                    <ColumnWrapper>
+                        <Typography variant="h4">Your Watchlist</Typography>
+                        <Paper>
+                            <Skeleton variant="rectangular" width="100%" height={100} />
+                        </Paper>
+                        <Typography variant="h4">Top movers</Typography>
+                        <Skeleton variant="rectangular" width="100%" height={150} />
+                        <Typography variant="h4">Top tokens</Typography>
+                        <Skeleton variant="rectangular" width="100%" height={300} />
+                    </ColumnWrapper>
+                </HomeWrapper>
+            </>
+        );
     }
 
 

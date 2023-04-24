@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom"
 import { filterTx, getLiquidityTx, getPools, getSwapTx, groupLiquidityPerDay } from '../../functions'
 import { GroupedEntry, IPoolData, IPoolLiquidity, ITx } from '../../interfaces'
 import styled from "styled-components";
-import { Container, Grid, Paper, Typography } from "@mui/material";
+import { Container, Grid, Paper, Skeleton, Typography } from "@mui/material";
 import { ColumnWrapper, RowWrapper, SkeletonWrapper } from '../../components'
 import { DailyVolumeChart } from '../../components/DailyVolumeChart'
 import Header from '../../components/Header'
@@ -42,70 +42,88 @@ const Balance = styled(Typography)`
 `;
 
 const PoolPage = () => {
-    const [ _poolData, setPoolData ] = useState<IPoolData | any>()
-    const [loading, setLoading] = useState(true);
-    const [ liquidityData, setLiquidityData ] = useState<GroupedEntry[]>()
-    const [ txs, setTxs ] = useState<ITx[] | undefined>()
-    const { poolAddress, chain } = useParams()
-    const { state } = useContext(AppContext)
-    const { usdPrice, poolData, txData } = state
-    
-    useEffect(() => {
-          const index = poolData.findIndex((item: IPoolData) => item.pool === poolAddress)
-          const pool: IPoolData | any = poolData[index]
-          setPoolData(pool)
-          const poolLiquidity = groupLiquidityPerDay(pool?.liquidity)
-          setLiquidityData(poolLiquidity)
-          const filteredTx = txData.filter((entry: ITx) => entry.token0 === pool.token0 && entry.token1 === pool.token1)
-          setTxs(filteredTx)
-    }, [])
+  const [_poolData, setPoolData] = useState<IPoolData | any>()
+  const [loading, setLoading] = useState(true);
+  const [liquidityData, setLiquidityData] = useState<GroupedEntry[]>()
+  const [txs, setTxs] = useState<ITx[] | undefined>()
+  const { poolAddress, chain } = useParams()
+  const { state } = useContext(AppContext)
+  const { usdPrice, poolData, txData } = state
 
-    if (state === initialState) {
-      return (<>
-          <SubHeader  />
-          <Header />
-          <Loading />
-      </>)
-  }
+  useEffect(() => {
+    const index = poolData.findIndex((item: IPoolData) => item.pool === poolAddress)
+    const pool: IPoolData | any = poolData[index]
+    setPoolData(pool)
+    const poolLiquidity = groupLiquidityPerDay(pool?.liquidity)
+    setLiquidityData(poolLiquidity)
+    const filteredTx = txData.filter((entry: ITx) => entry.token0 === pool.token0 && entry.token1 === pool.token1)
+    setTxs(filteredTx)
+  }, [])
 
-    
+  if (state === initialState) {
     return (
-      <>
-        <SubHeader  />
-        <Header />
-        <HomeWrapper>
-          {_poolData === undefined || liquidityData === undefined || txs === undefined ? (
-            <Loading />
-          ) : (
-            <Grid container spacing={4}>
-              <Grid item xs={12} sm={6}>
-                <Title variant="h5">
-                  {_poolData?.symbol0}/{_poolData?.symbol1}
-                </Title>
-                <Typography variant="subtitle1">Total tokens locked</Typography>
-                <BalanceContainer>
-                  <Typography variant="h6">{_poolData?.symbol0}</Typography>
-                  <Balance variant="h6">{Number(_poolData?.balance0).toFixed(2)}</Balance>
-                </BalanceContainer>
-                <BalanceContainer>
-                  <Typography variant="h6">{_poolData?.symbol1} </Typography>
-                  <Balance variant="h6">{Number(_poolData?.balance1).toFixed(2)}</Balance>
-                </BalanceContainer>
-                <Title variant="h4">TVL: ${Number(_poolData?.tvl * usdPrice).toFixed(2)}</Title>
-                <Title variant="h4">Volume (24h): ${Number(_poolData?.volume24H * usdPrice).toFixed(2)}</Title>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <DailyVolumeChart chartWidth={500} chartData={liquidityData} />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="h4">Recent transactions</Typography>
-                <TransactionsTable chain={chain} txData={txs} usdPrice={usdPrice} />
-              </Grid>
-            </Grid>
-          )}
-        </HomeWrapper>
-      </>
+        <>
+            <SubHeader />
+            <Header />
+            <HomeWrapper>
+                <Grid container spacing={4}>
+                    <Grid item xs={12} sm={6}>
+                        <Skeleton variant="text" width={200} height={50} />
+                        <Skeleton variant="text" width={200} height={50} />
+                        <Skeleton variant="text" width={200} height={50} />
+                        <Skeleton variant="text" width={200} height={50} />
+                        <Skeleton variant="text" width={200} height={50} />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <Skeleton variant="rectangular" width={500} height={200} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Skeleton variant="text" width={200} height={50} />
+                        <Skeleton variant="rectangular" width="100%" height={300} />
+                    </Grid>
+                </Grid>
+            </HomeWrapper>
+        </>
     );
+}
+
+  return (
+    <>
+      <SubHeader />
+      <Header />
+      <HomeWrapper>
+        {_poolData === undefined || liquidityData === undefined || txs === undefined ? (
+          <Loading />
+        ) : (
+          <Grid container spacing={4}>
+            <Grid item xs={12} sm={6}>
+              <Title variant="h5">
+                {_poolData?.symbol0}/{_poolData?.symbol1}
+              </Title>
+              <Typography variant="subtitle1">Total tokens locked</Typography>
+              <BalanceContainer>
+                <Typography variant="h6">{_poolData?.symbol0}</Typography>
+                <Balance variant="h6">{Number(_poolData?.balance0).toFixed(2)}</Balance>
+              </BalanceContainer>
+              <BalanceContainer>
+                <Typography variant="h6">{_poolData?.symbol1} </Typography>
+                <Balance variant="h6">{Number(_poolData?.balance1).toFixed(2)}</Balance>
+              </BalanceContainer>
+              <Title variant="h4">TVL: ${Number(_poolData?.tvl * usdPrice).toFixed(2)}</Title>
+              <Title variant="h4">Volume (24h): ${Number(_poolData?.volume24H * usdPrice).toFixed(2)}</Title>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <DailyVolumeChart chartWidth={500} chartData={liquidityData} />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="h4">Recent transactions</Typography>
+              <TransactionsTable chain={chain} txData={txs} usdPrice={usdPrice} />
+            </Grid>
+          </Grid>
+        )}
+      </HomeWrapper>
+    </>
+  );
 }
 
 export default PoolPage

@@ -13,15 +13,15 @@ const CardWrapper = styled.div`
 const TopMoversCard = () => {
     const { state } = useContext(AppContext)
     const { tokenData } = state
-    return(<>
+    return (<>
         {tokenData.map((data: IToken | any) => {
-            return(<>
+            return (<>
                 <Card>
                     <CardWrapper>
                         <QuestionMarkIcon />
                         {data.tokenSymbol}
-                    </CardWrapper>           
-                </Card>            
+                    </CardWrapper>
+                </Card>
             </>)
 
         })}

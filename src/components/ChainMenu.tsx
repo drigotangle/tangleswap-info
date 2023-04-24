@@ -25,7 +25,7 @@ export default function ChainMenu() {
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
-      {state.chain}
+        {state.chain}
       </Button>
       <Menu
         id="basic-menu"
@@ -37,12 +37,12 @@ export default function ChainMenu() {
         }}
       >
         {['Ethereum', 'Shimmer'].map((data) => {
-            return(<>
-                <MenuItem value='data' onClick={_ => {
-                    console.log(data, 'chamou')
-                    setChain(dispatch, data)
-                    }}>{data}</MenuItem>              
-            </>)
+          return (<>
+            <MenuItem value='data' onClick={_ => {
+              console.log(data, 'chamou')
+              setChain(dispatch, data)
+            }}>{data}</MenuItem>
+          </>)
         })}
       </Menu>
     </div>

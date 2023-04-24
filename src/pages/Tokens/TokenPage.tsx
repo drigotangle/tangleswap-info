@@ -62,13 +62,25 @@ const TokenPage = () => {
   }, [state])
 
   if (state === initialState) {
-    return (<>
-      <SubHeader />
-      <Header />
-      <Loading />
-    </>)
-  }
-
+    return (
+        <>
+            <SubHeader />
+            <Header />
+            <HomeWrapper>
+                <ColumnWrapper>
+                    <Typography variant="h4">Token</Typography>
+                    <Skeleton variant="rectangular" width="100%" height={300} />
+                    <Typography variant="h4">Token General</Typography>
+                    <Skeleton variant="rectangular" width="100%" height={150} />
+                    <Typography variant="h4">Pools</Typography>
+                    <Skeleton variant="rectangular" width="100%" height={300} />
+                    <Typography variant="h4">Recent transactions</Typography>
+                    <Skeleton variant="rectangular" width="100%" height={300} />
+                </ColumnWrapper>
+            </HomeWrapper>
+        </>
+    );
+}
 
 
   return (<>

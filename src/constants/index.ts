@@ -13,7 +13,7 @@ export const setUrl = (chain: string, pool: string) => {
         'Shimmer': `../pools/Shimmer/${chain}/${pool}`
     }
 
-    return [ url, nestedUrl ]
+    return [url, nestedUrl]
 }
 
 export const logo: LogoMap = {
