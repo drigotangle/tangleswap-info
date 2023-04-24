@@ -27,18 +27,18 @@ const Pools = () => {
 
     useEffect(() => {
         //TOKENS TABLE
-    getTokens(state.chain).then((res: IToken[]) => {
-        let arr: IToken[] = res
-        arr.sort((a: IToken, b: IToken) => {
-            return Number(a.TVL) - Number(b.TVL)
-        })
+        getTokens(state.chain).then((res: IToken[]) => {
+            let arr: IToken[] = res
+            arr.sort((a: IToken, b: IToken) => {
+                return Number(a.TVL) - Number(b.TVL)
+            })
             setTokenData(dispatch, arr)
-        })    
-      }, [state.chain])
+        })
+    }, [state.chain])
 
-      if (state === initialState) {
+    if (state === initialState) {
         return (<>
-            <SubHeader  />
+            <SubHeader />
             <Header />
             <Loading />
         </>)
@@ -46,22 +46,22 @@ const Pools = () => {
 
 
 
-    return(<>
-        <SubHeader  />
+    return (<>
+        <SubHeader />
         <Header />
         <HomeWrapper>
             <ColumnWrapper>
-            <Typography variant='h4'>Your Watchlist</Typography>
-            <Paper><PaperWrapper>Your saved pools will appear here</PaperWrapper></Paper>
-            <Typography variant='h4'>Top movers</Typography>
-            <Paper>
-                <TopMoversCard />
-            </Paper>
-            <Typography variant='h4'>Top tokens</Typography>
+                <Typography variant='h4'>Your Watchlist</Typography>
+                <Paper><PaperWrapper>Your saved pools will appear here</PaperWrapper></Paper>
+                <Typography variant='h4'>Top movers</Typography>
+                <Paper>
+                    <TopMoversCard />
+                </Paper>
+                <Typography variant='h4'>Top tokens</Typography>
                 <TokenTable tokenList={state.tokenData} />
-            </ColumnWrapper>    
+            </ColumnWrapper>
         </HomeWrapper>
-        </>)
+    </>)
 }
 
 export default Pools

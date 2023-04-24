@@ -17,7 +17,6 @@ import Loading from '../../components/Loading'
 const Pools = () => {
 
     const { dispatch, state } = useContext(AppContext)
-    const [loading, setLoading] = useState(true);
     const { chain: urlChain } = useParams()
     const { chain, usdPrice } = state
 
@@ -31,30 +30,30 @@ const Pools = () => {
         getPools(15, urlChain).then((res: IPoolData[]) => {
             console.log(res, 'pools')
             setPoolData(dispatch, res)
-        })       
+        })
     }, [])
 
     if (state === initialState) {
         return (<>
-            <SubHeader  />
+            <SubHeader />
             <Header />
             <Loading />
         </>)
     }
 
 
-    return(<>
-        <SubHeader  />
-        <Header />  
+    return (<>
+        <SubHeader />
+        <Header />
         <HomeWrapper>
             <ColumnWrapper>
-            <Typography variant='h4'>Your Watchlist</Typography>
-            <Paper><PaperWrapper>Your saved pools will appear here</PaperWrapper></Paper>
-            <Typography variant='h4'>All pools</Typography>
-            <PoolDataTable pooList={state.poolData} usdPrice={usdPrice} chain={chain} />
-            </ColumnWrapper>    
+                <Typography variant='h4'>Your Watchlist</Typography>
+                <Paper><PaperWrapper>Your saved pools will appear here</PaperWrapper></Paper>
+                <Typography variant='h4'>All pools</Typography>
+                <PoolDataTable pooList={state.poolData} usdPrice={usdPrice} chain={chain} />
+            </ColumnWrapper>
         </HomeWrapper>
-        </>)
+    </>)
 }
 
 export default Pools

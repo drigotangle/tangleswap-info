@@ -54,12 +54,10 @@ const PoolPage = () => {
           const index = poolData.findIndex((item: IPoolData) => item.pool === poolAddress)
           const pool: IPoolData | any = poolData[index]
           setPoolData(pool)
-          console.log(pool, 'poolPage')
           const poolLiquidity = groupLiquidityPerDay(pool?.liquidity)
           setLiquidityData(poolLiquidity)
           const filteredTx = txData.filter((entry: ITx) => entry.token0 === pool.token0 && entry.token1 === pool.token1)
           setTxs(filteredTx)
-          console.log(txs, 'txs')
     }, [])
 
     if (state === initialState) {

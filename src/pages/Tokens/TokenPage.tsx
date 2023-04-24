@@ -27,8 +27,8 @@ const TokenPage = () => {
   const [loading, setLoading] = useState(true);
   const [tokenVolume7D, setTokenVolume7D] = useState<number>()
   const [tokenVolume24H, setTokenVolume24H] = useState<number>()
-  const [ tokenName, setTokenName] = useState<string | any>()
-  const [ tokenSymbol, setTokenSymbol ] = useState<string | any>()
+  const [tokenName, setTokenName] = useState<string | any>()
+  const [tokenSymbol, setTokenSymbol] = useState<string | any>()
   const [poolsArr, setPoolsArr] = useState<IPoolData[]>([])
   const [candleStickData, setCandleStickData] = useState<CandlestickData[] | any>([])
   const { tokenAddress, chain } = useParams()
@@ -37,7 +37,7 @@ const TokenPage = () => {
   const { usdPrice, txData, tokenData, poolData } = state
 
   useEffect(() => {
-    if(usdPrice && txData && tokenData && poolData){
+    if (usdPrice && txData && tokenData && poolData) {
       const verifyedPool = removeUnmatchedPools(poolData, tokenAddress)
       setPoolsArr(verifyedPool)
       const tokenIndex = tokenData.findIndex((item: IToken | any) => tokenAddress === item.tokenAddress)
@@ -49,8 +49,7 @@ const TokenPage = () => {
       // const _volume24h = _token.volume24h * usdPrice
       // setTokenVolume24H(_volume24h)
       // setTokenVolume7D(_volume7D)
-      console.log(txData, 'before')
-      const filteredTxData = txData.filter((entry: ITx) => { return entry.token0 === tokenAddress || entry.token1 === tokenAddress})
+      const filteredTxData = txData.filter((entry: ITx) => { return entry.token0 === tokenAddress || entry.token1 === tokenAddress })
       console.log(filteredTxData, 'after')
       setTxs(filteredTxData)
       const _poolsToCandle = poolsToCandle(verifyedPool, tokenAddress)
@@ -62,28 +61,24 @@ const TokenPage = () => {
     }
   }, [state])
 
-  useEffect(() => {
-    console.log('candleStickData here:', JSON.stringify(candleStickData))
-  }, [candleStickData])
-
   if (state === initialState) {
     return (<>
-        <SubHeader  />
-        <Header />
-        <Loading />
+      <SubHeader />
+      <Header />
+      <Loading />
     </>)
-}
+  }
 
 
 
   return (<>
-    <SubHeader  />
+    <SubHeader />
     <Header />
     <HomeWrapper>
       {
         [poolsArr, txs, candleStickData, token].includes(undefined)
 
-          ? 
+          ?
 
           <>
             <Loading />
@@ -101,10 +96,10 @@ const TokenPage = () => {
                   <Typography variant="h5">Tvl: ${Number(token?.TVL ?? 0 * usdPrice).toFixed(2)}</Typography>
                 </SpanWrapper>
                 <SpanWrapper>
-                  <Typography variant="h5">24h trading volume: ${}</Typography>
+                  <Typography variant="h5">24h trading volume: ${ }</Typography>
                 </SpanWrapper>
                 <SpanWrapper>
-                  <Typography variant="h5">7d trading volume: ${}</Typography>
+                  <Typography variant="h5">7d trading volume: ${ }</Typography>
                 </SpanWrapper>
               </PaperWrapper>
             </Paper>
