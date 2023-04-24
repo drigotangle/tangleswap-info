@@ -50,15 +50,21 @@ function App() {
       },
       primary: {
         main: '#9C27B0', // purple
+        light: '#C459CF', // lighter purple
+        dark: '#6E1B8C', // darker purple
+        contrastText: '#FFFFFF', // white
       },
       secondary: {
         main: '#7022E7', // lighter purple
+        light: '#9D52F2', // lightest purple
+        dark: '#4C00B7', // dark purple
+        contrastText: '#FFFFFF', // white
       },
       success: {
         main: '#1B7A43',
-        dark: '#1B7A43',
-        contrastText: '#1B7A43',
-        light: '#1B7A43'
+        dark: '#12512F',
+        contrastText: '#FFFFFF',
+        light: '#4CAF50'
       }
     },
   });
