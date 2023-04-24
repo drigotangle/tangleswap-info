@@ -11,7 +11,7 @@ export interface IToken {
   lastPrice: number
   priceChange: number
   volume24H: number
-  TVL?: number
+  TVL: number
 }
 
 export interface IPoolLiquidity {
