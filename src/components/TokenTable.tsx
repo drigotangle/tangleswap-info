@@ -65,7 +65,7 @@ const TokenTable: FC<IProps> = (props) => {
                     <Typography variant="h5">${isNaN(token.volume24H) ? 0 : Number(token.volume24H * usdPrice).toFixed(2)}</Typography>
                   </StyledTableCell>
                   <StyledTableCell>
-                    <Typography variant="h5">${Number((token?.TVL) ?? 0 * usdPrice).toFixed(2) ?? 'N/A'}</Typography>
+                    <Typography variant="h5">${Number(token?.TVL * usdPrice).toFixed(2) ?? 'N/A'}</Typography>
                   </StyledTableCell>
                 </StyledTableRow>
               ))}
