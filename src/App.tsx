@@ -74,6 +74,7 @@ function App() {
     margin: 0;
     padding: 0;
     background-color: #191B1F;
+    background: linear-gradient(180deg, rgba(25,27,31,1) 0%, rgba(25,27,31,1) 10%, rgba(118,14,181,0.4962359943977591) 100%);
     color: white;
   }
 `;
