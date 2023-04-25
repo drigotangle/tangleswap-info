@@ -100,7 +100,7 @@ const TokenPage = () => {
 
           <ColumnWrapper>
             <Typography variant='h4'>{tokenName}{' '}({tokenSymbol})</Typography>
-            {candleStickData.length > 0 ? <CandleChart props={candleStickData} /> : null}
+            <CandleChart props={candleStickData} />
             <Typography variant='h4'>Token General</Typography>
             <Paper>
               <PaperWrapper>

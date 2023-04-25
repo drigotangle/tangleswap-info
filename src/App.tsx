@@ -73,7 +73,7 @@ function App() {
   body {
     margin: 0;
     padding: 0;
-    background-color: #000000;
+    background-color: #191B1F;
     color: white;
   }
 `;
