@@ -5,6 +5,8 @@ import styled from 'styled-components'
 import { AppContext } from '../state'
 import { getLiquidityTx, getPools, getSwapTx, getTVL, getTokens, getUsdPrice } from '../functions'
 import { setPoolData, setTVL, setTokenData, setTxData, setUsdPrice } from '../state/Actions';
+import { useTheme } from '@mui/material/styles';
+
 
 const HeadWrapper = styled.div`
 display: flex;
@@ -23,6 +25,8 @@ const SubHeader = () => {
     const [loading, setLoading] = useState(true);
     const { state, dispatch } = useContext(AppContext)
     const { chain, usdPrice } = state
+    const theme = useTheme();
+    
 
     const loadDataFromLocalStorage = useCallback(
         (setLoading: (loading: boolean) => void) => {
@@ -119,7 +123,7 @@ const SubHeader = () => {
             {
                 <Stack direction="row" spacing={1}>
                     <StyledSpan><Chip onDelete={_ => { }} deleteIcon={<FiberManualRecordIcon color="success" />} label={`Latest synced block ${lastBlockSync ?? 0}`} /></StyledSpan>
-                    <StyledSpan><Typography variant='subtitle1'>SMR Price: $ {usdPrice ?? 0}</Typography></StyledSpan>
+                    <StyledSpan><Typography variant='subtitle1' style={{ color: theme.palette.secondary.contrastText }}  >SMR Price: $ {usdPrice ?? 0}</Typography></StyledSpan>
                 </Stack>
             }
         </HeadWrapper>

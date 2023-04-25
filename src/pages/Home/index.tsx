@@ -18,9 +18,9 @@ import { AnyNsRecord } from 'dns'
 
 const HomeWrapper = styled.div`
     display: flex;
-    flex-directangularion: column;
-    width: 80vw;
-    margin: 10vh auto 10vh;
+    flex-direction: column;
+    width: 95vw;
+    margin: 0 auto;
 `
 
 
@@ -41,7 +41,7 @@ const Home = () => {
 
     if (state === initialState) {
         return (
-            <>
+            <HomeWrapper>
                 <SubHeader />
                 <Header />
                 <Container maxWidth="lg">
@@ -80,7 +80,7 @@ const Home = () => {
                     </Box>
                     <Skeleton variant="rectangular" width="100%" height={300} />
                 </Container>
-            </>
+            </HomeWrapper>
         );
     }
 

@@ -73,9 +73,8 @@ function App() {
   body {
     margin: 0;
     padding: 0;
-    background: rgb(25,27,31);
-    background: linear-gradient(180deg, rgba(25,27,31,1) 10%, rgba(25,2,40,1) 21%, rgba(56,2,65,1) 68%, rgba(71,18,92,1) 94%);
-    color: white;
+    background: rgb(57,3,67);
+    background: radial-gradient(circle, rgba(57,3,67,1) 4%, rgba(25,2,40,1) 58%, rgba(25,27,31,1) 100%, rgba(25,14,36,1) 100%, rgba(56,2,65,1) 100%, rgba(71,18,92,1) 100%);
   }
 `;
 
