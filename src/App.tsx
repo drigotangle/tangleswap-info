@@ -73,8 +73,8 @@ function App() {
   body {
     margin: 0;
     padding: 0;
-    background-color: #191B1F;
-    background: linear-gradient(180deg, rgba(25,27,31,1) 0%, rgba(25,27,31,1) 10%, rgba(118,14,181,0.4962359943977591) 100%);
+    background: rgb(25,27,31);
+    background: linear-gradient(180deg, rgba(25,27,31,1) 10%, rgba(25,2,40,1) 21%, rgba(56,2,65,1) 68%, rgba(71,18,92,1) 94%);
     color: white;
   }
 `;
