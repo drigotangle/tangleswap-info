@@ -74,7 +74,10 @@ function App() {
     margin: 0;
     padding: 0;
     background: rgb(57,3,67);
-    background: radial-gradient(circle, rgba(57,3,67,1) 4%, rgba(25,2,40,1) 58%, rgba(25,27,31,1) 100%, rgba(25,14,36,1) 100%, rgba(56,2,65,1) 100%, rgba(71,18,92,1) 100%);
+    background: radial-gradient(circle, rgba(57,3,67,0.8687850140056023) 8%, rgba(25,27,31,1) 41%, rgba(25,27,31,1) 100%);
+    background-position: top;
+    background-size: cover;
+    background-repeat: no-repeat;
   }
 `;
 
