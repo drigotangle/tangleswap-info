@@ -49,7 +49,7 @@ export const ChartWrapper = styled.div`
 `
 
 export const PriceChangeSpan = styled.span`
-  color: ${(props: { priceChange: number }) => props.priceChange < 0 ? 'red' : 'green'};
+  color: ${(props: { priceChange: any }) => props.priceChange < 0 ? 'red' : 'green'};
 `;
 
 export const GlassPanelWrapper = styled(Grid)`
