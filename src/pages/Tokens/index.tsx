@@ -26,15 +26,16 @@ const Pools = () => {
     const { dispatch, state } = useContext(AppContext)
 
     useEffect(() => {
-        //TOKENS TABLE
-        getTokens(state.chain).then((res: IToken[]) => {
-            let arr: IToken[] = res
-            arr.sort((a: IToken, b: IToken) => {
-                return Number(a.TVL) - Number(b.TVL)
+        if (state !== initialState) {
+            getTokens(state.chain).then((res: IToken[]) => {
+                let arr: IToken[] = res
+                arr.sort((a: IToken, b: IToken) => {
+                    return Number(a.TVL) - Number(b.TVL)
+                })
+                setTokenData(dispatch, arr)
             })
-            setTokenData(dispatch, arr)
-        })
-    }, [state.chain])
+        }
+    }, [state])
 
     if (state === initialState) {
         return (
