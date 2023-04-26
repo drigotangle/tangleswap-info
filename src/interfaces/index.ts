@@ -2,6 +2,7 @@ export interface ITVL {
   time: number | string
   tvl: number | any
   blockNumber?: number
+  poolAddress: string
 }
 
 export interface IToken {

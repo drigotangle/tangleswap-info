@@ -27,7 +27,6 @@ const HomeWrapper = styled.div`
 const Home = () => {
 
     const { state } = useContext(AppContext)
-    const [loading, setLoading] = useState(true);
     const { chain, usdPrice, tvl } = state
     const [barChart, setBarChart] = useState<ITVL[] | any[] | any>([{}])
     const storedData = localStorage.getItem('data');
@@ -37,6 +36,7 @@ const Home = () => {
             const _barChart = groupTVLPerDay(tvl);
             setBarChart(_barChart);
         }
+        console.log(state.tvl, 'state.tvl')
     }, [storedData, state]);
 
     if (state === initialState) {

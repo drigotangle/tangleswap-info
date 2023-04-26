@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState } from 'react'
+import { ChangeEvent, useContext, useEffect, useState } from 'react'
 import { useParams } from "react-router-dom"
-import { filterTx, getLiquidityTx, getPools, getSwapTx, groupLiquidityPerDay } from '../../functions'
-import { GroupedEntry, IPoolData, IPoolLiquidity, ITx } from '../../interfaces'
+import { filterTVL, filterTx, getLiquidityTx, getPools, getSwapTx, groupLiquidityPerDay } from '../../functions'
+import { GroupedEntry, IPoolData, IPoolLiquidity, ITVL, ITx } from '../../interfaces'
 import styled from "styled-components";
-import { Container, Grid, Paper, Skeleton, Typography } from "@mui/material";
+import { Chip, Container, Grid, Paper, Skeleton, Tab, Tabs, Typography } from "@mui/material";
 import { ColumnWrapper, RowWrapper, SkeletonWrapper } from '../../components'
 import { DailyVolumeChart } from '../../components/DailyVolumeChart'
 import Header from '../../components/Header'
@@ -11,6 +11,7 @@ import TransactionsTable from '../../components/TransactionsTable';
 import SubHeader from '../../components/SubHeader';
 import { AppContext, initialState } from '../../state';
 import Loading from '../../components/Loading';
+import { TVLChart } from '../../components/TVLChart';
 
 
 
@@ -43,49 +44,58 @@ const Balance = styled(Typography)`
 
 const PoolPage = () => {
   const [_poolData, setPoolData] = useState<IPoolData | any>()
-  const [loading, setLoading] = useState(true);
   const [liquidityData, setLiquidityData] = useState<GroupedEntry[]>()
+  const [liquiditySerie, setLiquiditySerie] = useState<ITVL[]>([])
   const [txs, setTxs] = useState<ITx[] | undefined>()
   const { poolAddress, chain } = useParams()
   const { state } = useContext(AppContext)
   const { usdPrice, poolData, txData } = state
+  const [tabIndex, setTabIndex] = useState(0);
+
+  const handleTabChange = (event: ChangeEvent<{}>, newValue: number) => {
+    setTabIndex(newValue);
+  };
 
   useEffect(() => {
-    const index = poolData.findIndex((item: IPoolData) => item.pool === poolAddress)
-    const pool: IPoolData | any = poolData[index]
-    setPoolData(pool)
-    const poolLiquidity = groupLiquidityPerDay(pool?.liquidity)
-    setLiquidityData(poolLiquidity)
-    const filteredTx = txData.filter((entry: ITx) => entry.token0 === pool.token0 && entry.token1 === pool.token1)
-    setTxs(filteredTx)
-  }, [])
+    if (state !== initialState) {
+      const index = poolData.findIndex((item: IPoolData) => item.pool === poolAddress)
+      const pool: IPoolData | any = poolData[index]
+      setPoolData(pool)
+      const poolLiquidity = groupLiquidityPerDay(pool?.liquidity)
+      setLiquidityData(poolLiquidity)
+      const filteredTx = txData.filter((entry: ITx) => entry.token0 === pool.token0 && entry.token1 === pool.token1)
+      setTxs(filteredTx)
+      const filteredTVL = filterTVL(state.tvl, poolAddress)
+      setLiquiditySerie(filteredTVL)
+    }
+  }, [state])
 
-  if (state === initialState) {
+  if (state === initialState && groupLiquidityPerDay.length === 0) {
     return (
-        <>
-            <SubHeader />
-            <Header />
-            <HomeWrapper>
-                <Grid container spacing={4}>
-                    <Grid item xs={12} sm={6}>
-                        <Skeleton variant="text" width={200} height={50} />
-                        <Skeleton variant="text" width={200} height={50} />
-                        <Skeleton variant="text" width={200} height={50} />
-                        <Skeleton variant="text" width={200} height={50} />
-                        <Skeleton variant="text" width={200} height={50} />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <Skeleton variant="rectangular" width={500} height={200} />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Skeleton variant="text" width={200} height={50} />
-                        <Skeleton variant="rectangular" width="100%" height={300} />
-                    </Grid>
-                </Grid>
-            </HomeWrapper>
-        </>
+      <>
+        <SubHeader />
+        <Header />
+        <HomeWrapper>
+          <Grid container spacing={4}>
+            <Grid item xs={12} sm={6}>
+              <Skeleton variant="text" width={200} height={50} />
+              <Skeleton variant="text" width={200} height={50} />
+              <Skeleton variant="text" width={200} height={50} />
+              <Skeleton variant="text" width={200} height={50} />
+              <Skeleton variant="text" width={200} height={50} />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Skeleton variant="rectangular" width={500} height={200} />
+            </Grid>
+            <Grid item xs={12}>
+              <Skeleton variant="text" width={200} height={50} />
+              <Skeleton variant="rectangular" width="100%" height={300} />
+            </Grid>
+          </Grid>
+        </HomeWrapper>
+      </>
     );
-}
+  }
 
   return (
     <>
@@ -113,7 +123,12 @@ const PoolPage = () => {
               <Title variant="h4">Volume (24h): ${Number(_poolData?.volume24H * usdPrice).toFixed(2)}</Title>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <DailyVolumeChart chartWidth={500} chartData={liquidityData} />
+              <Tabs value={tabIndex} onChange={handleTabChange} centered>
+                <Tab label={<Chip label="TVL Chart" />} />
+                <Tab label={<Chip label="Daily Volume Chart" />} />
+              </Tabs>
+              {tabIndex === 0 && <TVLChart chartWidth={500} chartData={liquiditySerie} />}
+              {tabIndex === 1 && <DailyVolumeChart chartWidth={500} chartData={liquidityData} />}
             </Grid>
             <Grid item xs={12}>
               <Typography variant="h4">Recent transactions</Typography>

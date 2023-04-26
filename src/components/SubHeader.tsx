@@ -74,8 +74,6 @@ const SubHeader = () => {
 
                 const firstPriceArr = pools[0].price;
                 const firstLiquidityArr = pools[0].liquidity;
-                const lastBlockFromPrice = firstPriceArr[firstPriceArr.length - 1].block;
-                const lastBlockFromLiquidity = firstLiquidityArr[firstLiquidityArr.length - 1].block;
                 const lastBlockFromLiquidityTx = liquidityTx[liquidityTx.length - 1].blockNumber;
 
                 setLastBlockSync(lastBlockFromLiquidityTx);

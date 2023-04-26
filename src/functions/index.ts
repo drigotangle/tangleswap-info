@@ -7,6 +7,7 @@ export const getTVL = async (from: number, chain: string | any): Promise<any | I
     const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
     let result = await axios.get(`${url}/tvl/${from}`)
     result.data.sort((a: ITVL | any, b: ITVL | any) => a?.blockNumber - b?.blockNumber)
+    console.log(result.data, 'getTvl')
     return result.data
   } catch (error) {
     console.log(error, 'for getTVL')
@@ -356,5 +357,10 @@ export const calculateTVLPercentageDifference = (barChart: ITVL[]): number | nul
   return percentageDifference;
 }
 
+export const filterTVL = (tvl: ITVL[], poolAddress: string | any) => {
+  const filteredTVL = tvl.filter((entry: ITVL) => entry.poolAddress === poolAddress)
+  console.log(filteredTVL, 'filteredTVL')
+  return filteredTVL
+}
 
 
