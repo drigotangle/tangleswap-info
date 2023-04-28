@@ -2,7 +2,7 @@ import { FC, useContext, useEffect } from "react";
 import { Paper, Skeleton, Table, TableBody, TableContainer, TableHead, TableCell, Typography, Chip } from "@mui/material";
 import { ChartWrapper, StyledTableCell, StyledTableRow, TokenImage } from './'
 import { IPoolData } from "../interfaces";
-import { AppContext } from "../state";
+import { AppContext, initialState } from "../state";
 import { useNavigate } from "react-router-dom";
 import Loading from "./Loading";
 import { logo, xLogo } from "../constants";
@@ -27,7 +27,7 @@ const PoolDataTable: FC<IProps> = (props) => {
 
   return (<ChartWrapper>
 
-    {pooList !== undefined && pooList.length > 0
+    {state.poolData !== initialState.poolData
 
       ?
 

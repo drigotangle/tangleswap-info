@@ -22,7 +22,7 @@ const TokenTable: FC<IProps> = (props) => {
   return (<ChartWrapper>
     {
 
-      tokenList !== undefined && tokenList.length > 0 && usdPrice !== initialState.usdPrice
+      state.tokenData !== initialState.tokenData
 
         ?
 

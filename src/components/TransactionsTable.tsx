@@ -1,12 +1,13 @@
 import { Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, Typography } from '@mui/material';
 import dayjs from 'dayjs';
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 import { ITx } from '../interfaces';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { ChartWrapper, SkeletonWrapper } from '.'
 import { StyledTableRow, StyledTableCell } from './'
 import { toSignificantDigits } from '../functions/toSignificant';
 import { getExplorerUrl } from '../functions';
+import { AppContext, initialState } from '../state';
 
 interface IProps {
   txData: ITx[] | undefined
@@ -15,11 +16,12 @@ interface IProps {
 }
 
 const TransactionsTable: FC<IProps> = (props) => {
+  const { state } = useContext(AppContext)
   const { txData, chain, usdPrice } = props
   dayjs.extend(relativeTime)
 
   return (<ChartWrapper>{
-    ![txData, usdPrice, txData].includes(undefined)
+    state.txData !== initialState.txData
       ?
       <TableContainer component={Paper}>
         <Table>
