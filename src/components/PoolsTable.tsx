@@ -1,6 +1,6 @@
 import { FC, useContext, useEffect } from "react";
 import { Paper, Skeleton, Table, TableBody, TableContainer, TableHead, TableCell, Typography, Chip } from "@mui/material";
-import { ChartWrapper, StyledTableCell, StyledTableRow, TokenImage } from './'
+import { ChartWrapper, SkeletonWrapper, StyledTableCell, StyledTableRow, TokenImage } from './'
 import { IPoolData } from "../interfaces";
 import { AppContext, initialState } from "../state";
 import { useNavigate } from "react-router-dom";
@@ -68,7 +68,8 @@ const PoolDataTable: FC<IProps> = (props) => {
 
       :
 
-      <Loading />
+      <SkeletonWrapper><Skeleton variant="rectangular" width={1030} height={300} /></SkeletonWrapper>
+
 
     }</ChartWrapper>);
 };
