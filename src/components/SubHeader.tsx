@@ -68,14 +68,6 @@ const SubHeader = () => {
         fetchData();
     }, [chain, dispatch]);
 
-    if(!loading){
-        return (
-            <HeadWrapper>
-                <Typography variant='subtitle1'>Loading...</Typography>
-            </HeadWrapper>
-        )        
-    }
-
     return (
         <HeadWrapper>
             {
