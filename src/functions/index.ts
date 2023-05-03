@@ -134,8 +134,17 @@ export const groupTVLPerDay = (data: ITVL[]): GroupedEntry[] => {
     groupedData[dayFormatted] += entry.tvl;
   });
 
-  return Object.keys(groupedData).map((day: string) => ({ day, tvl: groupedData[day] }));
+  const sortedData = Object.keys(groupedData)
+    .map((day: string) => ({ day, tvl: groupedData[day] }))
+    .sort((a, b) => {
+      const dateA = new Date(a.day);
+      const dateB = new Date(b.day);
+      return dateA.getTime() - dateB.getTime();
+    });
+
+  return sortedData;
 };
+
 
 export const poolsForToken = (pools: IPoolData[], tokenAddress: string | undefined): IPoolData[] => {
   const poolSet = new Set()
@@ -366,13 +375,54 @@ export const filterTVL = (tvl: ITVL[], poolAddress: string | any) => {
 export const filterFee = (data: ITx[]) => {
   let feesArr: ITVL[] = []
   for (const fee of data) {
-    feesArr.push({
-      time: fee.time,
-      tvl: fee.feePaid,
-      blockNumber: fee.block,
-      poolAddress: fee.poolAddress
-    })
+    if (fee.eventName === 'Swap') {
+      feesArr.push({
+        time: fee.time,
+        tvl: fee.feePaid,
+        blockNumber: fee.block,
+        poolAddress: fee.poolAddress
+      })
+    }
   }
+  return feesArr
+}
+
+export const filterTvlFromLiquidity = (data: ITx[]) => {
+  let feesArr: ITVL[] = []
+  
+  data = data.sort((a: any, b: any) => {
+    return new Date(a.time).getTime() - new Date(b.time).getTime()
+  })
+
+  for (const _tvl of data) {
+    if (feesArr.length === 0) {
+      feesArr.push({
+        time: _tvl.time,
+        tvl: _tvl.value,
+        blockNumber: _tvl.block,
+        poolAddress: _tvl.poolAddress
+      })
+    }
+
+    if (_tvl.eventName === 'IncreaseLiquidity') {
+      feesArr.push({
+        time: _tvl.time,
+        tvl: feesArr[feesArr.length - 1].tvl + _tvl.value,
+        blockNumber: _tvl.block,
+        poolAddress: _tvl.poolAddress
+      })
+    }
+
+    if (_tvl.eventName === 'DecreaseLiquidity') {
+      feesArr.push({
+        time: _tvl.time,
+        tvl: feesArr[feesArr.length - 1].tvl - _tvl.value,
+        blockNumber: _tvl.block,
+        poolAddress: _tvl.poolAddress
+      })
+    }
+  }
+
   return feesArr
 }
 

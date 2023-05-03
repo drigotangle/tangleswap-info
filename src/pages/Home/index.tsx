@@ -10,7 +10,7 @@ import SubHeader from '../../components/SubHeader'
 import TokenTable from '../../components/TokenTable'
 import TransactionsTable from '../../components/TransactionsTable'
 import { TVLChart } from '../../components/TVLChart'
-import { groupTVLPerDay } from '../../functions'
+import { filterFee, filterTvlFromLiquidity, groupTVLPerDay } from '../../functions'
 import { ITVL } from '../../interfaces'
 import { AppContext, initialState } from '../../state'
 import Loading from '../../components/Loading'
@@ -27,19 +27,24 @@ const HomeWrapper = styled.div`
 const Home = () => {
 
     const { state } = useContext(AppContext)
-    const { chain, usdPrice, tvl } = state
+    const { chain, usdPrice, tvl, txData } = state
     const [barChart, setBarChart] = useState<ITVL[] | any[] | any>([{}])
+    const [lineChart, setLineChart] = useState<ITVL[] | any[]>([])
+    const [feeData, setFeeData] = useState<ITVL[] | any[]>([])
     const storedData = localStorage.getItem('data');
 
     useEffect(() => {
         if (tvl.length > 1) {
-            const _barChart = groupTVLPerDay(tvl);
+            const tvlLine = filterTvlFromLiquidity(txData)
+            setLineChart(tvlLine)
+            const _barChart = groupTVLPerDay(tvlLine);
             setBarChart(_barChart);
+            const fees = filterFee(txData)
+            setFeeData(fees)
         }
-        console.log(state.tvl, 'state.tvl')
-    }, [storedData, state]);
+    }, [state]);
 
-    if (state === initialState) {
+    if (state.txData === initialState.txData || state.usdPrice === initialState.usdPrice) {
         return (
             <HomeWrapper>
                 <SubHeader />
@@ -65,7 +70,7 @@ const Home = () => {
                         </Grid>
                     </Grid>
                     <Box mt={4}>
-                    <Skeleton variant="rectangular" width="100%" height={20} />
+                        <Skeleton variant="rectangular" width="100%" height={20} />
                     </Box>
                     <Box mt={4} mb={4}>
                         <Typography variant="h4">Top tokens</Typography>
@@ -96,8 +101,8 @@ const Home = () => {
                     <Grid item xs={12} sm={6}>
                         <GlassPanelWrapper>
                             <Typography variant="h6">TVL</Typography>
-                            <Typography variant="h3">${Number(tvl[tvl.length - 1]?.tvl * usdPrice).toFixed(2)}</Typography>
-                            <TVLChart chartWidth={500} chartData={state.tvl} />
+                            <Typography variant="h3">${Number(lineChart[lineChart.length - 1]?.tvl * usdPrice).toFixed(2)}</Typography>
+                            <TVLChart chartWidth={500} chartData={lineChart} />
                         </GlassPanelWrapper>
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -109,7 +114,11 @@ const Home = () => {
                     </Grid>
                 </Grid>
                 <Box mt={4}>
-                    <HomeGeneral />
+                    <HomeGeneral
+                        volume24h={Number(barChart[barChart?.length - 1]?.tvl ?? 0 * usdPrice)}
+                        feesGenerated={feeData[feeData.length - 1]?.tvl }
+                        tvl={Number(lineChart[lineChart.length - 1]?.tvl * usdPrice)}
+                    />
                 </Box>
                 <Box mt={4} mb={4}>
                     <Typography variant="h4">Top tokens</Typography>

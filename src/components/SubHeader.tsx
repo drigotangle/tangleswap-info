@@ -44,9 +44,11 @@ const SubHeader = () => {
                 getSwapTx(100, chain),
             ]);
 
-            const firstPriceArr = pools[0].price;
-            const firstLiquidityArr = pools[0].liquidity;
+
             const lastBlockFromLiquidityTx = liquidityTx[liquidityTx.length - 1].blockNumber;
+
+            const orderedLiquidityTx = liquidityTx.sort((a: any, b: any) => { return b.block - a.block });
+            const orderedswapTx = swapTx.sort((a: any, b: any) => { return b.block - a.block });
 
             setLastBlockSync(lastBlockFromLiquidityTx);
             setUsdPrice(dispatch, Number(usdPrice.USD));
@@ -55,7 +57,7 @@ const SubHeader = () => {
             setTVL(dispatch, tvl);
             setPoolData(dispatch, pools);
             setTokenData(dispatch, tokens);
-            setTxData(dispatch, [...liquidityTx, ...swapTx]);
+            setTxData(dispatch, [...orderedLiquidityTx, ...orderedswapTx]);
 
         } catch (error) {
             console.error('Error fetching data:', error);
