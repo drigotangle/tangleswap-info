@@ -69,7 +69,7 @@ const PoolPage = () => {
       const filteredTVL = filterTVL(state.tvl, poolAddress)
       setLiquiditySerie(filteredTVL)
       const fees = filterFee(state.txData)
-      const filterfees = fees.filter((entry: ITVL) => { entry.poolAddress === poolAddress})
+      const filterfees = fees.filter((entry: ITVL) => { return entry.poolAddress === poolAddress})
       setFees(filterfees)
     }
   }, [state])
