@@ -1,6 +1,6 @@
 import { ChangeEvent, useContext, useEffect, useState } from 'react'
 import { useParams } from "react-router-dom"
-import { filterTVL, filterTx, getLiquidityTx, getPools, getSwapTx, groupLiquidityPerDay } from '../../functions'
+import { filterFee, filterTVL, filterTx, getLiquidityTx, getPools, getSwapTx, groupLiquidityPerDay } from '../../functions'
 import { GroupedEntry, IPoolData, IPoolLiquidity, ITVL, ITx } from '../../interfaces'
 import styled from "styled-components";
 import { Chip, Container, Grid, Paper, Skeleton, Tab, Tabs, Typography } from "@mui/material";
@@ -46,6 +46,7 @@ const PoolPage = () => {
   const [_poolData, setPoolData] = useState<IPoolData | any>()
   const [liquidityData, setLiquidityData] = useState<GroupedEntry[]>()
   const [liquiditySerie, setLiquiditySerie] = useState<ITVL[]>([])
+  const [fees, setFees] = useState<ITVL[]>([])
   const [txs, setTxs] = useState<ITx[] | undefined>()
   const { poolAddress, chain } = useParams()
   const { state } = useContext(AppContext)
@@ -67,6 +68,9 @@ const PoolPage = () => {
       setTxs(filteredTx)
       const filteredTVL = filterTVL(state.tvl, poolAddress)
       setLiquiditySerie(filteredTVL)
+      const fees = filterFee(state.txData)
+      const filterfees = fees.filter((entry: ITVL) => { entry.poolAddress === poolAddress})
+      setFees(filterfees)
     }
   }, [state])
 
@@ -121,6 +125,7 @@ const PoolPage = () => {
               </BalanceContainer>
               <Title variant="h4">TVL: ${Number(_poolData?.tvl * usdPrice).toFixed(2)}</Title>
               <Title variant="h4">Volume (24h): ${Number(_poolData?.volume24H * usdPrice).toFixed(2)}</Title>
+              <Title variant="h4">Fees generated: ${Number(fees[fees.length - 1].tvl * usdPrice).toFixed(2)}</Title>
             </Grid>
             <Grid item xs={12} sm={6}>
               <Tabs value={tabIndex} onChange={handleTabChange} centered>

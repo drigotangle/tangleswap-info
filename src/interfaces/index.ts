@@ -57,6 +57,8 @@ export interface ITx {
   time: any
   value: any
   hash: string | undefined
+  poolAddress: string
+  feePaid?: number
 }
 
 export interface IFee {

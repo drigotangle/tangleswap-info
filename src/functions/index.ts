@@ -363,4 +363,17 @@ export const filterTVL = (tvl: ITVL[], poolAddress: string | any) => {
   return filteredTVL
 }
 
+export const filterFee = (data: ITx[]) => {
+  let feesArr: ITVL[] = []
+  for (const fee of data) {
+    feesArr.push({
+      time: fee.time,
+      tvl: fee.feePaid,
+      blockNumber: fee.block,
+      poolAddress: fee.poolAddress
+    })
+  }
+  return feesArr
+}
+
 

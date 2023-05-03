@@ -22,7 +22,6 @@ const StyledSpan = styled.span`
 
 const SubHeader = () => {
     const [lastBlockSync, setLastBlockSync] = useState<number>()
-    const [loading, setLoading] = useState(true);
     const { state, dispatch } = useContext(AppContext)
     const { chain, usdPrice } = state
     const theme = useTheme();
@@ -41,8 +40,8 @@ const SubHeader = () => {
                 getUsdPrice(chain),
                 getPools(1000, chain),
                 getTokens(chain),
-                getLiquidityTx(20, chain),
-                getSwapTx(20, chain),
+                getLiquidityTx(100, chain),
+                getSwapTx(100, chain),
             ]);
 
             const firstPriceArr = pools[0].price;
@@ -58,7 +57,6 @@ const SubHeader = () => {
             setTokenData(dispatch, tokens);
             setTxData(dispatch, [...liquidityTx, ...swapTx]);
 
-            setLoading(false); // Set loading to false when the data is loaded
         } catch (error) {
             console.error('Error fetching data:', error);
         }
