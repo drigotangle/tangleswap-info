@@ -23,7 +23,7 @@ const HomeGeneral = () => {
         <Paper>
             <PaperWrapper>
                 <SpanWrapper><Typography variant="h5">Volume24h: ${Number(barChart[barChart.length - 1].tvl * usdPrice).toFixed(2)}</Typography></SpanWrapper>
-                <SpanWrapper><Typography variant="h5">Fees generated: ${fees[fees.length - 1].tvl * usdPrice}</Typography></SpanWrapper>
+                <SpanWrapper><Typography variant="h5">Fees generated: ${(fees[fees.length - 1]?.tvl ?? 0) * usdPrice}</Typography></SpanWrapper>
                 <SpanWrapper><Typography variant="h5">TVL: ${Number(lastTvl * usdPrice).toFixed(2)}</Typography></SpanWrapper>
             </PaperWrapper>
         </Paper>
