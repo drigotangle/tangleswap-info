@@ -331,10 +331,10 @@ export const filterTVL = (tvl: ITVL[], poolAddress: string | any) => {
 export const filterFee = (data: ITx[]) => {
   let feesArr: ITVL[] = []
   for (const fee of data) {
-    if (fee.eventName === 'Swap') {
+    if (fee.eventName === 'Swap' && fee.feePaid !== undefined) {
       feesArr.push({
         time: fee.time,
-        tvl: fee.feePaid,
+        tvl: Math.abs(Number(fee.feePaid)),
         blockNumber: fee.blockNumber,
         pool: fee.pool
       })

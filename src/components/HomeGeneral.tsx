@@ -1,14 +1,11 @@
 import { Paper, Typography } from '@mui/material'
-import { FC, useContext, useEffect, useState } from 'react'
+import { FC } from 'react'
 import { PaperWrapper, SpanWrapper } from '.'
-import { filterFee } from '../functions'
-import { ITVL } from '../interfaces'
-import { AppContext, initialState } from '../state'
 
 interface IProps {
-    volume24h: number
-    feesGenerated: number
-    tvl: number
+    volume24h: string | undefined
+    feesGenerated: string | undefined
+    tvl: string | undefined
 }
 
 const HomeGeneral: FC<IProps> = (props) => {
@@ -16,9 +13,9 @@ const HomeGeneral: FC<IProps> = (props) => {
     return (
         <Paper>
             <PaperWrapper>
-                <SpanWrapper><Typography variant="h5">Volume24h: ${Number(volume24h.toFixed(2))}</Typography></SpanWrapper>
-                <SpanWrapper><Typography variant="h5">Fees generated: ${Number(feesGenerated).toFixed(2)}</Typography></SpanWrapper>
-                <SpanWrapper><Typography variant="h5">TVL: ${Number(tvl).toFixed(2)}</Typography></SpanWrapper>
+                <SpanWrapper><Typography variant="h5">Volume24h: ${volume24h}</Typography></SpanWrapper>
+                <SpanWrapper><Typography variant="h5">Fees generated: ${feesGenerated}</Typography></SpanWrapper>
+                <SpanWrapper><Typography variant="h5">TVL: ${tvl}</Typography></SpanWrapper>
             </PaperWrapper>
         </Paper>
     )

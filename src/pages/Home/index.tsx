@@ -25,23 +25,29 @@ const HomeWrapper = styled.div`
 const Home = () => {
 
     const { state } = useContext(AppContext)
-    const { chain, usdPrice, txData, poolData } = state
+    const { chain, usdPrice, txData, tokenData } = state
     const [barChart, setBarChart] = useState<ITVL[] | any[] | any>([{}])
     const [lineChart, setLineChart] = useState<ITVL[] | any[]>([])
-    const [feeData, setFeeData] = useState<ITVL[] | any[]>([])
+    const [feeData, setFeeData] = useState<string>()
     const [ wholeTVL, setWholeTVL] = useState<string>()
+    const [ volume24h, setVolume24h] = useState<string>()
     const storedData = localStorage.getItem('data');
 
     useEffect(() => {
-        if (txData.length > 1 && state.poolData !== initialState.poolData) {
+        if (txData.length > 1 && state.tokenData !== initialState.tokenData) {
             const tvlLine = filterTvlFromLiquidity(txData)
             setLineChart(tvlLine)
             const _barChart = groupTVLPerDay(tvlLine);
             setBarChart(_barChart);
+            const formatedVolume24h = formatCompactNumber(_barChart[_barChart.length - 1].tvl)
+            setVolume24h(formatedVolume24h)
             const fees = filterFee(txData)
-            setFeeData(fees)
+            const wholeFee = fees.reduce((accumulator: any, currentValue: any) => accumulator + currentValue.tvl, 0)
+            const formatedFee = formatCompactNumber(wholeFee)
+            console.log(formatedFee, 'formatedFee')
+            setFeeData(formatedFee)
             console.log(state.txData, 'state.txData')
-            const sumTVL = poolData.reduce((accumulator: any, currentValue: any) => accumulator + currentValue.tvl, 0);
+            const sumTVL = tokenData.reduce((accumulator: any, currentValue: any) => accumulator + currentValue.TVL, 0);
             const wholeTVL = sumTVL * usdPrice
             const formatedTVL = formatCompactNumber(Number(wholeTVL))
             console.log(wholeTVL, formatedTVL, 'formatedTVL')
@@ -113,16 +119,16 @@ const Home = () => {
                     <Grid item xs={12} sm={6}>
                         <GlassPanelWrapper>
                             <Typography variant="h6">Volume 24h</Typography>
-                            <Typography variant="h3">${Number(barChart[barChart?.length - 1]?.tvl ?? 0 * usdPrice).toFixed(2)}</Typography>
+                            <Typography variant="h3">${volume24h}</Typography>
                             <DailyVolumeChart chartWidth={500} chartData={barChart} />
                         </GlassPanelWrapper>
                     </Grid>
                 </Grid>
                 <Box mt={4}>
                     <HomeGeneral
-                        volume24h={Number(barChart[barChart?.length - 1]?.tvl ?? 0 * usdPrice)}
-                        feesGenerated={feeData[feeData.length - 1]?.tvl }
-                        tvl={Number(lineChart[lineChart.length - 1]?.tvl * usdPrice)}
+                        volume24h={volume24h}
+                        feesGenerated={feeData}
+                        tvl={wholeTVL}
                     />
                 </Box>
                 <Box mt={4} mb={4}>

@@ -4,7 +4,6 @@ import { ChartWrapper, SkeletonWrapper, StyledTableCell, StyledTableRow, TokenIm
 import { IPoolData } from "../interfaces";
 import { AppContext, initialState } from "../state";
 import { useNavigate } from "react-router-dom";
-import Loading from "./Loading";
 import { logo, xLogo } from "../constants";
 
 interface IProps {

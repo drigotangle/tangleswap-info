@@ -25,3 +25,4 @@ export const logo: LogoMap = {
 }
 
 export const xLogo = 'https://github.com/TangleSwap/assets/blob/main/chains/shimmer/x.png?raw=true'
+
