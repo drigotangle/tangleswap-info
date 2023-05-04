@@ -10,7 +10,7 @@ import SubHeader from '../../components/SubHeader'
 import TokenTable from '../../components/TokenTable'
 import TransactionsTable from '../../components/TransactionsTable'
 import { TVLChart } from '../../components/TVLChart'
-import { filterFee, filterTvlFromLiquidity, groupTVLPerDay } from '../../functions'
+import { filterFee, filterTvlFromLiquidity, formatCompactNumber, groupTVLPerDay } from '../../functions'
 import { ITVL } from '../../interfaces'
 import { AppContext, initialState } from '../../state'
 
@@ -25,14 +25,15 @@ const HomeWrapper = styled.div`
 const Home = () => {
 
     const { state } = useContext(AppContext)
-    const { chain, usdPrice, txData } = state
+    const { chain, usdPrice, txData, poolData } = state
     const [barChart, setBarChart] = useState<ITVL[] | any[] | any>([{}])
     const [lineChart, setLineChart] = useState<ITVL[] | any[]>([])
     const [feeData, setFeeData] = useState<ITVL[] | any[]>([])
+    const [ wholeTVL, setWholeTVL] = useState<string>()
     const storedData = localStorage.getItem('data');
 
     useEffect(() => {
-        if (txData.length > 1) {
+        if (txData.length > 1 && state.poolData !== initialState.poolData) {
             const tvlLine = filterTvlFromLiquidity(txData)
             setLineChart(tvlLine)
             const _barChart = groupTVLPerDay(tvlLine);
@@ -40,6 +41,11 @@ const Home = () => {
             const fees = filterFee(txData)
             setFeeData(fees)
             console.log(state.txData, 'state.txData')
+            const sumTVL = poolData.reduce((accumulator: any, currentValue: any) => accumulator + currentValue.tvl, 0);
+            const wholeTVL = sumTVL * usdPrice
+            const formatedTVL = formatCompactNumber(Number(wholeTVL))
+            console.log(wholeTVL, formatedTVL, 'formatedTVL')
+            setWholeTVL(formatedTVL)
         }
     }, [state]);
 
@@ -100,7 +106,7 @@ const Home = () => {
                     <Grid item xs={12} sm={6}>
                         <GlassPanelWrapper>
                             <Typography variant="h6">TVL</Typography>
-                            <Typography variant="h3">${Number(lineChart[lineChart.length - 1]?.tvl * usdPrice).toFixed(2)}</Typography>
+                            <Typography variant="h3">${wholeTVL}</Typography>
                             <TVLChart chartWidth={500} chartData={lineChart} />
                         </GlassPanelWrapper>
                     </Grid>

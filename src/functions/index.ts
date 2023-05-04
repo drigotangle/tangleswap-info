@@ -492,3 +492,8 @@ export const filterTvlFromLiquidityForToken = (data: ITx[], pools: IPoolData[], 
   return tvlArr
 }
 
+export function formatCompactNumber(number: number | any) {
+  const formatter = Intl.NumberFormat("en", { notation: "compact" });
+  return formatter.format(number);
+}
+
