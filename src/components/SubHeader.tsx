@@ -38,8 +38,8 @@ const SubHeader = () => {
                 getUsdPrice(chain),
                 getPools(1000, chain),
                 getTokens(chain),
-                getLiquidityTx(100, chain),
-                getSwapTx(100, chain),
+                getLiquidityTx(1000, chain),
+                getSwapTx(1000, chain),
             ]);
 
 
