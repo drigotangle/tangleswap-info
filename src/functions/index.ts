@@ -39,7 +39,6 @@ export const getPools = async (limit: number, chain: string | undefined): Promis
   try {
     const url = chain === 'Ethereum' ? process.env.REACT_APP_API_ENDPOINT : process.env.REACT_APP_API_ENDPOINT_SHIMMER
     const result = await axios.get(`${url}/pools/${limit}`)
-    console.log(result.data, 'poolsAqui')
     return result.data
   } catch (error: any) {
     return error
@@ -77,18 +76,7 @@ export const getFees = async (chain: string | undefined): Promise<IFee[] | any> 
   }
 }
 
-//
 
-export const vol24H = (liquidity: ITVL[]) => {
-  let volume = 0;
-  for (const tvl of liquidity) {
-    if (dayjs(tvl.time).format('DD') === dayjs(liquidity[liquidity.length - 1].tvl).format('DD')) {
-      volume = Number(liquidity[liquidity.length - 1].tvl) - Number(tvl.tvl)
-      break
-    }
-  }
-  return Math.abs(volume)
-}
 
 export const feesGenerated = async (chain: string | undefined): Promise<number> => {
   const feesArr: IFee[] = await getFees(chain)
@@ -144,25 +132,6 @@ export const groupTVLPerDay = (data: ITVL[]): GroupedEntry[] => {
 
   return sortedData;
 };
-
-
-export const poolsForToken = (pools: IPoolData[], tokenAddress: string | undefined): IPoolData[] => {
-  const poolSet = new Set()
-  let poolArr: IPoolData[] = []
-  for (const pool of pools) {
-
-    if (
-      (pool.token0 === tokenAddress) ||
-      (pool.token1 === tokenAddress) &&
-      !poolSet.has(pool) &&
-      pool !== undefined
-    ) {
-      poolSet.add(pool)
-      poolArr.push(pool)
-    }
-  }
-  return poolArr
-}
 
 export const txsForToken = (txs: ITx[], symbol: string): ITx[] => {
   const txSet = new Set()
@@ -226,7 +195,6 @@ export const getCandlestickData = (data: SeriesData[]): CandlestickData[] => {
   if (currentOHLC) {
     ohlcData.push(currentOHLC)
   }
-  console.log(ohlcData, 'ohlcData')
   return ohlcData
 }
 
@@ -236,7 +204,6 @@ export const poolsToCandle = (pools: IPoolData[] | any, tokenAddress: string | u
   for (const pool of pools) {
     console.log(pool, 'poolsToCandle')
     if (tokenAddress === pool?.token1 || tokenAddress === pool?.token0) {
-      console.log('chamou:', pool)
       poolsArr.push(pool)
     }
   }
@@ -314,17 +281,6 @@ export const tradingVolume24h = (swaps: ITx[], tokenAddress: string | any): Grou
 
 }
 
-export const volume7D = (groupedEntry: GroupedEntry[]): number => {
-  let volume7D = 0
-  for (const data of groupedEntry) {
-    if (groupedEntry.indexOf(data) <= 7) {
-      console.log(volume7D, 'volume7D')
-      volume7D += data.tvl
-    }
-    break
-  }
-  return volume7D
-}
 
 export const volume24h = (groupedEntry: GroupedEntry[]): number => {
   let volume7D = 0
@@ -367,7 +323,7 @@ export const calculateTVLPercentageDifference = (barChart: ITVL[]): number | nul
 }
 
 export const filterTVL = (tvl: ITVL[], poolAddress: string | any) => {
-  const filteredTVL = tvl.filter((entry: ITVL) => entry.poolAddress === poolAddress)
+  const filteredTVL = tvl.filter((entry: ITVL) => entry.pool === poolAddress)
   console.log(filteredTVL, 'filteredTVL')
   return filteredTVL
 }
@@ -379,8 +335,8 @@ export const filterFee = (data: ITx[]) => {
       feesArr.push({
         time: fee.time,
         tvl: fee.feePaid,
-        blockNumber: fee.block,
-        poolAddress: fee.poolAddress
+        blockNumber: fee.blockNumber,
+        pool: fee.pool
       })
     }
   }
@@ -389,7 +345,7 @@ export const filterFee = (data: ITx[]) => {
 
 export const filterTvlFromLiquidity = (data: ITx[]) => {
   let feesArr: ITVL[] = []
-  
+
   data = data.sort((a: any, b: any) => {
     return new Date(a.time).getTime() - new Date(b.time).getTime()
   })
@@ -400,7 +356,7 @@ export const filterTvlFromLiquidity = (data: ITx[]) => {
         time: _tvl.time,
         tvl: _tvl.value,
         blockNumber: _tvl.block,
-        poolAddress: _tvl.poolAddress
+        pool: _tvl.pool
       })
     }
 
@@ -409,7 +365,7 @@ export const filterTvlFromLiquidity = (data: ITx[]) => {
         time: _tvl.time,
         tvl: feesArr[feesArr.length - 1].tvl + _tvl.value,
         blockNumber: _tvl.block,
-        poolAddress: _tvl.poolAddress
+        pool: _tvl.pool
       })
     }
 
@@ -418,12 +374,121 @@ export const filterTvlFromLiquidity = (data: ITx[]) => {
         time: _tvl.time,
         tvl: feesArr[feesArr.length - 1].tvl - _tvl.value,
         blockNumber: _tvl.block,
-        poolAddress: _tvl.poolAddress
+        pool: _tvl.pool
       })
     }
   }
-
   return feesArr
 }
 
+export const tradingVolumefromSwap = (data: ITx[], tokenAddress: string | any) => {
+  let swapArr: ITVL[] = []
+
+  data = data.sort((a: any, b: any) => {
+    return new Date(a.time).getTime() - new Date(b.time).getTime()
+  })
+
+  for (const _tvl of data) {
+    if (_tvl.eventName === 'Swap') {
+      if (_tvl.token0 === tokenAddress) {
+        swapArr.push({
+          time: _tvl.time,
+          tvl: Math.abs(_tvl.amount0),
+          blockNumber: _tvl.block,
+          pool: _tvl.pool
+        })
+      }
+
+      if (_tvl.token1 === tokenAddress) {
+        swapArr.push({
+          time: _tvl.time,
+          tvl: Math.abs(_tvl.amount1),
+          blockNumber: _tvl.block,
+          pool: _tvl.pool
+        })
+      }
+    }
+  }
+  return swapArr
+}
+
+export const tradingVol7d = (data: ITVL[]) => {
+  let accVolume = 0
+  for (const entry of data) {
+    accVolume += Math.abs(entry.tvl)
+    if (data.indexOf(entry) < 6) {
+      break
+    }
+  }
+  return accVolume
+}
+
+export const filterTvlFromLiquidityForToken = (data: ITx[], pools: IPoolData[], tokenAddress: string | any, tokenPrice: number | any) => {
+  let tvlArr: ITVL[] = []
+
+  for (const pool of pools) {
+    console.log(pool.pool)
+    for (const _tvl of data) {
+      if (_tvl.pool === pool.pool) {
+        if (tvlArr.length === 0) {
+          if (_tvl.token0 === tokenAddress) {
+            tvlArr.push({
+              time: _tvl.time,
+              tvl: _tvl.amount0 * tokenPrice,
+              blockNumber: _tvl.block,
+              pool: _tvl.pool
+            })
+          }
+
+          if (_tvl.token1 === tokenAddress) {
+            tvlArr.push({
+              time: _tvl.time,
+              tvl: _tvl.amount1 * tokenPrice,
+              blockNumber: _tvl.block,
+              pool: _tvl.pool
+            })
+          }
+
+        } else {
+          if (_tvl.eventName === 'IncreaseLiquidity' && _tvl.token0 === tokenAddress) {
+            tvlArr.push({
+              time: _tvl.time,
+              tvl: tvlArr[tvlArr.length - 1].tvl + (_tvl.amount0 * tokenPrice),
+              blockNumber: _tvl.block,
+              pool: _tvl.pool
+            })
+          }
+
+          if (_tvl.eventName === 'IncreaseLiquidity' && _tvl.token1 === tokenAddress) {
+            tvlArr.push({
+              time: _tvl.time,
+              tvl: tvlArr[tvlArr.length - 1].tvl + (_tvl.amount1 * tokenPrice),
+              blockNumber: _tvl.block,
+              pool: _tvl.pool
+            })
+          }
+
+          if (_tvl.eventName === 'DecreaseLiquidity' && _tvl.token0 === tokenAddress) {
+            tvlArr.push({
+              time: _tvl.time,
+              tvl: tvlArr[tvlArr.length - 1].tvl - (_tvl.amount0 * tokenPrice),
+              blockNumber: _tvl.block,
+              pool: _tvl.pool
+            })
+          }
+
+          if (_tvl.eventName === 'DecreaseLiquidity' && _tvl.token1 === tokenAddress) {
+            tvlArr.push({
+              time: _tvl.time,
+              tvl: tvlArr[tvlArr.length - 1].tvl - (_tvl.amount1 * tokenPrice),
+              blockNumber: _tvl.block,
+              pool: _tvl.pool
+            })
+          }
+        }
+      }
+    }
+  }
+  return tvlArr
+}
 

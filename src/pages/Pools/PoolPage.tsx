@@ -1,6 +1,6 @@
 import { ChangeEvent, useContext, useEffect, useState } from 'react'
 import { useParams } from "react-router-dom"
-import { filterFee, filterTVL, filterTx, getLiquidityTx, getPools, getSwapTx, groupLiquidityPerDay } from '../../functions'
+import { filterFee, filterTVL, filterTvlFromLiquidity, filterTx, getLiquidityTx, getPools, getSwapTx, groupLiquidityPerDay, groupTVLPerDay } from '../../functions'
 import { GroupedEntry, IPoolData, IPoolLiquidity, ITVL, ITx } from '../../interfaces'
 import styled from "styled-components";
 import { Chip, Container, Grid, Paper, Skeleton, Tab, Tabs, Typography } from "@mui/material";
@@ -62,19 +62,22 @@ const PoolPage = () => {
       const index = poolData.findIndex((item: IPoolData) => item.pool === poolAddress)
       const pool: IPoolData | any = poolData[index]
       setPoolData(pool)
-      const poolLiquidity = groupLiquidityPerDay(pool?.liquidity)
-      setLiquidityData(poolLiquidity)
+      const tvlLine = filterTvlFromLiquidity(txData)
+      const tvlLineForPool = tvlLine.filter((entry) => { return entry.pool === poolAddress })
+      const _barChart = groupTVLPerDay(tvlLineForPool);
+      setLiquidityData(_barChart)
       const filteredTx = txData.filter((entry: ITx) => entry.token0 === pool.token0 && entry.token1 === pool.token1)
       setTxs(filteredTx)
-      const filteredTVL = filterTVL(state.tvl, poolAddress)
+      const filteredTVL = filterTVL(tvlLine, poolAddress)
+      console.log(tvlLine, 'filteredTVL')
       setLiquiditySerie(filteredTVL)
       const fees = filterFee(state.txData)
-      const filterfees = fees.filter((entry: ITVL) => { return entry.poolAddress === poolAddress})
+      const filterfees = fees.filter((entry: ITVL) => { return entry.pool === poolAddress })
       setFees(filterfees)
     }
   }, [state])
 
-  if (state === initialState && groupLiquidityPerDay.length === 0) {
+  if (state.poolData === initialState.poolData || state.txData === initialState.txData) {
     return (
       <>
         <SubHeader />
@@ -107,7 +110,40 @@ const PoolPage = () => {
       <Header />
       <HomeWrapper>
         {_poolData === undefined || liquidityData === undefined || txs === undefined ? (
-          <Loading />
+          <Grid container spacing={4}>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="h5">
+                <Skeleton variant="text" width="100%" />
+              </Typography>
+              <Typography variant="subtitle1">
+                <Skeleton variant="text" width="50%" />
+              </Typography>
+              <Paper>
+                <Skeleton variant="rectangular" width="100%" height={64} />
+              </Paper>
+              <Paper>
+                <Skeleton variant="rectangular" width="100%" height={64} />
+              </Paper>
+              <Typography variant="h4">
+                <Skeleton variant="text" width="50%" />
+              </Typography>
+              <Typography variant="h4">
+                <Skeleton variant="text" width="50%" />
+              </Typography>
+              <Typography variant="h4">
+                <Skeleton variant="text" width="50%" />
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Skeleton variant="rectangular" width="100%" height={400} />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="h4">Recent transactions</Typography>
+              <Paper>
+                <Skeleton variant="rectangular" width="100%" height={400} />
+              </Paper>
+            </Grid>
+          </Grid>
         ) : (
           <Grid container spacing={4}>
             <Grid item xs={12} sm={6}>
@@ -123,9 +159,9 @@ const PoolPage = () => {
                 <Typography variant="h6">{_poolData?.symbol1} </Typography>
                 <Balance variant="h6">{Number(_poolData?.balance1).toFixed(2)}</Balance>
               </BalanceContainer>
-              <Title variant="h4">TVL: ${Number(_poolData?.tvl * usdPrice).toFixed(2)}</Title>
+              <Title variant="h4">TVL: ${Number(liquiditySerie[liquiditySerie.length - 1]?.tvl * usdPrice).toFixed(2)}</Title>
               <Title variant="h4">Volume (24h): ${Number(_poolData?.volume24H * usdPrice).toFixed(2)}</Title>
-              <Title variant="h4">Fees generated: ${Number(fees[fees.length - 1].tvl * usdPrice).toFixed(2)}</Title>
+              <Title variant="h4">Fees generated: ${Number((fees[fees.length - 1]?.tvl ?? 0) * usdPrice).toFixed(2)}</Title>
             </Grid>
             <Grid item xs={12} sm={6}>
               <Tabs value={tabIndex} onChange={handleTabChange} centered>

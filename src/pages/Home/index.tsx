@@ -13,8 +13,6 @@ import { TVLChart } from '../../components/TVLChart'
 import { filterFee, filterTvlFromLiquidity, groupTVLPerDay } from '../../functions'
 import { ITVL } from '../../interfaces'
 import { AppContext, initialState } from '../../state'
-import Loading from '../../components/Loading'
-import { AnyNsRecord } from 'dns'
 
 const HomeWrapper = styled.div`
     display: flex;
@@ -27,20 +25,21 @@ const HomeWrapper = styled.div`
 const Home = () => {
 
     const { state } = useContext(AppContext)
-    const { chain, usdPrice, tvl, txData } = state
+    const { chain, usdPrice, txData } = state
     const [barChart, setBarChart] = useState<ITVL[] | any[] | any>([{}])
     const [lineChart, setLineChart] = useState<ITVL[] | any[]>([])
     const [feeData, setFeeData] = useState<ITVL[] | any[]>([])
     const storedData = localStorage.getItem('data');
 
     useEffect(() => {
-        if (tvl.length > 1) {
+        if (txData.length > 1) {
             const tvlLine = filterTvlFromLiquidity(txData)
             setLineChart(tvlLine)
             const _barChart = groupTVLPerDay(tvlLine);
             setBarChart(_barChart);
             const fees = filterFee(txData)
             setFeeData(fees)
+            console.log(state.txData, 'state.txData')
         }
     }, [state]);
 

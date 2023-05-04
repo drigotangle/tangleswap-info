@@ -1,8 +1,8 @@
 export interface ITVL {
   time: number | string
   tvl: number | any
-  blockNumber?: number
-  poolAddress: string
+  blockNumber: number 
+  pool: string
 }
 
 export interface IToken {
@@ -45,6 +45,8 @@ export interface IPoolData {
 }
 
 export interface ITx {
+  blockNumber: number
+  pool: any
   eventName: string
   token0: string
   token1: string

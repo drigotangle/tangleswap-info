@@ -2,7 +2,6 @@ import { createContext, useReducer } from 'react'
 import { GroupedEntry, IPoolData, IToken, ITVL, ITx } from '../interfaces';
 
 export const initialState = {
-  tvl: [{ time: '', tvl: 0, blockNumer: 0, poolAddress: ''}],
   barChart: [{ time: '', tvl: 0, blockNumer: 0 }],
   tokenData: [{
     tokenName: '',
@@ -33,8 +32,6 @@ type ACTIONTYPE =
 
 function reducer(state: AppState, action: ACTIONTYPE) {
   switch (action.type) {
-    case "SET_LIQUIDITY_DATA":
-      return { ...state, tvl: action.payload };
     case "SET_LIQUIDITY_BAR_DATA":
       return { ...state, barChart: action.payload }
     case "SET_TOKEN_DATA":

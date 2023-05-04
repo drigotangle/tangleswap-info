@@ -39,7 +39,6 @@ export default function ChainMenu() {
         {['Ethereum', 'Shimmer'].map((data) => {
           return (<>
             <MenuItem value='data' onClick={_ => {
-              console.log(data, 'chamou')
               setChain(dispatch, data)
             }}>{data}</MenuItem>
           </>)

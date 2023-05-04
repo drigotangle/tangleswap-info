@@ -1,6 +1,6 @@
 import { Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, Typography } from '@mui/material';
 import dayjs from 'dayjs';
-import { FC, useContext } from 'react';
+import { FC, useContext, useState } from 'react';
 import { ITx } from '../interfaces';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { ChartWrapper, SkeletonWrapper } from '.'
@@ -8,6 +8,7 @@ import { StyledTableRow, StyledTableCell } from './'
 import { toSignificantDigits } from '../functions/toSignificant';
 import { getExplorerUrl } from '../functions';
 import { AppContext, initialState } from '../state';
+import useEnhancedEffect from '@mui/material/utils/useEnhancedEffect';
 
 interface IProps {
   txData: ITx[] | undefined
@@ -17,8 +18,14 @@ interface IProps {
 
 const TransactionsTable: FC<IProps> = (props) => {
   const { state } = useContext(AppContext)
+  const [ txs, setTxs ] = useState<ITx[] | any>([])
   const { txData, chain, usdPrice } = props
   dayjs.extend(relativeTime)
+
+  useEnhancedEffect(() => {
+    const sortedTxData = txData?.sort((a: any, b: any) => { return b.blockNumber - a.blockNumber})
+    setTxs(sortedTxData)
+  }, [])
 
   return (<ChartWrapper>{
     state.txData !== initialState.txData
@@ -36,7 +43,7 @@ const TransactionsTable: FC<IProps> = (props) => {
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {txData?.map((event: ITx, index) => (
+            {txs?.map((event: ITx, index: number) => (
               <StyledTableRow key={index} onClick={() => window.open(getExplorerUrl(chain, event.hash))}>
                 <StyledTableCell>
                   <Typography color='primary' variant="h5">
