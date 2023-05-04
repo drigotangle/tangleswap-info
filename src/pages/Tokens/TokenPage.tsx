@@ -47,7 +47,7 @@ const TokenPage = () => {
       setCandleStickData(_candleStickData)
       const tradingVolumefromSwap_ = tradingVolumefromSwap(filteredTxData, tokenAddress)
       const dailyVolumeSwap = groupTVLPerDay(tradingVolumefromSwap_)
-      setTokenVolume24H(dailyVolumeSwap[dailyVolumeSwap.length - 1].tvl)
+      setTokenVolume24H(dailyVolumeSwap[dailyVolumeSwap.length - 1]?.tvl)
       const tradingVolume7D = tradingVol7d(tradingVolumefromSwap_)
       setTradingVolumeData(dailyVolumeSwap)
       setTokenVolume7D(tradingVolume7D)
