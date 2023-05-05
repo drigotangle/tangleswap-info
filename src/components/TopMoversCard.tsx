@@ -109,7 +109,7 @@ const TopMoversCard = () => {
                                 {`$${Number(data.lastPrice * usdPrice).toFixed(2)}`}
                             </Typography>
                             <Typography variant="h4" component="p">
-                                <PriceChangeSpan priceChange={data.priceChange / 100}>{isNaN(data.priceChange / 100) ? 0 : `${data.priceChange / 100}%`}</PriceChangeSpan>
+                                <PriceChangeSpan priceChange={data.priceChange / 100}>{isNaN(data.priceChange / 100) ? 0 : `${Number(data.priceChange / 100).toFixed(2)}%`}</PriceChangeSpan>
                             </Typography>
                         </div>
                     </TreadmillCard>

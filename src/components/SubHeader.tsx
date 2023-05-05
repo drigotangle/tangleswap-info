@@ -50,8 +50,8 @@ const SubHeader = () => {
             setLastBlockSync(lastBlockFromLiquidityTx);
             setUsdPrice(dispatch, Number(usdPrice.USD));
 
-            const orderedTokenData = tokens.sort((a: IToken, b: IToken) => { return b.lastPrice - a.lastPrice; });
-            const orderedPoolData = pools.sort((a: IPoolData, b: IPoolData) => { return Number(b.liquidity) - Number(a.liquidity) })
+            const orderedTokenData = tokens.sort((a: IToken, b: IToken) => { return (b.lastPrice * usdPrice) - (a.lastPrice * usdPrice); });
+            const orderedPoolData = pools.sort((a: IPoolData, b: IPoolData) => { return (Number(b.liquidity) * usdPrice) - (Number(a.liquidity) * usdPrice) })
             const orderedLiquidity = liquidityTx.sort((a: ITx, b: ITx) => { return b.blockNumber - a.blockNumber })
             const orderedSwap = swapTx.sort((a: ITx, b: ITx) => { return b.blockNumber - a.blockNumber })
 
