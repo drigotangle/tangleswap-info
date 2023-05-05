@@ -7,6 +7,7 @@ import PoolPage from './pages/Pools/PoolPage';
 import Tokens from "./pages/Tokens";
 import TokenPage from "./pages/Tokens/TokenPage";
 import { createGlobalStyle } from "styled-components";
+import { useEffect } from "react";
 
 function App() {
 
@@ -80,6 +81,8 @@ function App() {
     background-repeat: no-repeat;
   }
 `;
+
+useEffect(() => {document.title = 'Analytics - TangleSwap'}, [])
 
   return (
     <>
