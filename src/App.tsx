@@ -82,7 +82,9 @@ function App() {
   }
 `;
 
-useEffect(() => {document.title = 'Analytics - TangleSwap'}, [])
+useEffect(() => {
+  document.title = 'Analytics - TangleSwap'
+}, [])
 
   return (
     <>
