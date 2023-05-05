@@ -1,7 +1,7 @@
 import { Typography, Container, Grid, Box, Skeleton } from '@mui/material'
 import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { GlassPanelWrapper } from '../../components'
+import { GlassPanelWrapper, HomeWrapper } from '../../components'
 import { DailyVolumeChart } from '../../components/DailyVolumeChart'
 import Header from '../../components/Header'
 import HomeGeneral from '../../components/HomeGeneral'
@@ -14,12 +14,6 @@ import { filterFee, filterTvlFromLiquidity, formatCompactNumber, groupTVLPerDay 
 import { ITVL } from '../../interfaces'
 import { AppContext, initialState } from '../../state'
 
-const HomeWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 95vw;
-    margin: 0 auto;
-`
 
 
 const Home = () => {
@@ -56,10 +50,10 @@ const Home = () => {
     }, [state]);
 
     if (state.txData === initialState.txData || state.usdPrice === initialState.usdPrice) {
-        return (
+        return (<>
+            <SubHeader />
+            <Header />
             <HomeWrapper>
-                <SubHeader />
-                <Header />
                 <Container maxWidth="lg">
                     <Box mt={4} mb={4}>
                         <Typography variant="h4">TangleSwap general</Typography>
@@ -97,7 +91,7 @@ const Home = () => {
                     <Skeleton variant="rectangular" width="100%" height={300} />
                 </Container>
             </HomeWrapper>
-        );
+            </>);
     }
 
     return (

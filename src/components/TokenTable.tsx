@@ -1,11 +1,12 @@
-import { Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, Typography } from '@mui/material';
-import { FC, useContext } from 'react';
+import { Box, Pagination, Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow, Typography } from '@mui/material';
+import { FC, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChartWrapper, PriceChangeSpan, SkeletonWrapper, StyledTableCell, TokenImage } from '.';
 import { IToken } from '../interfaces';
 import { AppContext, initialState } from '../state';
 import { StyledTableRow } from './'
 import { logo, xLogo } from '../constants';
+import styled from 'styled-components';
 
 interface IProps {
   tokenList: IToken[] | any
@@ -18,6 +19,17 @@ const TokenTable: FC<IProps> = (props) => {
   const navigate = useNavigate()
 
   const { chain, usdPrice } = state
+
+  const [page, setPage] = useState(1);
+
+
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
+
+  const StyledPagination = styled(Pagination)`
+    margin: auto;
+  `
 
   return (<ChartWrapper>
     {
@@ -39,7 +51,7 @@ const TokenTable: FC<IProps> = (props) => {
               </StyledTableRow>
             </TableHead>
             <TableBody>
-              {tokenList.map((token: IToken) => (
+              {tokenList?.slice((page - 1) * 10, page * 10).map((token: IToken) => (
                 <StyledTableRow key={token.tokenAddress} onClick={() => navigate(`/${chain}/Tokens/${token.tokenAddress}`)}>
                   <StyledTableCell>
                     <Typography variant="h5"><span><TokenImage src={logo[token.tokenAddress] ?? xLogo} />{token.tokenName}</span></Typography>
@@ -70,6 +82,24 @@ const TokenTable: FC<IProps> = (props) => {
                 </StyledTableRow>
               ))}
             </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TableCell colSpan={6}>
+                  <Box width="100%" display="flex" justifyContent="center">
+                    <StyledPagination
+                      count={Math.ceil(tokenList ? tokenList?.length / 1 : 0)}
+                      page={page}
+                      onChange={handlePageChange}
+                      siblingCount={1}
+                      boundaryCount={1}
+                      shape="rounded"
+                      size="large"
+                      color='primary'
+                    />
+                  </Box>
+                </TableCell>
+              </TableRow>
+            </TableFooter>
           </Table>
         </TableContainer>
 

@@ -31,13 +31,14 @@ export const PaperWrapper = styled.div`
 export const HomeWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    width: 80vw;
+    width: 100%;
     margin: auto auto;
     margin-top: 10vh;
 `
 
 export const StyledTableRow = styled(TableRow)`
     padding: 4vh;
+    text-align: center;
 `
 
 export const StyledTableCell = styled(TableCell)`
@@ -57,8 +58,7 @@ export const GlassPanelWrapper = styled(Grid)`
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   position: relative;
-  height: max-content;
-  width: max-content;
+  width: 100%;
   padding: 5vh;
 `;
 

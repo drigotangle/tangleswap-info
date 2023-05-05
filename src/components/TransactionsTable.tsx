@@ -1,4 +1,4 @@
-import { Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, Typography } from '@mui/material';
+import { Box, Pagination, Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow, Typography, styled } from '@mui/material';
 import dayjs from 'dayjs';
 import { FC, useContext, useState } from 'react';
 import { ITx } from '../interfaces';
@@ -18,14 +18,23 @@ interface IProps {
 
 const TransactionsTable: FC<IProps> = (props) => {
   const { state } = useContext(AppContext)
-  const [ txs, setTxs ] = useState<ITx[] | any>([])
+  const [txs, setTxs] = useState<ITx[] | any>([])
   const { txData, chain, usdPrice } = props
+  const [page, setPage] = useState(1);
   dayjs.extend(relativeTime)
 
   useEnhancedEffect(() => {
-    const sortedTxData = txData?.sort((a: any, b: any) => { return b.blockNumber - a.blockNumber})
+    const sortedTxData = txData?.sort((a: any, b: any) => { return b.blockNumber - a.blockNumber })
     setTxs(sortedTxData)
   }, [])
+
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
+
+  const StyledPagination = styled(Pagination)`
+    margin: auto;
+  `
 
   return (<ChartWrapper>{
     state.txData !== initialState.txData
@@ -43,7 +52,7 @@ const TransactionsTable: FC<IProps> = (props) => {
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {txs?.map((event: ITx, index: number) => (
+            {txs?.slice((page - 1) * 10, page * 10).map((event: ITx, index: number) => (
               <StyledTableRow key={index} onClick={() => window.open(getExplorerUrl(chain, event.hash))}>
                 <StyledTableCell>
                   <Typography color='primary' variant="h5">
@@ -80,6 +89,24 @@ const TransactionsTable: FC<IProps> = (props) => {
               </StyledTableRow>
             ))}
           </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={6}>
+                <Box width="100%" display="flex" justifyContent="center">
+                  <StyledPagination
+                    count={Math.ceil(txs ? txs?.length / 10 : 0)}
+                    page={page}
+                    onChange={handlePageChange}
+                    siblingCount={1}
+                    boundaryCount={1}
+                    shape="rounded"
+                    size="large"
+                    color='primary'
+                  />
+                </Box>
+              </TableCell>
+            </TableRow>
+          </TableFooter>
         </Table>
       </TableContainer>
       :

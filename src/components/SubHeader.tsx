@@ -6,6 +6,7 @@ import { AppContext } from '../state'
 import { getLiquidityTx, getPools, getSwapTx, getTVL, getTokens, getUsdPrice } from '../functions'
 import { setPoolData, setTokenData, setTxData, setUsdPrice } from '../state/Actions';
 import { useTheme } from '@mui/material/styles';
+import { IPoolData, IToken, ITx } from '../interfaces';
 
 
 const HeadWrapper = styled.div`
@@ -49,10 +50,16 @@ const SubHeader = () => {
             setLastBlockSync(lastBlockFromLiquidityTx);
             setUsdPrice(dispatch, Number(usdPrice.USD));
 
+            const orderedTokenData = tokens.sort((a: IToken, b: IToken) => { return b.lastPrice - a.lastPrice; });
+            const orderedPoolData = pools.sort((a: IPoolData, b: IPoolData) => { return Number(b.liquidity) - Number(a.liquidity) })
+            const orderedLiquidity = liquidityTx.sort((a: ITx, b: ITx) => { return b.blockNumber - a.blockNumber })
+            const orderedSwap = swapTx.sort((a: ITx, b: ITx) => { return b.blockNumber - a.blockNumber })
+
+
             // Update the state with the fetched data
-            setPoolData(dispatch, pools);
-            setTokenData(dispatch, tokens);
-            setTxData(dispatch, [...liquidityTx, ...swapTx]);
+            setPoolData(dispatch, orderedPoolData);
+            setTokenData(dispatch, orderedTokenData);
+            setTxData(dispatch, [...orderedLiquidity, ...orderedSwap]);
 
         } catch (error) {
             console.error('Error fetching data:', error);
