@@ -41,6 +41,7 @@ const TokenPage = () => {
       setTokenSymbol(_token.tokenSymbol)
       setToken(_token)
       const filteredTxData = txData.filter((entry: ITx) => { return entry.token0 === tokenAddress || entry.token1 === tokenAddress })
+      console.log(filteredTxData, 'filteredTxData')
       setTxs(filteredTxData)
       const _poolsToCandle = poolsToCandle(verifyedPool, tokenAddress)
       const _candleStickData = getCandlestickData(_poolsToCandle)

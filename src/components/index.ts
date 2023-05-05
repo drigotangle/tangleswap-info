@@ -31,7 +31,7 @@ export const PaperWrapper = styled.div`
 export const HomeWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 80%;
     margin: auto auto;
     margin-top: 10vh;
 `
