@@ -47,7 +47,7 @@ const Header = () => {
     <AppBar position="static">
       <Toolbar>
         <Link component={RouterLink} to="/" color="inherit" underline="none">
-          <img width={30} src="https://d3m3d54t409w7t.cloudfront.net/logos/Logo_White_Alpha.gif" alt="Logo" />
+          <img width={30} src="https://d3m3d54t409w7t.cloudfront.net/logos/Logo_White_Alpha.webp" alt="Logo" />
         </Link>
         <Box sx={{ flexGrow: 1, display: 'flex', gap: '4vw', ml: 2 }}>
           {['Overview', 'Pools', 'Tokens'].map((data: string, index: number) => {

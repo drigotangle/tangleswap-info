@@ -20,6 +20,7 @@ export const SkeletonWrapper = styled.div`
 `
 
 export const PaperWrapper = styled.div`
+position: relative;
     display: flex;
     flex-direction: row;
     gap: 4vw;
