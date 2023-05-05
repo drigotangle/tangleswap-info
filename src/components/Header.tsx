@@ -78,7 +78,11 @@ const Header = () => {
             InputProps={{
               endAdornment: (
                 <IconButton 
-                disabled={error.error || !searchInputValue} 
+                disabled={
+                  error.error || 
+                  !searchInputValue ||
+                  !containsTokenAddressInTokens(state.tokenData, searchInputValue) && !containsTokenAddressInPools(state.poolData, searchInputValue)
+                } 
                 type="submit" 
                 aria-label="search" 
                 edge="end"
