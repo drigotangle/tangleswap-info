@@ -52,14 +52,14 @@ const SubHeader = () => {
 
             const orderedTokenData = tokens.sort((a: IToken, b: IToken) => { return (b.lastPrice * usdPrice) - (a.lastPrice * usdPrice); });
             const orderedPoolData = pools.sort((a: IPoolData, b: IPoolData) => { return (Number(b.liquidity) * usdPrice) - (Number(a.liquidity) * usdPrice) })
-            const orderedLiquidity = liquidityTx.sort((a: ITx, b: ITx) => { return b.blockNumber - a.blockNumber })
-            const orderedSwap = swapTx.sort((a: ITx, b: ITx) => { return b.blockNumber - a.blockNumber })
+            // const orderedLiquidity = liquidityTx.sort((a: ITx, b: ITx) => { return b.blockNumber - a.blockNumber })
+            // const orderedSwap = swapTx.sort((a: ITx, b: ITx) => { return b.blockNumber - a.blockNumber })
 
 
             // Update the state with the fetched data
             setPoolData(dispatch, orderedPoolData);
             setTokenData(dispatch, orderedTokenData);
-            setTxData(dispatch, [...orderedLiquidity, ...orderedSwap]);
+            setTxData(dispatch, [...liquidityTx, ...liquidityTx]);
 
         } catch (error) {
             console.error('Error fetching data:', error);
