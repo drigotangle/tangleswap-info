@@ -52,8 +52,8 @@ const SubHeader = () => {
 
             const orderedTokenData = tokens.sort((a: IToken, b: IToken) => { return (b.lastPrice * usdPrice) - (a.lastPrice * usdPrice); });
             const orderedPoolData = pools.sort((a: IPoolData, b: IPoolData) => { return (Number(b.liquidity) * usdPrice) - (Number(a.liquidity) * usdPrice) })
-            const orderedLiquidity = liquidityTx.sort((a: ITx, b: ITx) => { return Number(b.blockNumber) - Number(a.blockNumber) });
-            const orderedSwap = swapTx.sort((a: ITx, b: ITx) => { return Number(b.blockNumber) - Number(a.blockNumber) });
+            const orderedLiquidity = liquidityTx.sort((a: ITx, b: ITx) => { return Number(a.blockNumber) - Number(b.blockNumber) });
+            const orderedSwap = swapTx.sort((a: ITx, b: ITx) => { return Number(a.blockNumber) - Number(b.blockNumber) });
 
 
             // Update the state with the fetched data
