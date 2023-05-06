@@ -47,7 +47,7 @@ const TransactionsTable: FC<IProps> = (props) => {
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {txs?.slice((page - 1) * 10, page * 10).map((event: ITx, index: number) => (
+            {txData?.slice((page - 1) * 10, page * 10).map((event: ITx, index: number) => (
               <StyledTableRow key={index} onClick={() => window.open(getExplorerUrl(chain, event.hash))}>
                 <StyledTableCell>
                   <Typography color='primary' variant="h5">
