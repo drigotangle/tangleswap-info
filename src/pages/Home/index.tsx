@@ -1,6 +1,5 @@
 import { Typography, Container, Grid, Box, Skeleton } from '@mui/material'
 import { useContext, useEffect, useState } from 'react'
-import styled from 'styled-components'
 import { GlassPanelWrapper, HomeWrapper } from '../../components'
 import { DailyVolumeChart } from '../../components/DailyVolumeChart'
 import Header from '../../components/Header'
@@ -47,7 +46,7 @@ const Home = () => {
             console.log(wholeTVL, formatedTVL, 'formatedTVL')
             setWholeTVL(formatedTVL)
         }
-    }, [state]);
+    }, [txData, tokenData, usdPrice]);
 
     if (state.txData === initialState.txData || state.usdPrice === initialState.usdPrice) {
         return (<>
