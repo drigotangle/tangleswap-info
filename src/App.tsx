@@ -79,6 +79,7 @@ function App() {
     background-position: top;
     background-size: cover;
     background-repeat: no-repeat;
+    width: 100%
   }
 `;
 
