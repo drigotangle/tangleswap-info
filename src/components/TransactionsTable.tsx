@@ -33,12 +33,13 @@ const TransactionsTable: FC<IProps> = (props) => {
   useEffect(() => {
     if(state.txData !== initialState.txData) {
       const sortedTx = txData?.sort((a: ITx, b: ITx) => { return b.blockNumber - a.blockNumber; });
+      console.log(sortedTx, 'sortedTx')
       setTx(sortedTx)
     }
   }, [state.txData])
 
   return (<ChartWrapper>{
-    state.txData !== initialState.txData
+    state.txData !== initialState.txData && tx !== undefined
       ?
       <TableContainer component={Paper}>
         <Table>
