@@ -62,14 +62,14 @@ const Home = () => {
                         <Grid item xs={12} sm={6}>
                             <GlassPanelWrapper>
                                 <Typography variant="h6">TVL</Typography>
-                                <Skeleton variant="text" width={100} height={50} />
+                                <Skeleton variant="text" width={80} height={50} />
                                 <Skeleton variant="rectangular" width={250} height={200} />
                             </GlassPanelWrapper>
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <GlassPanelWrapper>
                                 <Typography variant="h6">Volume 24h</Typography>
-                                <Skeleton variant="text" width={100} height={50} />
+                                <Skeleton variant="text" width={80} height={50} />
                                 <Skeleton variant="rectangular" width={250} height={200} />
                             </GlassPanelWrapper>
                         </Grid>
