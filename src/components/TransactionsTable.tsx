@@ -23,11 +23,6 @@ const TransactionsTable: FC<IProps> = (props) => {
   const [page, setPage] = useState(1);
   dayjs.extend(relativeTime)
 
-  useEnhancedEffect(() => {
-    const sortedTxData = txData?.sort((a: any, b: any) => { return b.blockNumber - a.blockNumber })
-    setTxs(sortedTxData)
-  }, [])
-
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
