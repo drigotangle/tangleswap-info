@@ -8,7 +8,6 @@ import { StyledTableRow, StyledTableCell } from './'
 import { toSignificantDigits } from '../functions/toSignificant';
 import { getExplorerUrl } from '../functions';
 import { AppContext, initialState } from '../state';
-import useEnhancedEffect from '@mui/material/utils/useEnhancedEffect';
 
 interface IProps {
   txData: ITx[] | undefined
@@ -18,7 +17,6 @@ interface IProps {
 
 const TransactionsTable: FC<IProps> = (props) => {
   const { state } = useContext(AppContext)
-  const [txs, setTxs] = useState<ITx[] | any>([])
   const { txData, chain, usdPrice } = props
   const [page, setPage] = useState(1);
   dayjs.extend(relativeTime)
@@ -89,7 +87,7 @@ const TransactionsTable: FC<IProps> = (props) => {
               <TableCell colSpan={6}>
                 <Box width="100%" display="flex" justifyContent="center">
                   <StyledPagination
-                    count={Math.ceil(txs ? txs?.length / 10 : 0)}
+                    count={Math.ceil(txData ? txData?.length / 10 : 0)}
                     page={page}
                     onChange={handlePageChange}
                     siblingCount={1}
