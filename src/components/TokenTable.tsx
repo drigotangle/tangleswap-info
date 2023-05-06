@@ -87,7 +87,7 @@ const TokenTable: FC<IProps> = (props) => {
                 <TableCell colSpan={6}>
                   <Box width="100%" display="flex" justifyContent="center">
                     <StyledPagination
-                      count={Math.ceil(tokenList ? tokenList?.length / 1 : 0)}
+                      count={Math.ceil(tokenList ? tokenList?.length / 10 : 0)}
                       page={page}
                       onChange={handlePageChange}
                       siblingCount={1}
