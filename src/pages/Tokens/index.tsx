@@ -26,6 +26,7 @@ const Pools = () => {
     const { dispatch, state } = useContext(AppContext)
 
 
+
     if (state === initialState) {
         return (
             <>

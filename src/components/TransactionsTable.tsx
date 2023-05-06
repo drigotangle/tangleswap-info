@@ -1,6 +1,6 @@
 import { Box, Pagination, Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow, Typography, styled } from '@mui/material';
 import dayjs from 'dayjs';
-import { FC, useContext, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import { ITx } from '../interfaces';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { ChartWrapper, SkeletonWrapper } from '.'
@@ -19,6 +19,7 @@ const TransactionsTable: FC<IProps> = (props) => {
   const { state } = useContext(AppContext)
   const { txData, chain, usdPrice } = props
   const [page, setPage] = useState(1);
+  const [ tx, setTx ] = useState<ITx[]>()
   dayjs.extend(relativeTime)
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -28,6 +29,13 @@ const TransactionsTable: FC<IProps> = (props) => {
   const StyledPagination = styled(Pagination)`
     margin: auto;
   `
+
+  useEffect(() => {
+    if(state.txData !== initialState.txData) {
+      const sortedTx = txData?.sort((a: ITx, b: ITx) => { return b.blockNumber - a.blockNumber; });
+      setTx(sortedTx)
+    }
+  }, [])
 
   return (<ChartWrapper>{
     state.txData !== initialState.txData
@@ -45,7 +53,7 @@ const TransactionsTable: FC<IProps> = (props) => {
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {txData?.slice((page - 1) * 10, page * 10).map((event: ITx, index: number) => (
+            {tx?.slice((page - 1) * 10, page * 10).map((event: ITx, index: number) => (
               <StyledTableRow key={index} onClick={() => window.open(getExplorerUrl(chain, event.hash))}>
                 <StyledTableCell>
                   <Typography color='primary' variant="h5">
@@ -87,7 +95,7 @@ const TransactionsTable: FC<IProps> = (props) => {
               <TableCell colSpan={6}>
                 <Box width="100%" display="flex" justifyContent="center">
                   <StyledPagination
-                    count={Math.ceil(txData ? txData?.length / 10 : 0)}
+                    count={Math.ceil(tx ? tx?.length / 10 : 0)}
                     page={page}
                     onChange={handlePageChange}
                     siblingCount={1}
