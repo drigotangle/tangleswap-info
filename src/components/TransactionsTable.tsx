@@ -35,7 +35,7 @@ const TransactionsTable: FC<IProps> = (props) => {
       const sortedTx = txData?.sort((a: ITx, b: ITx) => { return b.blockNumber - a.blockNumber; });
       setTx(sortedTx)
     }
-  }, [])
+  }, [state.txData])
 
   return (<ChartWrapper>{
     state.txData !== initialState.txData
