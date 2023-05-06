@@ -31,12 +31,12 @@ const TransactionsTable: FC<IProps> = (props) => {
   `
 
   useEffect(() => {
-    if(state.txData !== initialState.txData) {
-      const sortedTx = txData?.sort((a: ITx, b: ITx) => { return b.blockNumber - a.blockNumber; });
+    if(txData !== initialState.txData) {
+      const sortedTx = txData?.sort((a: ITx, b: ITx) => { return Number(b.blockNumber) - Number(a.blockNumber) });
       console.log(sortedTx, 'sortedTx')
       setTx(sortedTx)
     }
-  }, [state.txData])
+  }, [txData])
 
   return (<ChartWrapper>{
     state.txData !== initialState.txData && tx !== undefined

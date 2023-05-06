@@ -16,22 +16,9 @@ import Loading from '../../components/Loading'
 
 const Pools = () => {
 
-    const { dispatch, state } = useContext(AppContext)
-    const { chain: urlChain } = useParams()
+    const { state } = useContext(AppContext)
     const { chain, usdPrice } = state
 
-
-    useEffect(() => {
-        setChain(dispatch, urlChain)
-    }, [])
-
-
-    useEffect(() => {
-        getPools(15, urlChain).then((res: IPoolData[]) => {
-            console.log(res, 'pools')
-            setPoolData(dispatch, res)
-        })
-    }, [])
 
     if (state === initialState) {
         return (
