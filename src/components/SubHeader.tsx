@@ -44,7 +44,7 @@ const SubHeader = () => {
             ]);
 
 
-            const lastBlockFromLiquidityTx = liquidityTx[liquidityTx.length - 1].blockNumber;
+            const lastBlockFromLiquidityTx = liquidityTx[0].blockNumber;
 
 
             setLastBlockSync(lastBlockFromLiquidityTx);
