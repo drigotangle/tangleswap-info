@@ -135,7 +135,7 @@ const Home = () => {
                 <Box mt={4} mb={4}>
                     <Typography variant="h4">Recent transactions</Typography>
                 </Box>
-                <TransactionsTable chain={chain} txData={state.txData} usdPrice={usdPrice} />
+                <TransactionsTable chain={chain} txData={txData} usdPrice={usdPrice} />
             </Container>
         </>
     )
