@@ -19,7 +19,7 @@ const TransactionsTable: FC<IProps> = (props) => {
   const { state } = useContext(AppContext)
   const { txData, chain, usdPrice } = props
   const [page, setPage] = useState(1);
-  const [ tx, setTx ] = useState<ITx[]>()
+  const [ tx, setTx ] = useState<ITx[] | any>([])
   dayjs.extend(relativeTime)
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -39,7 +39,7 @@ const TransactionsTable: FC<IProps> = (props) => {
   }, [txData])
 
   return (<ChartWrapper>{
-    state.txData !== initialState.txData && tx !== undefined
+    state.txData !== initialState.txData && tx?.length > 0
       ?
       <TableContainer component={Paper}>
         <Table>
