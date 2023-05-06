@@ -51,15 +51,13 @@ const SubHeader = () => {
             setUsdPrice(dispatch, Number(usdPrice.USD));
 
             const orderedTokenData = tokens.sort((a: IToken, b: IToken) => { return (b.lastPrice * Number(usdPrice.USD)) - (a.lastPrice * Number(usdPrice.USD)); });
-            const orderedPoolData = pools.sort((a: IPoolData, b: IPoolData) => { return (Number(b.liquidity) * Number(usdPrice.USD)) - (Number(a.liquidity) * Number(usdPrice.USD)) })
-            const orderedLiquidity = liquidityTx.sort((a: ITx, b: ITx) => { return Number(a.blockNumber) - Number(b.blockNumber) });
-            const orderedSwap = swapTx.sort((a: ITx, b: ITx) => { return Number(a.blockNumber) - Number(b.blockNumber) });
+            const orderedPoolData = pools.sort((a: IPoolData, b: IPoolData) => { return (Number(b.tvl) * Number(usdPrice.USD)) - (Number(a.tvl) * Number(usdPrice.USD)) })
 
 
             // Update the state with the fetched data
             setPoolData(dispatch, orderedPoolData);
             setTokenData(dispatch, orderedTokenData);
-            setTxData(dispatch, [...orderedLiquidity, ...orderedSwap]);
+            setTxData(dispatch, [...liquidityTx, ...swapTx]);
 
         } catch (error) {
             console.error('Error fetching data:', error);
