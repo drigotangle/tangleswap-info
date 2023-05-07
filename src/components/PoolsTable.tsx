@@ -83,13 +83,13 @@ const PoolDataTable: FC<IProps> = (props) => {
                         </span>
                       </StyledTableCell>
                       <StyledTableCell>
-                        <Typography variant="h5">${Number(formatCompactNumber(Number(row.tvl) * (usdPrice ?? 0)))}</Typography>
+                        <Typography variant="h5">${Number(formatCompactNumber(Number(row.tvl * Number(usdPrice))))}</Typography>
                       </StyledTableCell>
                       <StyledTableCell>
-                        <Typography variant="h5">${Number(formatCompactNumber(Number(row.volume24H) * (usdPrice ?? 0)))}</Typography>
+                        <Typography variant="h5">${Number(formatCompactNumber(Number(row.volume24H * Number(usdPrice))))}</Typography>
                       </StyledTableCell>
                       <StyledTableCell>
-                        <Typography variant="h5">${Number(formatCompactNumber(Number(row.volume7D) * (usdPrice ?? 0)))}</Typography>
+                        <Typography variant="h5">${Number(formatCompactNumber(Number(row.volume7D * Number(usdPrice))))}</Typography>
                       </StyledTableCell>
                     </StyledTableRow>
                   ))}
