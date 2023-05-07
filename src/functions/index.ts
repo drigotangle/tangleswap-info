@@ -172,7 +172,7 @@ export const getCandlestickData = (data: SeriesData[]): CandlestickData[] => {
           close: currentData.price,
           timestamp
         }
-      } else if (timestamp - currentOHLC.timestamp >= 60000) {
+      } else if (timestamp - currentOHLC.timestamp >= 3600000) {
         // If the current data point is outside the current time interval, push the current OHLC data and start a new time interval
         ohlcData.push(currentOHLC)
         currentOHLC = {
@@ -197,6 +197,7 @@ export const getCandlestickData = (data: SeriesData[]): CandlestickData[] => {
   }
   return ohlcData
 }
+
 
 
 export const poolsToCandle = (pools: IPoolData[] | any, tokenAddress: string | undefined): SeriesData[] => {

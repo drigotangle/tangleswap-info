@@ -97,6 +97,7 @@ const Home = () => {
         <>
             <SubHeader />
             <Header />
+            <HomeWrapper>
             <Container maxWidth="lg">
                 <Box mt={4} mb={4}>
                     <Typography variant="h4">TangleSwap general</Typography>
@@ -137,6 +138,7 @@ const Home = () => {
                 </Box>
                 <TransactionsTable chain={chain} txData={state.txData.sort((a: any, b: any) => b.blockNumber - a.blockNumber)} usdPrice={usdPrice} />
             </Container>
+            </HomeWrapper>
         </>
     )
 }
