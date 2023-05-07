@@ -50,7 +50,7 @@ const SubHeader = () => {
             setLastBlockSync(lastBlockFromLiquidityTx);
             setUsdPrice(dispatch, Number(usdPrice.USD));
 
-            const orderedTokenData = tokens.sort((a: IToken, b: IToken) => { return (b.lastPrice * Number(usdPrice.USD)) - (a.lastPrice * Number(usdPrice.USD)); });
+            const orderedTokenData = tokens.sort((a: IToken, b: IToken) => { return b.TVL - a.TVL });
             const orderedPoolData = pools.sort((a: IPoolData, b: IPoolData) => { return (Number(b.tvl) * Number(usdPrice.USD)) - (Number(a.tvl) * Number(usdPrice.USD)) })
 
 
