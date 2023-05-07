@@ -24,6 +24,7 @@ const Header = () => {
   };
 
   useEffect(() => {
+    setError({error: false, message:''})
     if (searchInputValue !== undefined && state.tokenData !== initialState.tokenData && state.poolData !== initialState.poolData) {
       if (!isValidEthereumAddress(searchInputValue)) {
         setError({ error: true, message: 'Not a valid Ethereum address' })
