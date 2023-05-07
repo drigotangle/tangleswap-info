@@ -6,7 +6,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { ChartWrapper, SkeletonWrapper } from '.'
 import { StyledTableRow, StyledTableCell } from './'
 import { toSignificantDigits } from '../functions/toSignificant';
-import { getExplorerUrl } from '../functions';
+import { formatCompactNumber, getExplorerUrl } from '../functions';
 import { AppContext, initialState } from '../state';
 
 interface IProps {
@@ -70,7 +70,7 @@ const TransactionsTable: FC<IProps> = (props) => {
                   </Typography>
                 </StyledTableCell>
                 <StyledTableCell>
-                  <Typography variant="h5">${Number(event.value * (usdPrice ?? 1)).toFixed(2)}</Typography>
+                  <Typography variant="h5">${formatCompactNumber(Number(event.value * (usdPrice ?? 1)))}</Typography>
                 </StyledTableCell>
                 <StyledTableCell>
                   <Typography variant="h5">{toSignificantDigits(event.amount0, 3) + " " + event.symbol0}</Typography>

@@ -20,6 +20,7 @@ import { AppContext, initialState } from "../state";
 import { useNavigate } from "react-router-dom";
 import { logo, xLogo } from "../constants";
 import styled from "styled-components";
+import { formatCompactNumber } from "../functions";
 
 interface IProps {
   pooList: IPoolData[] | undefined;
@@ -82,13 +83,13 @@ const PoolDataTable: FC<IProps> = (props) => {
                         </span>
                       </StyledTableCell>
                       <StyledTableCell>
-                        <Typography variant="h5">${Number(row.tvl * (usdPrice ?? 0)).toFixed(2)}</Typography>
+                        <Typography variant="h5">${Number(formatCompactNumber(row.tvl * (usdPrice ?? 0)))}</Typography>
                       </StyledTableCell>
                       <StyledTableCell>
-                        <Typography variant="h5">${Number(row.volume24H * (usdPrice ?? 0)).toFixed(2)}</Typography>
+                        <Typography variant="h5">${Number(formatCompactNumber(row.volume24H * (usdPrice ?? 0)))}</Typography>
                       </StyledTableCell>
                       <StyledTableCell>
-                        <Typography variant="h5">${Number(row.volume7D * (usdPrice ?? 0)).toFixed(2)}</Typography>
+                        <Typography variant="h5">${Number(formatCompactNumber(row.volume7D * (usdPrice ?? 0)))}</Typography>
                       </StyledTableCell>
                     </StyledTableRow>
                   ))}

@@ -1,6 +1,6 @@
 import { ChangeEvent, useContext, useEffect, useState } from 'react'
 import { useParams } from "react-router-dom"
-import { filterTvlFromLiquidityForToken, getCandlestickData, groupTVLPerDay, poolsToCandle, removeUnmatchedPools, tradingVol7d, tradingVolumefromSwap } from '../../functions'
+import { filterTvlFromLiquidityForToken, formatCompactNumber, getCandlestickData, groupTVLPerDay, poolsToCandle, removeUnmatchedPools, tradingVol7d, tradingVolumefromSwap } from '../../functions'
 import { CandlestickData, IPoolData, ITVL, IToken, ITx } from '../../interfaces'
 import styled from "styled-components";
 import { Chip, Paper, Skeleton, Tab, Tabs, Typography } from "@mui/material";
@@ -103,13 +103,13 @@ const TokenPage = () => {
         <Paper>
           <PaperWrapper>
             <SpanWrapper>
-              <Typography variant="h5">Tvl: ${Number(token?.TVL ?? 0 * usdPrice).toFixed(2)}</Typography>
+              <Typography variant="h5">Tvl: ${formatCompactNumber(Number(token?.TVL ?? 0 * usdPrice))}</Typography>
             </SpanWrapper>
             <SpanWrapper>
-              <Typography variant="h5">24h trading volume: ${Number(tokenVolume24H).toFixed(2)}</Typography>
+              <Typography variant="h5">24h trading volume: ${formatCompactNumber(Number(tokenVolume24H))}</Typography>
             </SpanWrapper>
             <SpanWrapper>
-              <Typography variant="h5">7d trading volume: ${Number(tokenVolume7D).toFixed(2)}</Typography>
+              <Typography variant="h5">7d trading volume: ${formatCompactNumber(Number(tokenVolume7D))}</Typography>
             </SpanWrapper>
           </PaperWrapper>
         </Paper>
