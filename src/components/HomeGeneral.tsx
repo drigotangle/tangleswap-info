@@ -10,8 +10,7 @@ interface IProps {
 
 const HomeGeneral: FC<IProps> = (props) => {
     const { volume24h, feesGenerated, tvl } = props
-    return (
-        <PaperWrapper>
+    return (<>
             <Paper>
                 <PaperWrapper>
                     <SpanWrapper><Typography variant="h5">Volume24h: ${volume24h}</Typography></SpanWrapper>
@@ -19,8 +18,7 @@ const HomeGeneral: FC<IProps> = (props) => {
                     <SpanWrapper><Typography variant="h5">TVL: ${tvl}</Typography></SpanWrapper>
                 </PaperWrapper>
             </Paper>
-        </PaperWrapper>
-    )
+    </>)
 }
 
 export default HomeGeneral
