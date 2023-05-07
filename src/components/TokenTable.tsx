@@ -7,6 +7,7 @@ import { AppContext, initialState } from '../state';
 import { StyledTableRow } from './'
 import { logo, xLogo } from '../constants';
 import styled from 'styled-components';
+import { formatCompactNumber } from '../functions';
 
 interface IProps {
   tokenList: IToken[] | any
@@ -60,7 +61,7 @@ const TokenTable: FC<IProps> = (props) => {
                     <Typography variant="h5">{token.tokenAddress}</Typography>
                   </StyledTableCell>
                   <StyledTableCell>
-                    <Typography variant="h5">${Number(Number(token.lastPrice) * usdPrice).toFixed(2)}</Typography>
+                    <Typography variant="h5">${formatCompactNumber(Number(Number(token.lastPrice) * usdPrice))}</Typography>
                   </StyledTableCell>
                   <StyledTableCell>
                     <Typography variant="h5">
@@ -74,10 +75,10 @@ const TokenTable: FC<IProps> = (props) => {
                     </Typography>
                   </StyledTableCell>
                   <StyledTableCell>
-                    <Typography variant="h5">${isNaN(token.volume24H) ? 0 : Number(token.volume24H * usdPrice).toFixed(2)}</Typography>
+                    <Typography variant="h5">${isNaN(token.volume24H) ? 0 : formatCompactNumber(Number(token.volume24H * usdPrice))}</Typography>
                   </StyledTableCell>
                   <StyledTableCell>
-                    <Typography variant="h5">${Number(token.TVL * usdPrice).toFixed(2) ?? 'N/A'}</Typography>
+                    <Typography variant="h5">${formatCompactNumber(Number(token.TVL * usdPrice)) ?? 'N/A'}</Typography>
                   </StyledTableCell>
                 </StyledTableRow>
               ))}

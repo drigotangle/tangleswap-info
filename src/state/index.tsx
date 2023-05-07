@@ -8,11 +8,12 @@ export const initialState = {
     tokenSymbol: '',
     lastPrice: 0,
     priceChange: 0,
-    volume24h: 0,
+    volume24H: 0,
     volume7d: 0,
     tradingVolume24h: 0,
     tradingVolume7D: 0,
-    TVL: 0
+    TVL: 0,
+    tokenAddress: ''
   }],
   poolData: [],
   txData: [],

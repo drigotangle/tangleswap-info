@@ -10,7 +10,7 @@ import TokenTable from '../../components/TokenTable'
 import TransactionsTable from '../../components/TransactionsTable'
 import { TVLChart } from '../../components/TVLChart'
 import { filterFee, filterTvlFromLiquidity, formatCompactNumber, groupTVLPerDay } from '../../functions'
-import { ITVL } from '../../interfaces'
+import { ITVL, IToken } from '../../interfaces'
 import { AppContext, initialState } from '../../state'
 
 
@@ -24,7 +24,6 @@ const Home = () => {
     const [feeData, setFeeData] = useState<string>()
     const [ wholeTVL, setWholeTVL] = useState<string>()
     const [ volume24h, setVolume24h] = useState<string>()
-    const storedData = localStorage.getItem('data');
 
     useEffect(() => {
         if (txData.length > 1 && state.tokenData !== initialState.tokenData) {
@@ -40,7 +39,7 @@ const Home = () => {
             console.log(formatedFee, 'formatedFee')
             setFeeData(formatedFee)
             console.log(state.txData, 'state.txData')
-            const sumTVL = tokenData.reduce((accumulator: any, currentValue: any) => accumulator + currentValue.TVL, 0);
+            const sumTVL = tokenData.reduce((accumulator: number, currentValue: IToken) => accumulator + currentValue.TVL, 0);
             const wholeTVL = sumTVL * usdPrice
             const formatedTVL = formatCompactNumber(Number(wholeTVL))
             console.log(wholeTVL, formatedTVL, 'formatedTVL')
