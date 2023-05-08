@@ -152,7 +152,6 @@ export const txsForToken = (txs: ITx[], symbol: string): ITx[] => {
 export const getCandlestickData = (data: SeriesData[]): CandlestickData[] => {
   const ohlcData: CandlestickData[] = []
   let currentOHLC: CandlestickData | any = null
-  console.log(data, 'data')
   // Sort the data by timestamp
   data.sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime())
 
@@ -172,7 +171,7 @@ export const getCandlestickData = (data: SeriesData[]): CandlestickData[] => {
           close: currentData.price,
           timestamp
         }
-      } else if (timestamp - currentOHLC.timestamp >= 3600000) {
+      } else if (timestamp - currentOHLC.timestamp >= 3600000 * 6) {
         // If the current data point is outside the current time interval, push the current OHLC data and start a new time interval
         ohlcData.push(currentOHLC)
         currentOHLC = {
