@@ -31,8 +31,8 @@ const Home = () => {
             setLineChart(tvlLine)
             const _barChart = groupTVLPerDay(tvlLine);
             setBarChart(_barChart);
-            const formatedVolume24h = formatCompactNumber(_barChart[_barChart.length - 1].tvl)
-            setVolume24h(formatedVolume24h * usdPrice)
+            const formatedVolume24h = formatCompactNumber(_barChart[_barChart.length - 1].tvl * usdPrice)
+            setVolume24h(formatedVolume24h)
             const fees = filterFee(txData)
             const wholeFee = fees.reduce((accumulator: any, currentValue: any) => accumulator + currentValue.tvl, 0)
             const formatedFee = formatCompactNumber(wholeFee)
