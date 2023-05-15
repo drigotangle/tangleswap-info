@@ -74,6 +74,7 @@ const PoolPage = () => {
       const fees = filterFee(state.txData)
       const filterfees = fees.filter((entry: ITVL) => { return entry.pool === poolAddress })
       setFees(filterfees)
+      //
     }
   }, [state])
 
